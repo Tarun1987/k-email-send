@@ -1,4 +1,5 @@
 ﻿using EmailSender.Models;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,24 +45,22 @@ namespace EmailSender.Controllers
 
         private IList<string> getRecipientsListFromFile(HttpPostedFileBase RecipientFile)
         {
+            IList<string> emailList = new List<string>();
             if ((RecipientFile != null) && (RecipientFile.ContentLength > 0) && !string.IsNullOrEmpty(RecipientFile.FileName))
             {
                 string fileName = RecipientFile.FileName;
                 string fileContentType = RecipientFile.ContentType;
                 byte[] fileBytes = new byte[RecipientFile.ContentLength];
                 var data = RecipientFile.InputStream.Read(fileBytes, 0, Convert.ToInt32(RecipientFile.ContentLength));
-                using (var package = new ExcelPackage(file.InputStream))
+                using (var package = new ExcelPackage(RecipientFile.InputStream))
                 {
                     var currentSheet = package.Workbook.Worksheets;
                     var workSheet = currentSheet.First();
                     var noOfCol = workSheet.Dimension.End.Column;
                     var noOfRow = workSheet.Dimension.End.Row;
-                    for (int rowIterator = 2; rowIterator & lt; = noOfRow; rowIterator++)   
-                {
-                        var user = new Users();
-                        user.FirstName = workSheet.Cells[rowIterator, 1].Value.ToString();
-                        user.LastName = workSheet.Cells[rowIterator, 2].Value.ToString();
-                        usersList.Add(user);
+                    for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                    {
+                        emailList.Add("");
                     }
                 }
             }
