@@ -15,6 +15,12 @@ namespace EmailSender.Models
         [DisplayName("Greetings")]
         public string Greeting { get; set; }
 
+        [DisplayName("CC Emails")]
+        public string CC { get; set; }
+
+        [DisplayName("BCC Emails")]
+        public string Bcc { get; set; }
+
         [DisplayName("Attachments")]
         public string AttachmentPath { get; set; }
 

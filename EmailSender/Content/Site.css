@@ -24,9 +24,39 @@ textarea {
 }*/
 
 input::file-selector-button {
-    font-weight: bold;
-    color: dodgerblue;
-    padding: 0.5em;
-    border: thin solid grey;
     border-radius: 3px;
+    border: none;
+    border-right: 1px solid #bdbdbd;
+    padding: 10px;
+}
+
+.form-control-file {
+    border: 1px solid #bdbdbd;
+    cursor: pointer;
+    border-radius: 2px;
+    display: inline !important;
+}
+
+.footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    text-align: center;
+}
+
+.panel-container {
+    padding: 0;
+}
+
+    .panel-container .panel {
+        min-height: 400px;
+    }
+
+
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
