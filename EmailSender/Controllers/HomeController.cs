@@ -2,6 +2,8 @@
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.OleDb;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -19,7 +21,15 @@ namespace EmailSender.Controllers
         [HttpPost]
         public ActionResult Index(EmailSendModel membervalues)
         {
-            var data = getRecipientsListFromFile(membervalues.RecipientFile);
+            try
+            {
+                var emailList = getRecipientsListFromFile(membervalues.RecipientFile);
+                ViewBag.Message = "Email send to all.";
+            }
+            catch (Exception e)
+            {
+                ViewBag.Error = "Error sending email";
+            }
             return View();
         }
 
@@ -27,26 +37,26 @@ namespace EmailSender.Controllers
         private IList<string> getRecipientsListFromFile(HttpPostedFileBase RecipientFile)
         {
             IList<string> emailList = new List<string>();
-            if ((RecipientFile != null) && (RecipientFile.ContentLength > 0) && !string.IsNullOrEmpty(RecipientFile.FileName))
-            {
-                string fileName = RecipientFile.FileName;
-                string fileContentType = RecipientFile.ContentType;
-                byte[] fileBytes = new byte[RecipientFile.ContentLength];
-                var data = RecipientFile.InputStream.Read(fileBytes, 0, Convert.ToInt32(RecipientFile.ContentLength));
-                using (var package = new ExcelPackage(RecipientFile.InputStream))
-                {
-                    var currentSheet = package.Workbook.Worksheets;
-                    var workSheet = currentSheet.First();
-                    var noOfCol = workSheet.Dimension.End.Column;
-                    var noOfRow = workSheet.Dimension.End.Row;
-                    for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
-                    {
-                        emailList.Add("ss");
-                    }
-                }
-            }
+            //string path = Server.MapPath("~/Content/Upload/" + RecipientFile.FileName);
+            //RecipientFile.SaveAs(path);
 
-            return null;
+            //string excelConnectionString = @"Provider='Microsoft.ACE.OLEDB.12.0';Data Source='" + path + "';Extended Properties='Excel 12.0 Xml;IMEX=1'";
+            //OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
+
+            ////Sheet Name
+            //excelConnection.Open();
+            //string tableName = excelConnection.GetSchema("Tables").Rows[0]["TABLE_NAME"].ToString();
+            //excelConnection.Close();
+            ////End
+
+            ////Putting Excel Data in DataTable
+            //DataTable dataTable = new DataTable();
+            //OleDbDataAdapter adapter = new OleDbDataAdapter("Select * from [" + tableName + "]", excelConnection);
+            //adapter.Fill(dataTable);
+            ////End
+
+            //Session["ExcelData"] = dataTable;
+            return emailList;
         }
     }
 }
