@@ -19,26 +19,7 @@ namespace EmailSender.Controllers
         [HttpPost]
         public ActionResult Index(EmailSendModel membervalues)
         {
-            //    //Use Namespace called :  System.IO  
-            //    string FileName = Path.GetFileNameWithoutExtension(membervalues.AttachmentFile.FileName);
-
-            //    //To Get File Extension  
-            //    string FileExtension = Path.GetExtension(membervalues.AttachmentFile.FileName);
-
-            //    //Add Current Date To Attached File Name  
-            //    FileName = DateTime.Now.ToString("yyyyMMdd") + "-" + FileName.Trim() + FileExtension;
-
-            //    //Get Upload path from Web.Config file AppSettings.  
-            //    string UploadPath = "";
-
-            //    //Its Create complete path to store in server.  
-            //    membervalues.AttachmentPath = UploadPath + FileName;
-
-            //    //To copy and save file into server.  
-            //    membervalues.AttachmentFile.SaveAs(membervalues.AttachmentPath);
-
             var data = getRecipientsListFromFile(membervalues.RecipientFile);
-
             return View();
         }
 
@@ -60,7 +41,7 @@ namespace EmailSender.Controllers
                     var noOfRow = workSheet.Dimension.End.Row;
                     for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
                     {
-                        emailList.Add("");
+                        emailList.Add("ss");
                     }
                 }
             }

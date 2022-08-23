@@ -28,5 +28,11 @@ namespace EmailSender.Models
         public HttpPostedFileBase AttachmentFile { get; set; }
         public HttpPostedFileBase RecipientFile { get; set; }
 
+
+        public string GetEmailBody()
+        {
+            return this.Greeting + this.Body;
+        }
+
     }
 }
