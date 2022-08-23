@@ -1,5 +1,4 @@
 ﻿using EmailSender.Models;
-using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -21,15 +20,19 @@ namespace EmailSender.Controllers
         [HttpPost]
         public ActionResult Index(EmailSendModel membervalues)
         {
-            try
+            if (ModelState.IsValid)
             {
-                var emailList = getRecipientsListFromFile(membervalues.RecipientFile);
-                ViewBag.Message = "Email send to all.";
+                try
+                {
+                    var emailList = getRecipientsListFromFile(membervalues.RecipientFile);
+                    ViewBag.Message = "Email send to all.";
+                }
+                catch (Exception e)
+                {
+                    ViewBag.Error = "Error sending email";
+                }
             }
-            catch (Exception e)
-            {
-                ViewBag.Error = "Error sending email";
-            }
+
             return View();
         }
 
