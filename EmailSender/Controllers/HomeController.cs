@@ -18,13 +18,17 @@ namespace EmailSender.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(EmailSendModel membervalues)
+        public ActionResult Index(EmailSendModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var emailList = getRecipientsListFromFile(membervalues.RecipientFile);
+                    var EmailList = GetRecipientsListFromFile(model.RecipientFile);
+                    foreach (var emailTo in EmailList)
+                    {
+                        SendEmail(emailTo, model.Subject, model.GetEmailBody());
+                    }
                     ViewBag.Message = "Email send to all.";
                 }
                 catch (Exception e)
@@ -36,8 +40,12 @@ namespace EmailSender.Controllers
             return View();
         }
 
+        private void SendEmail (string EmailTo, string Subject, string Body)
+        {
+            // Code to send email
+        }
 
-        private IList<string> getRecipientsListFromFile(HttpPostedFileBase RecipientFile)
+        private IList<string> GetRecipientsListFromFile(HttpPostedFileBase RecipientFile)
         {
             IList<string> emailList = new List<string>();
             //string path = Server.MapPath("~/Content/Upload/" + RecipientFile.FileName);
