@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Home Page";
 }
+
 <div class="col-md-12">
     @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
@@ -10,8 +11,23 @@
             @{
                 if (!string.IsNullOrWhiteSpace(ViewBag.Message))
                 {
-
-                    <div class="alert alert-success" role="alert"> <strong>Well done!</strong> @ViewBag.Message </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                
+                                <div class="modal-body">
+                                    <h4 class="modal-title" id="myModalLabel">Sending email</h4>
+                                    <br />
+                                    sending email to selected recipients...
+                                    @*Email sending completed...*@
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default modal-close">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
                 if (!string.IsNullOrWhiteSpace(ViewBag.Error))
                 {
@@ -82,10 +98,9 @@
 
 </div>
 
-@section Scripts { 
-    <script type = "text/javascript" src = "http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"> </script>
-    @Scripts.Render("~/bundles/custom-editor") 
-    <link href = "http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css"
-    rel = "stylesheet" >
+@section Scripts {
+    @Scripts.Render("~/bundles/site")
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css"
+          rel="stylesheet">
 }
 

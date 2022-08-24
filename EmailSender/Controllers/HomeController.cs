@@ -14,7 +14,6 @@ namespace EmailSender.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Email send to all.";
             return View();
         }
 
@@ -25,11 +24,11 @@ namespace EmailSender.Controllers
             {
                 try
                 {
-                    var EmailList = GetRecipientsListFromFile(model.RecipientFile);
-                    foreach (var emailTo in EmailList)
-                    {
-                        SendEmail(emailTo, model.Subject, model.GetEmailBody());
-                    }
+                    //var EmailList = GetRecipientsListFromFile(model.RecipientFile);
+                    //foreach (var emailTo in EmailList)
+                    //{
+                    //    SendEmail(emailTo, model.Subject, model.GetEmailBody());
+                    //}
                     ViewBag.Message = "Email send to all.";
                 }
                 catch (Exception e)

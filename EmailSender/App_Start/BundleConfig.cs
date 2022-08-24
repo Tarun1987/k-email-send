@@ -22,8 +22,8 @@ namespace EmailSender
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/custom-editor").Include(
-                      "~/Scripts/custom-editor.js"));
+            bundles.Add(new ScriptBundle("~/bundles/site").Include(
+                      "~/Scripts/summernote.js", "~/Scripts/site.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
