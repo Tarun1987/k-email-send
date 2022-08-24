@@ -30,13 +30,6 @@ input::file-selector-button {
     padding: 10px;
 }
 
-.form-control-file {
-    border: 1px solid #bdbdbd;
-    cursor: pointer;
-    border-radius: 2px;
-    display: inline !important;
-}
-
 .footer {
     position: fixed;
     width: 100%;
@@ -48,9 +41,13 @@ input::file-selector-button {
     padding: 0;
 }
 
-    .panel-container .panel {
+    .panel-container .box-panel {
         min-height: 400px;
     }
+
+        .panel-container .panel .panel-body {
+            width: 100%;
+        }
 
 
 .vertical-center {
@@ -59,4 +56,24 @@ input::file-selector-button {
     top: 50%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
+}
+
+div.file {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.file .form-control-file {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+}
+
+.file-upload-container label {
+    cursor: pointer;
+    width: 100%;
 }

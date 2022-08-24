@@ -1,6 +1,7 @@
 ﻿using System.Web;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace EmailSender.Models
 {
@@ -25,6 +26,7 @@ namespace EmailSender.Models
         public string AttachmentPath { get; set; }
 
         [Required]
+        [AllowHtml]
         [DisplayName("Body of Email")]
         public string Body { get; set; }
 

@@ -14,6 +14,7 @@ namespace EmailSender.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.Message = "Email send to all.";
             return View();
         }
 
