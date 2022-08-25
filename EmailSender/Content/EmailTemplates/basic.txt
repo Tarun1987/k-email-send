@@ -1,0 +1,1 @@
+﻿<p>This is from <strong>Basic Template.</strong>. But note this is comming from server</p>

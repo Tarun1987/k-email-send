@@ -18,7 +18,7 @@ $(document).ready(function () {
     })
 
     var elemLogData = $('#log-data');
-    if (elemLogData) {
+    if (elemLogData && elemLogData.attr("data-log-file-name")) {
         intervalId = setInterval(function () {
             getEmailSendProgress(elemLogData.attr("data-log-file-name"), elemLogData.attr("data-recipient-count"));
         }, 3000)
@@ -36,7 +36,9 @@ $(document).ready(function () {
     $('#selectTemplate').on('change', function () {
         var elem = $(this);
         $(textEditorId).summernote('reset');
-        $(textEditorId).summernote('pasteHTML', getEditorTemplateString(elem.val()));
+        getEditorTemplateString(elem.val(), function (htmlStr) {
+            $(textEditorId).summernote('pasteHTML', htmlStr);
+        });
     });
 });
 
@@ -55,14 +57,8 @@ function getEmailSendProgress(logFileName, totalRecipientsCount) {
     })
 }
 
-function getEditorTemplateString(templateId) {
-    if (templateId === "basic") {
-        return "<p>This is from <strong>Basic Template.</strong></p>";
-    }
-    else if (templateId === "custom") {
-        return "<p>This is from <strong>Custom Template.</strong></p>"
-    }
-    else {
-        return "<i>No template found.</i>"
-    }
+function getEditorTemplateString(templateName, cb) {
+    $.post('/home/GetExitorTemplate', { templateName }, function (data, status, jqXHR) {
+        cb(data.htmlString);
+    })
 }

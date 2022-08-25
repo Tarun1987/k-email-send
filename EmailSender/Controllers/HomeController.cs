@@ -65,6 +65,19 @@ namespace EmailSender.Controllers
             return Json(new { completed = completedEmail.Count, fileName, completedEmail });
         }
 
+        public JsonResult GetExitorTemplate(string templateName)
+        {
+            var htmlString = "";
+            try
+            {
+                string path = GetEmailTemplateFilePath($"{templateName}.txt");
+                htmlString = System.IO.File.ReadAllText(path);
+            }
+            catch (Exception) { }
+
+            return Json(new { templateName,  htmlString });
+        }
+
         #region Private Section
 
         private void SendEmailInBackground(IList<ExcelDataModel> excelDataList, string subject, string body, string attachmentFilePath, string logFileName)
@@ -117,6 +130,11 @@ namespace EmailSender.Controllers
         private string GetRecipientTemplateFilePath(string fileName)
         {
             return Server.MapPath("~/Content/" + fileName);
+        }
+
+        private string GetEmailTemplateFilePath(string fileName)
+        {
+            return Server.MapPath("~/Content/EmailTemplates/" + fileName);
         }
 
         private IList<string> GetCompletedEmail(string fileName)
