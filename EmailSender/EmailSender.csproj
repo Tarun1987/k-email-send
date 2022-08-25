@@ -131,6 +131,7 @@
     </Compile>
     <Compile Include="Models\EmailSendModel.cs" />
     <Compile Include="Models\ExcelDataModel.cs" />
+    <Compile Include="Models\ReportViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

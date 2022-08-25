@@ -1,4 +1,4 @@
-﻿@model EmailSender.Models.EmailSendModel
+﻿@model IList<EmailSender.Models.ReportViewModel>
 @{
     ViewBag.Title = "Report Page";
 }
@@ -6,23 +6,23 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th scope="col">Col 1</th>
-                <th scope="col">Col 2</th>
-                <th scope="col">Col 3</th>
-                <th scope="col">Col 4</th>
-                <th scope="col">Col 5</th>
+                <th scope="col">Date Send</th>
+                <th scope="col">Failed Count</th>
+                <th scope="col">Delivered Count</th>
+                <th scope="col">Pending Count</th>
+                <th scope="col">File Name</th>
             </tr>
         </thead>
         <tbody>
             @{
-                for (int i = 0; i < 15; i++)
+                foreach (var report in Model)
                 {
                     <tr>
-                        <th scope="row">@(i+1)</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>mdo</td>
-                        <td>mdo</td>
+                        <th scope="row">@report.CreatedDate</th>
+                        <td>@report.FailedCount</td>
+                        <td>@report.DeliveredCount</td>
+                        <td>@report.PendingCount</td>
+                        <td>@report.FileName</td>
                     </tr>
                 }
             }
