@@ -24,13 +24,20 @@ namespace EmailSender.Controllers
             {
                 try
                 {
+                    // Set log file name
                     string logFileName = $"log_{DateTime.Now.Ticks}.txt";
-                    var EmailList = GetRecipientsListFromFile(model.RecipientFile);
-                    Thread myNewThread = new Thread(() => SendEmailInBackground(EmailList, model.Subject, model.GetEmailBody(), logFileName));
+
+                    // Save Attachment file
+                    var attachmentFilePath = SaveAttachmentFile(model.AttachmentFile);
+
+                    // Get email list fby reading excel file.
+                    var emailList = GetRecipientsListFromFile(model.RecipientFile);
+
+                    Thread myNewThread = new Thread(() => SendEmailInBackground(emailList, model.Subject, model.GetEmailBody(), attachmentFilePath, logFileName));
                     myNewThread.Start();
 
                     ViewBag.logFileName = logFileName;
-                    ViewBag.recipientCount = EmailList.Count;
+                    ViewBag.recipientCount = emailList.Count;
                     ModelState.Clear();
                     ViewBag.Message = "Email send to all.";
                 }
@@ -43,38 +50,49 @@ namespace EmailSender.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult DownloadTemplate()
+        {
+            string fileName = "template.xlsx";
+            var path = GetRecipientTemplateFilePath(fileName);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(path);
+            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+
         public JsonResult GetProgress(string fileName)
         {
             var completedEmail = GetCompletedEmail(fileName);
             return Json(new { completed = completedEmail.Count, fileName, completedEmail });
         }
 
-        private void SendEmailInBackground(IList<string> emailList, string subject, string body, string logFileName)
+        #region Private Section
+
+        private void SendEmailInBackground(IList<ExcelDataModel> excelDataList, string subject, string body, string attachmentFilePath, string logFileName)
         {
-            foreach (var email in emailList)
+            foreach (var data in excelDataList)
             {
                 // TODO Send email function call here
-                WriteToFile(email, logFileName);
+                WriteToFile(data, logFileName);
             }
         }
 
-        private void WriteToFile(string email, string logFileName)
+        private void WriteToFile(ExcelDataModel data, string logFileName)
         {
             Thread.Sleep(2000);
-            string path = GetFilePath(logFileName);
+            string path = GetLogFilePath(logFileName);
             try
             {
                 // Check if file already exists. If yes, delete it.     
                 if (System.IO.File.Exists(path))
                 {
-                    System.IO.File.AppendAllText(path, email + Environment.NewLine);
+                    System.IO.File.AppendAllText(path, data.Email + Environment.NewLine);
                 }
                 else
                 {
                     using (FileStream fs = System.IO.File.Create(path))
                     {
                         // Add some text to file    
-                        byte[] title = new UTF8Encoding(true).GetBytes(email + Environment.NewLine);
+                        byte[] title = new UTF8Encoding(true).GetBytes(data.Email + Environment.NewLine);
                         fs.Write(title, 0, title.Length);
                     }
                 }
@@ -86,9 +104,19 @@ namespace EmailSender.Controllers
             }
         }
 
-        private string GetFilePath(string fileName)
+        private string GetLogFilePath(string logFileName)
         {
-            return Server.MapPath("~/Content/Upload/" + fileName);
+            return Server.MapPath("~/Content/Logs/" + logFileName);
+        }
+
+        private string GetAttachmentFilePath(string fileName)
+        {
+            return Server.MapPath("~/Content/Attachments/" + fileName);
+        }
+
+        private string GetRecipientTemplateFilePath(string fileName)
+        {
+            return Server.MapPath("~/Content/" + fileName);
         }
 
         private IList<string> GetCompletedEmail(string fileName)
@@ -96,7 +124,7 @@ namespace EmailSender.Controllers
             IList<string> completedEmail = new List<string>();
             try
             {
-                string path = Server.MapPath("~/Content/Upload/" + fileName);
+                string path = GetLogFilePath(fileName);
                 if (!System.IO.File.Exists(path))
                 {
                     return completedEmail;
@@ -119,32 +147,38 @@ namespace EmailSender.Controllers
 
         }
 
-        private IList<string> GetRecipientsListFromFile(HttpPostedFileBase RecipientFile)
+        private IList<ExcelDataModel> GetRecipientsListFromFile(HttpPostedFileBase recipientFile)
         {
-            IList<string> emailList = new List<string>();
-            //string path = Server.MapPath("~/Content/Upload/" + RecipientFile.FileName);
-            //RecipientFile.SaveAs(path);
+            IList<ExcelDataModel> emailList = new List<ExcelDataModel>();
+            string fileExtn = recipientFile.FileName.Split('.')[1];
+            string path = Server.MapPath("~/Content/Recipients/" + $"recipients_{DateTime.Now.Ticks}.{fileExtn}");
+            recipientFile.SaveAs(path);
+            
+            // TODO:: Logic to read excel file here.
 
-            //string excelConnectionString = @"Provider='Microsoft.ACE.OLEDB.12.0';Data Source='" + path + "';Extended Properties='Excel 12.0 Xml;IMEX=1'";
-            //OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
-
-            ////Sheet Name
-            //excelConnection.Open();
-            //string tableName = excelConnection.GetSchema("Tables").Rows[0]["TABLE_NAME"].ToString();
-            //excelConnection.Close();
-            ////End
-
-            ////Putting Excel Data in DataTable
-            //DataTable dataTable = new DataTable();
-            //OleDbDataAdapter adapter = new OleDbDataAdapter("Select * from [" + tableName + "]", excelConnection);
-            //adapter.Fill(dataTable);
-            ////End
-
-            //Session["ExcelData"] = dataTable;
             for (int i = 0; i < 10; i++)
-                emailList.Add($"test.{i}@gmail.com");
+            {
+                var email = $"test.{i}@gmail.com";
+                emailList.Add(new ExcelDataModel { Email = email, CC = email, BCC = email, Name = $"Name_{i}" });
+
+            }
 
             return emailList;
         }
+
+        private string SaveAttachmentFile(HttpPostedFileBase attachmentFile)
+        {
+            if (!string.IsNullOrWhiteSpace(attachmentFile?.FileName))
+            {
+                string fileExtn = attachmentFile.FileName.Split('.')[1];
+                string path = Server.MapPath("~/Content/Attachments/" + $"attachment_{DateTime.Now.Ticks}.{fileExtn}");
+                attachmentFile.SaveAs(path);
+                return path;
+            }
+
+            return string.Empty;
+        }
+
+        #endregion
     }
 }
