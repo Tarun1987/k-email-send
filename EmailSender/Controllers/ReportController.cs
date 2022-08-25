@@ -34,5 +34,14 @@ namespace EmailSender.Controllers
             return list;
         }
 
+        [HttpGet]
+        public ActionResult DownloadFile(string fileName)
+        {
+            var path = Server.MapPath("~/Content/Recipients/" + fileName);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(path);
+            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+
+
     }
 }

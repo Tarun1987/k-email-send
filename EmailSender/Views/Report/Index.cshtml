@@ -22,7 +22,9 @@
                         <td>@report.FailedCount</td>
                         <td>@report.DeliveredCount</td>
                         <td>@report.PendingCount</td>
-                        <td>@report.FileName</td>
+                        <td>
+                            @Html.ActionLink(report.FileName, "DownloadFile", "Report", new { fileName= report.FileName }, new { @class = "a" })
+                        </td>
                     </tr>
                 }
             }
