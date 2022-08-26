@@ -75,7 +75,7 @@ namespace EmailSender.Controllers
             }
             catch (Exception) { }
 
-            return Json(new { templateName,  htmlString });
+            return Json(new { templateName, htmlString });
         }
 
         #region Private Section
@@ -171,7 +171,7 @@ namespace EmailSender.Controllers
             string fileExtn = recipientFile.FileName.Split('.')[1];
             string path = Server.MapPath("~/Content/Recipients/" + $"recipients_{DateTime.Now.Ticks}.{fileExtn}");
             recipientFile.SaveAs(path);
-            
+
             // TODO:: Logic to read excel file here.
 
             for (int i = 0; i < 10; i++)

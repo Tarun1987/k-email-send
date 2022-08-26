@@ -4,45 +4,123 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Email Sending</title>
+    <link href="~/Content/style.min.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="col-md-12">
-            <div class="navbar-header">
-                <a href="@Url.Action("Index", "Home")" title="List View" class="navbar-brand" style="padding-top:11px">
-                    <img src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" style="display:inline">
-                    Email sender
-                </a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Manage Email", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Report", "Index", "Report")</li>
-                </ul>
-                <ul class="nav navbar-nav pull-right">
-                    <li>
-                        <a href="@Url.Action("Index", "Home")">
-                            Welcome! <strong>User</strong>
-                        </a>
-                    </li>
-                </ul>
-              
-            </div>
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
         </div>
     </div>
-    <div class="body-content col-md-12 flex-column min-vh-100" style="margin-top: 40px">
-        @RenderBody()
-        <hr />
-        <footer class="footer">
-            <p>&copy; @DateTime.Now.Year - Footer of application</p>
-        </footer>
+  
+    <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
+         data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar" data-navbarbg="skin6">
+            <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                <div class="navbar-header" data-logobg="skin6">
+                    <!-- ============================================================== -->
+                    <!-- Logo -->
+                    <!-- ============================================================== -->
+                    <a class="navbar-brand"  href="@Url.Action("Index", "Home")">
+                        <!-- Logo icon -->
+                        <b class="logo-icon">
+                            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                            <!-- Dark Logo icon -->
+                            <img src="~/Content/images/logo-icon.png" alt="homepage" class="dark-logo" />
+                            <!-- Light Logo icon -->
+                            <img src="~/Content/images/logo-light-icon.png" alt="homepage" class="light-logo" />
+                        </b>
+                        <!--End Logo icon -->
+                        <!-- Logo text -->
+                        <span class="logo-text">
+                            <!-- dark Logo text -->
+                            <img src="~/Content/images/logo-text.png" alt="homepage" class="dark-logo" />
+                            <!-- Light Logo text -->
+                            <img src="~/Content/images/logo-light-text.png" class="light-logo" alt="homepage" />
+                        </span>
+                    </a>
+                    <!-- ============================================================== -->
+                    <!-- End Logo -->
+                    <!-- ============================================================== -->
+                    <!-- This is for the sidebar toggle which is visible on mobile only -->
+                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)">
+                        <i class="mdi mdi-menu"></i>
+                    </a>
+                </div>
+                <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+                    <ul class="navbar-nav float-start me-auto"></ul>
+                    <ul class="navbar-nav float-end">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted">Welcome! Karteek</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic"  href="@Url.Action("Index", "Home")" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="~/Content/images/users/profile.png" alt="user" class="rounded-circle" width="31">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <aside class="left-sidebar" data-sidebarbg="skin6">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                               href="@Url.Action("Index", "Home")" aria-expanded="false">
+                                <i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Manage Email</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                               href="@Url.Action("Index", "Report")" aria-expanded="false">
+                                <i class="mdi mdi-file"></i><span class="hide-menu">Reports</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                               href="@Url.Action("Index", "MasterRecipient")" aria-expanded="false">
+                                <i class="mdi mdi-face"></i><span class="hide-menu">Master recipients</span>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+
+        <div class="page-wrapper">
+            @RenderBody()
+            <footer class="footer text-center">
+                <p>&copy; @DateTime.Now.Year - Footer of application</p>
+            </footer>
+
+        </div>
+
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
     @RenderSection("scripts", required: false)
+
+    <script src="~/Scripts/app-style-switcher.js"></script>
+    <script src="~/Scripts/custom.js"></script>
+    <script src="~/Scripts/sidebarmenu.js"></script>
+    <script src="~/Scripts/waves.js"></script>
 </body>
+
 </html>

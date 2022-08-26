@@ -1,0 +1,70 @@
+﻿@model IList<EmailSender.Models.ReportViewModel>
+@{
+    ViewBag.Title = "Master Recipients";
+}
+<div class="page-breadcrumb">
+    <div class="row align-items-center">
+        <div class="col-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 d-flex align-items-center">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="link"><i class="mdi mdi-home-outline fs-4"></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">MasterRecipient</li>
+                </ol>
+            </nav>
+            <h1 class="mb-0 fw-bold">Master Recipients</h1>
+        </div>
+        <div class="col-4">
+            <div class="text-end upgrade-btn">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary text-white"
+                   target="_blank">Add new list</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-md-flex align-items-center">
+                        <div class="table-responsive" style="width:100%">
+                            <table class="table mb-0 table-hover align-middle text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th class="border-top-0">Date Send</th>
+                                        <th class="border-top-0">Failed Count</th>
+                                        <th class="border-top-0">Delivered Count</th>
+                                        <th class="border-top-0">Pending Count</th>
+                                        <th class="border-top-0">File Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (var report in Model)
+                                        {
+                                            <tr>
+                                                <th scope="row">@report.CreatedDate</th>
+                                                <td><label class="badge bg-danger">@report.FailedCount</label></td>
+                                                <td><label class="badge bg-success">@report.DeliveredCount</label></td>
+                                                <td><label class="badge bg-purple">@report.PendingCount</label></td>
+                                                <td>
+                                                    @Html.ActionLink(report.FileName, "DownloadFile", "Report", new { fileName = report.FileName }, new { @class = "a" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="amp-pxl mt-4" style="height: 350px;">
+                    <div class="chartist-tooltip"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -29,6 +29,9 @@ $(document).ready(function () {
         let msg = 'No File Selected'
         if ($(this).val()) {
             msg = $(this).val().replace(/C:\\fakepath\\/i, '');
+            if ($(this).attr('id') === "RecipientFile") {
+                $('#emailtext').collapse('show');
+            }
         }
         if ($fileElem) $fileElem.html(msg);
     });
