@@ -15,7 +15,7 @@
             <div class="lds-pos"></div>
         </div>
     </div>
-  
+
     <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
          data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
         <!-- ============================================================== -->
@@ -27,7 +27,7 @@
                     <!-- ============================================================== -->
                     <!-- Logo -->
                     <!-- ============================================================== -->
-                    <a class="navbar-brand"  href="@Url.Action("Index", "Home")">
+                    <a class="navbar-brand" href="@Url.Action("Index", "Home")">
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
@@ -60,7 +60,7 @@
                             <a class="nav-link dropdown-toggle text-muted">Welcome! Karteek</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic"  href="@Url.Action("Index", "Home")" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="@Url.Action("Index", "Home")" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="~/Content/images/users/profile.png" alt="user" class="rounded-circle" width="31">
                             </a>
                         </li>
@@ -115,6 +115,7 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/site")
     @RenderSection("scripts", required: false)
 
     <script src="~/Scripts/app-style-switcher.js"></script>

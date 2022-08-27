@@ -1,4 +1,7 @@
-﻿
+﻿body {
+    color: black;
+    font-weight: 400;
+}
 input::file-selector-button {
     border-radius: 3px;
     border: none;
@@ -19,6 +22,9 @@ input::file-selector-button {
 
     .panel-container .box-panel {
         min-height: 125px;
+    }
+    .panel-container .no-upload {
+        min-height: 30px;
     }
 
     .panel-container .panel .panel-body {
@@ -63,3 +69,39 @@ div.file {
         transition: transform 0.3s ease-out;
         transform: translate(0,0px);
     }
+
+
+.download-template {
+    float: right;
+    position: absolute;
+    right: 0;
+}
+
+.card-body {
+    padding: 8px 30px;
+}
+
+.toggle {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+    background-color: #1a419c;
+    border-color: #183e92;
+    margin-right: 5px;
+}
+
+.toggle-off.btn {
+    background-color: #e6e6e6;
+    border-color: #adadad;
+    color: #333;
+}
+
+.toggle-handle {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+
+#upload-master-cancel > * {
+    margin-left: 6px;
+}

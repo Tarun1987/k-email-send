@@ -11,7 +11,6 @@
                     <li class="breadcrumb-item active" aria-current="page">Report</li>
                 </ol>
             </nav>
-            <h1 class="mb-0 fw-bold">Reports</h1>
         </div>
     </div>
 </div>
@@ -44,7 +43,7 @@
                                                 <td><label class="badge bg-success">@report.DeliveredCount</label></td>
                                                 <td><label class="badge bg-purple">@report.PendingCount</label></td>
                                                 <td>
-                                                    @Html.ActionLink(report.FileName, "DownloadFile", "Report", new { fileName = report.FileName }, new { @class = "a" })
+                                                    @Html.ActionLink(report.FileName, "UploadedRecipientsFile", "Download", new { fileName = report.FileName }, new { @class = "a" })
                                                 </td>
                                             </tr>
                                         }

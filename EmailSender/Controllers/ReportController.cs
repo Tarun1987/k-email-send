@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace EmailSender.Controllers
 {
-    public class ReportController : Controller
+    public class ReportController : CustomBaseController
     {
         public ActionResult Index()
         {
@@ -33,15 +33,6 @@ namespace EmailSender.Controllers
             }
             return list;
         }
-
-        [HttpGet]
-        public ActionResult DownloadFile(string fileName)
-        {
-            var path = Server.MapPath("~/Content/Recipients/" + fileName);
-            byte[] fileBytes = System.IO.File.ReadAllBytes(path);
-            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
-        }
-
 
     }
 }

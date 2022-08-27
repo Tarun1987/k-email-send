@@ -24,6 +24,16 @@ namespace EmailSender.Models
         [DisplayName("Body of Email")]
         public string Body { get; set; }
 
+        public string RecipientsTemplate { get; set; }
+
+        public bool UseDefaultTemplate
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(RecipientsTemplate) && RecipientsTemplate.ToLower() == "on";
+            }
+        }
+
         [DisplayName("Upload  a file with list of recipients.")]
         public string RecipientPath { get; set; }
 

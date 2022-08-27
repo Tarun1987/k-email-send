@@ -46,6 +46,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1001\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -124,14 +128,18 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CustomBaseController.cs" />
+    <Compile Include="Controllers\DownloadController.cs" />
     <Compile Include="Controllers\MasterRecipientController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Constant.cs" />
     <Compile Include="Models\EmailSendModel.cs" />
     <Compile Include="Models\ExcelDataModel.cs" />
+    <Compile Include="Models\MasterRecipientUpdateModel.cs" />
     <Compile Include="Models\ReportViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -194,7 +202,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Content\template.xlsx" />
+    <Content Include="Content\Templates\recipients_blank.xlsx" />
     <Content Include="Content\icons\font-awesome\less\fa-brands.less" />
     <Content Include="Content\icons\font-awesome\less\fa-regular.less" />
     <Content Include="Content\icons\font-awesome\less\fa-solid.less" />
@@ -319,6 +327,7 @@
     <Content Include="Content\icons\weather-icons\sass\weather-icons-wind.scss" />
     <Content Include="Content\icons\weather-icons\sass\weather-icons.min.scss" />
     <Content Include="Content\icons\weather-icons\sass\weather-icons.scss" />
+    <Content Include="Content\Templates\recipients_master.xlsx" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\site.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

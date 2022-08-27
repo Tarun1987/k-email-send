@@ -2,6 +2,12 @@
 $(document).ready(function () {
     const modalId = '#myModal'
     const textEditorId = '#email-body';
+    const logDataId = '#log-data';
+    const emailSectionId = '#emailtext';
+    const recipientsBxPanel = '#recipients-box-panel';
+    const masterRecipientsUpdate = '#MasterRecipients';
+
+
     // Initialize Editor
     $(textEditorId).summernote({
         height: 300, // set editor height
@@ -14,10 +20,10 @@ $(document).ready(function () {
     });
 
     $(modalId + " .modal-close").on('click', function () {
-        $('#myModal').modal('hide')
+        $(modalId).modal('hide')
     })
 
-    var elemLogData = $('#log-data');
+    var elemLogData = $(logDataId);
     if (elemLogData && elemLogData.attr("data-log-file-name")) {
         intervalId = setInterval(function () {
             getEmailSendProgress(elemLogData.attr("data-log-file-name"), elemLogData.attr("data-recipient-count"));
@@ -30,7 +36,7 @@ $(document).ready(function () {
         if ($(this).val()) {
             msg = $(this).val().replace(/C:\\fakepath\\/i, '');
             if ($(this).attr('id') === "RecipientFile") {
-                $('#emailtext').collapse('show');
+                $(emailSectionId).collapse('show');
             }
         }
         if ($fileElem) $fileElem.html(msg);
@@ -43,6 +49,36 @@ $(document).ready(function () {
             $(textEditorId).summernote('pasteHTML', htmlStr);
         });
     });
+
+    $('#UseDefaultTemplate').change(function () {
+        var checked = $(this).prop('checked');
+        if (checked) {
+            $('#new-file-container').hide();
+            $(emailSectionId).collapse('show');
+            $(recipientsBxPanel).addClass('no-upload')
+        }
+        else {
+            $('#new-file-container').show();
+            $(emailSectionId).collapse('hide');
+            $(recipientsBxPanel).removeClass('no-upload')
+        }
+    })
+
+    $(masterRecipientsUpdate).on('change', function () {
+        if ($(this).val()) {
+            $('#upload-master-container').hide();
+            $('#upload-master-cancel').show();
+        }
+        else {
+            $('#upload-master-container').show();
+            $('#upload-master-cancel').hide();
+        }
+    });
+
+    $('#btn-master-cancel').on('click', function () {
+        $('#upload-master-container').show();
+        $('#upload-master-cancel').hide();
+    })
 });
 
 

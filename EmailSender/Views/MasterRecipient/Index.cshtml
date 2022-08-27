@@ -1,22 +1,40 @@
-﻿@model IList<EmailSender.Models.ReportViewModel>
+﻿@model IList<EmailSender.Models.ExcelDataModel>
 @{
     ViewBag.Title = "Master Recipients";
 }
 <div class="page-breadcrumb">
     <div class="row align-items-center">
-        <div class="col-8">
+        <div class="col-4">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 d-flex align-items-center">
                     <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="link"><i class="mdi mdi-home-outline fs-4"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">MasterRecipient</li>
                 </ol>
             </nav>
-            <h1 class="mb-0 fw-bold">Master Recipients</h1>
         </div>
-        <div class="col-4">
+        <div class="col-8">
             <div class="text-end upgrade-btn">
-                <a href="@Url.Action("Index", "Home")" class="btn btn-primary text-white"
-                   target="_blank">Add new list</a>
+                @using (Html.BeginForm("Index", "MasterRecipient", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div id="upload-master-container">
+                        <div class="file btn btn-primary">
+                            <i class="mdi mdi-upload"></i>
+                            Upload new
+                            <input type="file" class="form-control-file" id="MasterRecipients" name="MasterFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                        </div>
+
+                        <a href="@Url.Action("RecipientsMasterTemplate", "Download")" class="btn btn-primary text-white"
+                           target="_blank">
+                            <i class="mdi mdi-download"></i>
+                            Download master
+                        </a>
+                    </div>
+                    <div id="upload-master-cancel" style="display:none">
+                        <span data-control-id="MasterRecipients"></span>
+                        <button type="button" id="btn-master-cancel" class="btn btn-danger btn-sm" style="float:right">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-sm" style="float:right">Submit</button>
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -32,11 +50,10 @@
                             <table class="table mb-0 table-hover align-middle text-nowrap">
                                 <thead>
                                     <tr>
-                                        <th class="border-top-0">Date Send</th>
-                                        <th class="border-top-0">Failed Count</th>
-                                        <th class="border-top-0">Delivered Count</th>
-                                        <th class="border-top-0">Pending Count</th>
-                                        <th class="border-top-0">File Name</th>
+                                        <th class="border-top-0">Client Email</th>
+                                        <th class="border-top-0">CC</th>
+                                        <th class="border-top-0">BCC</th>
+                                        <th class="border-top-0">Client Name</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -44,13 +61,11 @@
                                         foreach (var report in Model)
                                         {
                                             <tr>
-                                                <th scope="row">@report.CreatedDate</th>
-                                                <td><label class="badge bg-danger">@report.FailedCount</label></td>
-                                                <td><label class="badge bg-success">@report.DeliveredCount</label></td>
-                                                <td><label class="badge bg-purple">@report.PendingCount</label></td>
-                                                <td>
-                                                    @Html.ActionLink(report.FileName, "DownloadFile", "Report", new { fileName = report.FileName }, new { @class = "a" })
-                                                </td>
+                                                <th scope="row">@report.Email</th>
+                                                <th scope="row">@report.CC</th>
+                                                <th scope="row">@report.BCC</th>
+                                                <th scope="row">@report.Name</th>
+
                                             </tr>
                                         }
                                     }
