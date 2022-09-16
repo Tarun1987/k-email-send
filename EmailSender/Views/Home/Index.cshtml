@@ -6,29 +6,72 @@
 <div class="container-fluid">
     <div class="row">
         @{
-            if (!string.IsNullOrWhiteSpace(ViewBag.Message))
-            {
-                <input type="hidden" data-log-file-name="@ViewBag.logFileName" data-recipient-count="@ViewBag.recipientCount" id="log-data" />
-                <!-- Modal -->
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
 
-                            <div class="modal-body">
-                                <h4 class="modal-title" id="myModalLabel">Sending email</h4>
-                                <br />
-                                <p id="progress-text">Sending email to selected recipients...</p>
-                                <div class="progress">
-                                    <div id="send-progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-                                </div>
+                        <div class="modal-body" style="display:none" id="modal-body-1">
+                            <h4 class="modal-title" id="myModalLabel">Sending email</h4>
+                            <br />
+                            <p id="progress-text">Sending email to selected recipients...</p>
+                            <div class="progress">
+                                <div id="send-progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
                             </div>
-                            <div class="modal-footer">
-                                <button style="display:none" id="btn-close" type="button" class="btn btn-default modal-close">Close</button>
+                        </div>
+                        <div class="modal-body" id="modal-body-2">
+                            <h4 class="modal-title" id="myModalLabel">Are you sure you want to send email to below users?</h4>
+                            <br />
+                            <div class="table-responsive" style="width:100%; max-height:200px; overflow-y: scroll">
+                                <table class="table mb-0 table-hover align-middle text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-top-0">Client Email</th>
+                                            <th class="border-top-0">CC</th>
+                                            <th class="border-top-0">BCC</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td scope="row">Email</td>
+                                            <td scope="row">CC</td>
+                                            <td scope="row">BCC</td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="row">Email</td>
+                                            <td scope="row">CC</td>
+                                            <td scope="row">BCC</td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="row">Email</td>
+                                            <td scope="row">CC</td>
+                                            <td scope="row">BCC</td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="row">Email</td>
+                                            <td scope="row">CC</td>
+                                            <td scope="row">BCC</td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="row">Email</td>
+                                            <td scope="row">CC</td>
+                                            <td scope="row">BCC</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
+                        </div>
+
+                        <div class="modal-footer" id="modal-footer-1">
+                            <button id="btn-send" type="button" class="btn btn-default">Send</button>
+                            <button id="btn-cancel" type="button" class="btn modal-close">Cancel</button>
+                        </div>
+
+                        <div class="modal-footer" id="modal-footer-2" style="display:none">
+                            <button id="btn-close" type="button" class="btn modal-close">Ok</button>
                         </div>
                     </div>
                 </div>
-            }
+            </div>
             if (!string.IsNullOrWhiteSpace(ViewBag.Error))
             {
                 <div class="alert alert-danger" role="alert"> <strong>Oh snap!</strong> @ViewBag.Error</div>
@@ -50,7 +93,7 @@
                                     <div class="download-template">
                                         <label>Template:</label>
                                         <input type="checkbox" id="UseDefaultTemplate" name="RecipientsTemplate" data-width="75" data-toggle="toggle" data-size="small" data-on="Default" data-off="New">
-                                        @Html.ActionLink("Download latest Template", "RecipientsBlankTemplate", "download" , new { }, new { @class = "" })
+                                        @Html.ActionLink("Download latest Template", "RecipientsBlankTemplate", "download", new { }, new { @class = "" })
                                     </div>
                                     <div id="new-file-container" class="panel-body vertical-center text-center file-upload-container">
                                         <div class="row">
@@ -120,7 +163,7 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-md-12">
-                                <button type="submit" class="btn btn-primary" style="float:right">Submit</button>
+                                <button id="btnSubmit" type="button" class="btn btn-primary" style="float:right">Submit</button>
                             </div>
                         </div>
                     </div>
