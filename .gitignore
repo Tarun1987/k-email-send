@@ -1,3 +1,6 @@
-EmailSender/bin
-EmailSender/obj
-packages
+EmailSenderNet/EmailSender/bin
+EmailSenderNet/EmailSender/obj
+EmailSenderNet/packages
+Alteryx_ISV_Job/Alteryx_ISV_Job/bin
+Alteryx_ISV_Job/Alteryx_ISV_Job/obj
+Alteryx_ISV_Job/packages
