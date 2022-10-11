@@ -1,0 +1,55 @@
+﻿@model IList<EmailSender.DbModels.DbTemplates>
+@{
+    ViewBag.Title = "Templates";
+}
+<div class="page-breadcrumb">
+    <div class="row align-items-center">
+        <div class="col-4">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 d-flex align-items-center">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="link"><i class="mdi mdi-home-outline fs-4"></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Templates</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-8"></div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-md-flex align-items-center">
+                        <div class="table-responsive" style="width:100%">
+                            <table class="table mb-0 table-hover align-middle text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th class="border-top-0">Id</th>
+                                        <th class="border-top-0">Name</th>
+                                        <th class="border-top-0">Owner</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@item.Id</td>
+                                                <td>@item.Name</td>
+                                                <td>@item.OwnerId</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

@@ -27,6 +27,7 @@ function getTableBody(list) {
         html += '<td>' + list[i].CC + '</td>';
         html += '<td>' + list[i].BCC + '</td>';
         html += '<td>' + list[i].ClientName + '</td>';
+        html += '<td> <i style="cursor:pointer" title="Edit this" class="mdi mdi-pencil"></i> </td>';
         html += '</tr>';
     }
 

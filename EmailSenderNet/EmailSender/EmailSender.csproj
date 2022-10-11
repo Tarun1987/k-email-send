@@ -133,6 +133,7 @@
     <Compile Include="Controllers\MasterRecipientController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="DAL\BaseService.cs" />
     <Compile Include="DAL\TemplateService.cs" />
     <Compile Include="DAL\RecipientService.cs" />
@@ -361,6 +362,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\MasterRecipient\Index.cshtml" />
+    <Content Include="Views\Template\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
