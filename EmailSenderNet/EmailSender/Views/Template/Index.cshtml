@@ -29,6 +29,8 @@
                                         <th class="border-top-0">Id</th>
                                         <th class="border-top-0">Name</th>
                                         <th class="border-top-0">Owner</th>
+                                        <th class="border-top-0">Share</th>
+                                        <th class="border-top-0">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -39,6 +41,19 @@
                                                 <td>@item.Id</td>
                                                 <td>@item.Name</td>
                                                 <td>@item.OwnerId</td>
+                                                <td>
+                                                    @{
+                                                        if (item.Share)
+                                                        {
+                                                            <input class="form-check-input" type="checkbox" checked>
+                                                        }
+                                                        else
+                                                        {
+                                                            <input class="form-check-input" type="checkbox">
+                                                        }
+                                                    }
+                                                </td>
+                                                <td><button type="button" class="btn btn-primary btn-sm">Preview</button></td>
                                             </tr>
                                         }
                                     }
