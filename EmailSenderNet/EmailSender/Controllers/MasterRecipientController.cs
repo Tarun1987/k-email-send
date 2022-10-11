@@ -1,6 +1,6 @@
-﻿using EmailSender.Helpers;
+﻿using EmailSender.DAL;
+using EmailSender.Helpers;
 using EmailSender.Models;
-using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace EmailSender.Controllers
@@ -10,8 +10,8 @@ namespace EmailSender.Controllers
         // GET: MasterRecipient
         public ActionResult Index()
         {
-            string path = GetRecipientTemplateFilePath(Constants.RecipientMasterFileName);
-            var list = ReadRecipientsFromExcelFile(path);
+            var dbService = new RecipientService();
+            var list = dbService.GetRecipientTemplateNameList();
             return View(list);
         }
 

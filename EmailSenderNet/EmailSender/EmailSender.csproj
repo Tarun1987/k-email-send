@@ -133,6 +133,11 @@
     <Compile Include="Controllers\MasterRecipientController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="DAL\BaseService.cs" />
+    <Compile Include="DAL\TemplateService.cs" />
+    <Compile Include="DAL\RecipientService.cs" />
+    <Compile Include="DbModels\DbRecipients.cs" />
+    <Compile Include="DbModels\DbTemplates.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

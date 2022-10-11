@@ -1,4 +1,4 @@
-﻿@model IList<EmailSender.Models.ExcelDataModel>
+﻿@model IList<string>
 @{
     ViewBag.Title = "Master Recipients";
 }
@@ -16,18 +16,32 @@
             <div class="text-end upgrade-btn">
                 @using (Html.BeginForm("Index", "MasterRecipient", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
-                    <div id="upload-master-container">
-                        <div class="file btn btn-primary">
-                            <i class="mdi mdi-upload"></i>
-                            Upload new
-                            <input type="file" class="form-control-file" id="MasterRecipients" name="MasterFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                    <div id="upload-master-container row">
+                        <div class="col-6" style="float:left">
+                            <select id="selectTemplate" class="form-select shadow-none form-control-linel">
+                                <option value="">Recipient Template</option>
+                                @{
+                                    foreach (var item in Model)
+                                    {
+                                        <option value="@item">@item</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-6" style="float:left">
+                            <div class="file btn btn-primary">
+                                <i class="mdi mdi-upload"></i>
+                                Upload new
+                                <input type="file" class="form-control-file" id="MasterRecipients" name="MasterFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                            </div>
+
+                            <a href="@Url.Action("RecipientsMasterTemplate", "Download")" class="btn btn-primary text-white"
+                               target="_blank">
+                                <i class="mdi mdi-download"></i>
+                                Download master
+                            </a>
                         </div>
 
-                        <a href="@Url.Action("RecipientsMasterTemplate", "Download")" class="btn btn-primary text-white"
-                           target="_blank">
-                            <i class="mdi mdi-download"></i>
-                            Download master
-                        </a>
                     </div>
                     <div id="upload-master-cancel" style="display:none">
                         <span data-control-id="MasterRecipients"></span>
@@ -56,21 +70,7 @@
                                         <th class="border-top-0">Client Name</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @{
-                                        foreach (var report in Model)
-                                        {
-                                            <tr>
-                                                <th scope="row">@report.Email</th>
-                                                <th scope="row">@report.CC</th>
-                                                <th scope="row">@report.BCC</th>
-                                                <th scope="row">@report.Name</th>
-
-                                            </tr>
-                                        }
-                                    }
-
-                                </tbody>
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
