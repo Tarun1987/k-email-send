@@ -18,7 +18,7 @@
                 {
                     <div id="upload-master-container row">
                         <div class="col-6" style="float:left">
-                            <select id="selectTemplate" class="form-select shadow-none form-control-linel">
+                            <select id="recipientTemplate" class="form-select shadow-none form-control-linel">
                                 <option value="">Recipient Template</option>
                                 @{
                                     foreach (var item in Model)
@@ -70,7 +70,7 @@
                                         <th class="border-top-0">Client Name</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
+                                <tbody id="recipientData"></tbody>
                             </table>
                         </div>
                     </div>
@@ -83,3 +83,7 @@
     </div>
 
 </div>
+
+@section Scripts {
+    <script src="~/Scripts/site.recipients.js"></script>
+}

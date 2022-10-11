@@ -19,14 +19,17 @@ namespace EmailSender.Controllers
         [HttpPost]
         public ActionResult Index(MasterRecipientUpdateModel model)
         {
-            string path = GetRecipientTemplateFilePath(Constants.RecipientMasterFileName);
-            // Check if file exists
-            if (System.IO.File.Exists(path))
-                System.IO.File.Delete(path);
-
-            model.MasterFile.SaveAs(path);
-            var list = ReadRecipientsFromExcelFile(path);
+            var dbService = new RecipientService();
+            var list = dbService.GetRecipientTemplateNameList();
             return View(list);
+        }
+
+        [HttpGet]
+        public JsonResult GetTemplateByRecipientName(string recipientName)
+        {
+            var dbService = new RecipientService();
+            var list = dbService.GetRecipients(recipientName);
+            return Json(list, JsonRequestBehavior.AllowGet);
         }
     }
 }

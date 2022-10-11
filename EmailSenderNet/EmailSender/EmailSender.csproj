@@ -200,6 +200,7 @@
     <Content Include="Scripts\app-style-switcher.js" />
     <Content Include="Scripts\custom.js" />
     <Content Include="Scripts\sidebarmenu.js" />
+    <Content Include="Scripts\site.recipients.js" />
     <Content Include="Scripts\summernote-lite.min.js" />
     <Content Include="Scripts\summernote.js" />
     <Content Include="favicon.ico" />
