@@ -47,8 +47,24 @@ namespace EmailSender.DAL
             //}
 
             list.Add(new DbTemplates { Id = 1 });
-            list.Add(new DbTemplates { Id = 2 });
+            list.Add(new DbTemplates { Id = 2, Share = true });
             return list;
+        }
+
+
+
+        /// <summary>
+        /// Get Template by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public DbTemplates GetTemplateById(int id)
+        {
+            return new DbTemplates
+            {
+                Id = id,
+                Html = $"<p>This is html {id}"
+            };
         }
     }
 }

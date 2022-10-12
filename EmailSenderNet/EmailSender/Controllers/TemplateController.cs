@@ -16,5 +16,13 @@ namespace EmailSender.Controllers
             var list = dbService.GetTemplates();
             return View(list);
         }
+
+        [HttpGet]
+        public JsonResult GetTemplateById(int id)
+        {
+            var dbService = new TemplateService();
+            var data = dbService.GetTemplateById(id);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
     }
 }

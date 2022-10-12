@@ -1,4 +1,5 @@
-﻿using EmailSender.Models;
+﻿using EmailSender.DbModels;
+using EmailSender.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
