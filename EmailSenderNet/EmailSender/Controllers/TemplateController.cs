@@ -1,4 +1,5 @@
 ﻿using EmailSender.DAL;
+using EmailSender.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,14 @@ namespace EmailSender.Controllers
             var dbService = new TemplateService();
             var data = dbService.GetTemplateById(id);
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult UpdateShareStatus(ShareStatusUpdateModel model)
+        {
+            var dbService = new TemplateService();
+            var result = dbService.UpdateShareStatus(model.Id, model.Share);
+            return Json(result ? "OK" : "FAIL", JsonRequestBehavior.AllowGet);
         }
     }
 }

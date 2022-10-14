@@ -66,5 +66,31 @@ namespace EmailSender.DAL
                 Html = $"<p>This is html {id}"
             };
         }
+
+        /// <summary>
+        /// Update remplate share status 
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <param name="shareStatus">Boolean</param>
+        /// <returns></returns>
+        public bool UpdateShareStatus(int id, bool shareStatus)
+        {
+            using (SqlConnection connection = GetDbConnection())
+            {
+                string oString = $"UPDATE Template SET Share='{shareStatus}'WHERE TemplateId={id}";
+                SqlCommand oCmd = new SqlCommand(oString, connection);
+                try
+                {
+                    connection.Open();
+                    oCmd.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+        }
     }
 }
