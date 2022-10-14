@@ -75,6 +75,16 @@ namespace EmailSender.Controllers
             return Json(new { templateName, htmlString });
         }
 
+        [HttpPost]
+        public JsonResult sendEmail(EmailSendModel model)
+        {
+            string logFileName = $"log_{DateTime.Now.Ticks}.txt";
+            IList<ExcelDataModel> list = new List<ExcelDataModel>();
+            list.Add(new ExcelDataModel { Name = "", BCC = "", CC = "", Email = "" });
+            SendEmailInBackground(list, model.Subject, model.GetEmailBody(), null, logFileName);
+            return Json("OK", JsonRequestBehavior.AllowGet);
+        }
+
         #region Private Section
 
         private void SendEmailInBackground(IList<ExcelDataModel> excelDataList, string subject, string body, string attachmentFilePath, string logFileName)

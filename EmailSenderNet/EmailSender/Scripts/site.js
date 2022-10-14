@@ -95,6 +95,7 @@ $(document).ready(function () {
                 if (percent >= 100) {
                     $('#modal-footer-2').show();
                     $('#progress-text').html('Email sending completed...');
+                    sendEmail();
                 }
             }, 1000);
         });
@@ -121,4 +122,15 @@ function getEditorTemplateString(templateName, cb) {
     $.post('/home/GetExitorTemplate', { templateName }, function (data, status, jqXHR) {
         cb(data.htmlString);
     })
+}
+
+
+function sendEmail() {
+    var Subject = $('#Subject').val();
+    var Greeting = $('#Greeting').val();
+    var Body = $('#Body').val();
+
+    $.post("/home/sendEmail", { Subject, Greeting, Body }, function (data, status, jqXHR) {
+
+    });
 }
