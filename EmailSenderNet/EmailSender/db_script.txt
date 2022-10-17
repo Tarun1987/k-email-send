@@ -1,0 +1,17 @@
+CREATE TABLE EmailSender.dbo.Recipients (
+	TemplateId int IDENTITY(1,1) NOT NULL,
+	TemplateName varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	ClientName varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	ClientEmail varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CC varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	BCC varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+);
+
+
+CREATE TABLE EmailSender.dbo.Templates (
+	Id int IDENTITY(1,1) NOT NULL,
+	Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Html varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	OwnerId varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Share tinyint NULL
+);
