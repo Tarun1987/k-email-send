@@ -16,41 +16,38 @@ namespace EmailSender.DAL
         public IList<DbRecipients> GetRecipients(string recipientName)
         {
             IList<DbRecipients> list = new List<DbRecipients>();
-            //using (SqlConnection connection = GetDbConnection())
-            //{
-            //    string oString = $"Select * from Recipients WHERE RecipientTemplateName = '{recipientName}'";
-            //    SqlCommand oCmd = new SqlCommand(oString, connection);
-            //    try
-            //    {
-            //        connection.Open();
-            //        using (SqlDataReader oReader = oCmd.ExecuteReader())
-            //        {
-            //            while (oReader.Read())
-            //            {
-            //                var obj = new DbRecipients
-            //                {
-            //                    BCC = oReader["BCC"].ToString(),
-            //                    CC = oReader["CC"].ToString(),
-            //                    ClientEmail = oReader["ClientEmail"].ToString(),
-            //                    ClientName = oReader["ClientName"].ToString(),
-            //                    TemplateId = Convert.ToInt32(oReader["RecipientTemplateId"]),
-            //                    TemplateName = oReader["RecipientTemplateName"].ToString()
-            //                };
+            using (SqlConnection connection = GetDbConnection())
+            {
+                string oString = $"Select * from {RecipientTable} WHERE TemplateName = '{recipientName}'";
+                SqlCommand oCmd = new SqlCommand(oString, connection);
+                try
+                {
+                    connection.Open();
+                    using (SqlDataReader oReader = oCmd.ExecuteReader())
+                    {
+                        while (oReader.Read())
+                        {
+                            var obj = new DbRecipients
+                            {
+                                BCC = oReader["BCC"].ToString(),
+                                CC = oReader["CC"].ToString(),
+                                ClientEmail = oReader["ClientEmail"].ToString(),
+                                ClientName = oReader["ClientName"].ToString(),
+                                TemplateId = Convert.ToInt32(oReader["TemplateId"]),
+                                TemplateName = oReader["TemplateName"].ToString()
+                            };
 
-            //                list.Add(obj);
-            //            }
+                            list.Add(obj);
+                        }
 
-            //            connection.Close();
-            //        }
-            //    }
-            //    catch (Exception e)
-            //    {
+                        connection.Close();
+                    }
+                }
+                catch (Exception e)
+                {
 
-            //    }
-            //}
-
-            list.Add(new DbRecipients { TemplateName = recipientName, TemplateId = 1 });
-            list.Add(new DbRecipients { TemplateName = recipientName, TemplateId = 2 });
+                }
+            }
             return list;
         }
 
@@ -61,31 +58,27 @@ namespace EmailSender.DAL
         public IList<string> GetRecipientTemplateNameList()
         {
             IList<string> list = new List<string>();
-            //using (SqlConnection connection = GetDbConnection())
-            //{
-            //    string oString = "Select DISTINCT RecipientTemplateName from Recipients";
-            //    SqlCommand oCmd = new SqlCommand(oString, connection);
-            //    try
-            //    {
-            //        connection.Open();
-            //        using (SqlDataReader oReader = oCmd.ExecuteReader())
-            //        {
-            //            while (oReader.Read())
-            //            {
-            //                list.Add(oReader["prop2"].ToString());
-            //            }
+            using (SqlConnection connection = GetDbConnection())
+            {
+                SqlCommand oCmd = new SqlCommand($"Select DISTINCT TemplateName from {RecipientTable}", connection);
+                try
+                {
+                    connection.Open();
+                    using (SqlDataReader oReader = oCmd.ExecuteReader())
+                    {
+                        while (oReader.Read())
+                        {
+                            list.Add(oReader["TemplateName"].ToString());
+                        }
 
-            //            connection.Close();
-            //        }
-            //    }
-            //    catch (Exception e)
-            //    {
+                        connection.Close();
+                    }
+                }
+                catch (Exception e)
+                {
 
-            //    }
-            //}
-
-            list.Add("Item 1");
-            list.Add("Item 2");
+                }
+            }
             return list;
         }
 
@@ -100,7 +93,7 @@ namespace EmailSender.DAL
         {
             using (SqlConnection connection = GetDbConnection())
             {
-                string oString = $"INSERT into Recipients VALUES('{templateName}', '{recipient.Name}', '{recipient.Email}', '{recipient.CC}', '{recipient.BCC}');";
+                string oString = $"INSERT INTO {RecipientTable}(TemplateName, ClientName, ClientEmail, CC, BCC) VALUES('{templateName}', '{recipient.Name}', '{recipient.Email}', '{recipient.CC}', '{recipient.BCC}');";
                 SqlCommand oCmd = new SqlCommand(oString, connection);
                 try
                 {
@@ -126,7 +119,7 @@ namespace EmailSender.DAL
         {
             using (SqlConnection connection = GetDbConnection())
             {
-                string oString = $"UPDATE Recipients SET ClientName='{model.ClientName}', BCC='{model.BCC}', ClientEmail='{model.ClientEmail}', CC='{model.CC}' WHERE TemplateId={model.TemplateId}";
+                string oString = $"UPDATE {RecipientTable} SET ClientName='{model.ClientName}', BCC='{model.BCC}', ClientEmail='{model.ClientEmail}', CC='{model.CC}' WHERE TemplateId={model.TemplateId}";
                 SqlCommand oCmd = new SqlCommand(oString, connection);
                 try
                 {

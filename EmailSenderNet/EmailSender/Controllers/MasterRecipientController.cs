@@ -11,36 +11,44 @@ namespace EmailSender.Controllers
         // GET: MasterRecipient
         public ActionResult Index()
         {
-            var dbService = new RecipientService();
-            var list = dbService.GetRecipientTemplateNameList();
-            return View(list);
+            return View(new MasterRecipientViewModel
+            {
+                RecipientTemplateNameList = new RecipientService().GetRecipientTemplateNameList()
+            });
         }
 
         [HttpPost]
-        public ActionResult Index(MasterRecipientUpdateModel model)
+        public ActionResult Index(MasterRecipientViewModel model)
         {
             var dbService = new RecipientService();
-            string path = GetRecipientTemplateFilePath(Constants.RecipientMasterFileName);
-            // Check if file exists
-            if (System.IO.File.Exists(path))
-                System.IO.File.Delete(path);
-
-            model.MasterFile.SaveAs(path);
-            var recipientsList = ReadRecipientsFromExcelFile(path);
-            foreach (var recipient in recipientsList)
+            if (ModelState.IsValid)
             {
-                dbService.SaveRecipient("Karteek template", recipient);
+                string path = GetRecipientTemplateFilePath(Constants.RecipientMasterFileName);
+                // Check if file exists
+                if (System.IO.File.Exists(path))
+                    System.IO.File.Delete(path);
+
+                model.MasterFile.SaveAs(path);
+                var templateName = model.MasterFile.FileName.Split('.')[0];
+
+                var recipientsList = ReadRecipientsFromExcelFile(path);
+                foreach (var recipient in recipientsList)
+                {
+                    dbService.SaveRecipient(templateName, recipient);
+                }
             }
 
-            var list = dbService.GetRecipientTemplateNameList();
-            return View(list);
+            return View(new MasterRecipientViewModel
+            {
+                RecipientTemplateNameList = dbService.GetRecipientTemplateNameList()
+            });
         }
 
         [HttpGet]
-        public JsonResult GetTemplateByRecipientName(string recipientName)
+        public JsonResult GetTemplateByRecipientName(string name)
         {
             var dbService = new RecipientService();
-            var list = dbService.GetRecipients(recipientName);
+            var list = dbService.GetRecipients(name);
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 

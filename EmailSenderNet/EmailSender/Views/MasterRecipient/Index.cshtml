@@ -1,27 +1,29 @@
-﻿@model IList<string>
+﻿@model EmailSender.Models.MasterRecipientViewModel
 @{
     ViewBag.Title = "Master Recipients";
 }
-<div class="page-breadcrumb">
-    <div class="row align-items-center">
-        <div class="col-4">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 d-flex align-items-center">
-                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="link"><i class="mdi mdi-home-outline fs-4"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">MasterRecipient</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="col-8">
-            <div class="text-end upgrade-btn">
-                @using (Html.BeginForm("Index", "MasterRecipient", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
+
+@using (Html.BeginForm("Index", "MasterRecipient", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="page-breadcrumb">
+        <div class="row align-items-center">
+            <div class="col-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0 d-flex align-items-center">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="link"><i class="mdi mdi-home-outline fs-4"></i></a></li>
+                        <li class="breadcrumb-item active" aria-current="page">MasterRecipient</li>
+                    </ol>
+                </nav>
+            </div>
+            
+            <div class="col-8">
+                <div class="text-end upgrade-btn">
                     <div id="upload-master-container row">
                         <div class="col-6" style="float:left">
                             <select id="recipientTemplate" class="form-select shadow-none form-control-linel">
                                 <option value="">Recipient Template</option>
                                 @{
-                                    foreach (var item in Model)
+                                    foreach (var item in Model.RecipientTemplateNameList)
                                     {
                                         <option value="@item">@item</option>
                                     }
@@ -32,7 +34,7 @@
                             <div class="file btn btn-primary">
                                 <i class="mdi mdi-upload"></i>
                                 Upload new
-                                <input type="file" class="form-control-file" id="MasterRecipients" name="MasterFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                                <input type="file" class="form-control-file" id="MasterFile" name="MasterFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
                             </div>
 
                             <a href="@Url.Action("RecipientsMasterTemplate", "Download")" class="btn btn-primary text-white"
@@ -41,18 +43,23 @@
                                 Download master
                             </a>
                         </div>
-
                     </div>
-                    <div id="upload-master-cancel" style="display:none">
-                        <span data-control-id="MasterRecipients"></span>
-                        <button type="button" id="btn-master-cancel" class="btn btn-danger btn-sm" style="float:right">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-sm" style="float:right">Submit</button>
-                    </div>
-                }
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top:6px">
+            <div class="col-6"></div>
+            <div class="col-6">
+                <div id="upload-master-cancel" style="display:none">
+                    <button type="button" id="btn-master-cancel" class="btn btn-danger btn-sm" style="float:right">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm" style="float:right">Submit</button>
+                    <span style="float:right" data-control-id="MasterFile"></span>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
+
 
 <div class="container-fluid">
     <div class="row">

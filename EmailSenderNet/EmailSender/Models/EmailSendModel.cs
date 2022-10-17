@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using System.Collections.Generic;
 
 namespace EmailSender.Models
 {
@@ -19,32 +20,28 @@ namespace EmailSender.Models
         [DisplayName("Attachments")]
         public string AttachmentPath { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         [AllowHtml]
         [DisplayName("Body of Email")]
         public string Body { get; set; }
 
-        public string RecipientsTemplate { get; set; }
+        [DisplayName("Select Recipient")]
+        [Required]
+        public string RecipientTemplateName { get; set; }
 
-        public bool UseDefaultTemplate
-        {
-            get
-            {
-                return !string.IsNullOrWhiteSpace(RecipientsTemplate) && RecipientsTemplate.ToLower() == "on";
-            }
-        }
-
-        [DisplayName("Upload  a file with list of recipients.")]
-        public string RecipientPath { get; set; }
+        [DisplayName("Select Template")]
+        [Required]
+        public int TemplateId { get; set; }
 
         public HttpPostedFileBase AttachmentFile { get; set; }
-        public HttpPostedFileBase RecipientFile { get; set; }
-
 
         public string GetEmailBody()
         {
             return this.Greeting + this.Body;
         }
+
+        public IList<SelectListItem> TemplatesList { get; set; }
+        public IList<SelectListItem> RecipientTemplateNameList { get; set; }
 
     }
 }

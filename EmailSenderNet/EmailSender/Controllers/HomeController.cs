@@ -1,10 +1,10 @@
-﻿using EmailSender.Helpers;
+﻿using EmailSender.DAL;
+using EmailSender.DbModels;
 using EmailSender.Models;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
-using System.Text;
+using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -13,23 +13,27 @@ namespace EmailSender.Controllers
 {
     public class HomeController : CustomBaseController
     {
+        [HttpGet]
         public ActionResult Index()
         {
-            return View();
+            var templatesList = new TemplateService().GetTemplates();
+            var recipientList = new RecipientService().GetRecipientTemplateNameList();
+            return View(new EmailSendModel
+            {
+                TemplatesList = templatesList.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList(),
+                RecipientTemplateNameList = recipientList.Select(x => new SelectListItem { Text = x, Value = x }).ToList(),
+            });
         }
 
         [HttpPost]
         public ActionResult Index(EmailSendModel model)
         {
+            var recipientService = new RecipientService();
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (!model.UseDefaultTemplate && model.RecipientFile == null)
-                    {
-                        return View(model);
-                    }
-
                     // Set log file name
                     string logFileName = $"log_{DateTime.Now.Ticks}.txt";
 
@@ -37,9 +41,9 @@ namespace EmailSender.Controllers
                     var attachmentFilePath = SaveAttachmentFile(model.AttachmentFile);
 
                     // Get email list by reading excel file.
-                    var emailList = GetRecipientsListFromFile(model);
+                    var emailList = recipientService.GetRecipients(model.RecipientTemplateName);
 
-                    Thread myNewThread = new Thread(() => SendEmailInBackground(emailList, model.Subject, model.GetEmailBody(), attachmentFilePath, logFileName));
+                    Thread myNewThread = new Thread(() => SendEmailInBackground(emailList, model, attachmentFilePath, logFileName));
                     myNewThread.Start();
 
                     ViewBag.logFileName = logFileName;
@@ -53,47 +57,48 @@ namespace EmailSender.Controllers
                 }
             }
 
-            return View();
+            var templatesList = new TemplateService().GetTemplates();
+            var recipientList = recipientService.GetRecipientTemplateNameList();
+            model.TemplatesList = templatesList.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+            model.RecipientTemplateNameList = recipientList.Select(x => new SelectListItem { Text = x, Value = x }).ToList();
+
+            return View(model);
         }
 
+        [HttpGet]
         public JsonResult GetProgress(string fileName)
         {
             var completedEmail = GetCompletedEmail(fileName);
-            return Json(new { completed = completedEmail.Count, fileName, completedEmail });
+            return Json(new { completed = completedEmail.Count, fileName, completedEmail }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetExitorTemplate(string templateName)
+        [HttpGet]
+        public JsonResult GetEditorTemplate(int id)
         {
-            var htmlString = "";
-            try
-            {
-                string path = GetEmailTemplateFilePath($"{templateName}.txt");
-                htmlString = System.IO.File.ReadAllText(path);
-            }
-            catch (Exception) { }
-
-            return Json(new { templateName, htmlString });
-        }
-
-        [HttpPost]
-        public JsonResult sendEmail(EmailSendModel model)
-        {
-            string logFileName = $"log_{DateTime.Now.Ticks}.txt";
-            IList<ExcelDataModel> list = new List<ExcelDataModel>();
-            list.Add(new ExcelDataModel { Name = "", BCC = "", CC = "", Email = "" });
-            SendEmailInBackground(list, model.Subject, model.GetEmailBody(), null, logFileName);
-            return Json("OK", JsonRequestBehavior.AllowGet);
+            var service = new TemplateService();
+            var data = service.GetTemplateById(id);
+            return Json(new { templateName = data.Name, htmlString = data.Html }, JsonRequestBehavior.AllowGet);
         }
 
         #region Private Section
 
-        private void SendEmailInBackground(IList<ExcelDataModel> excelDataList, string subject, string body, string attachmentFilePath, string logFileName)
+        /// <summary>
+        /// Send email in background
+        /// </summary>
+        /// <param name="recipientList">List of all recipients</param>
+        /// <param name="model">Data submitted from front end</param>
+        /// <param name="attachmentFilePath">Path of saved attachment file</param>
+        /// <param name="logFileName">Log file name</param>
+        private void SendEmailInBackground(IList<DbRecipients> recipientList, EmailSendModel model, string attachmentFilePath, string logFileName)
         {
-            foreach (var data in excelDataList)
+            foreach (var data in recipientList)
             {
-                // TODO Send email function call here
-                WriteToLogFile(data, logFileName);
+                Thread.Sleep(5000);
+                SendEmail(data.ClientEmail, model.GetEmailBody(), data.CC, data.BCC, attachmentFilePath);
+                WriteToLogFile(data.ClientEmail, logFileName);
             }
+
+            // Todo: Delete attachment file from file system
         }
 
         private IList<string> GetCompletedEmail(string fileName)
@@ -124,24 +129,6 @@ namespace EmailSender.Controllers
 
         }
 
-        private IList<ExcelDataModel> GetRecipientsListFromFile(EmailSendModel model)
-        {
-            var recipientFile = model.RecipientFile;
-            string path = string.Empty;
-            if (model.UseDefaultTemplate)
-            {
-                path = GetRecipientTemplateFilePath(Constants.RecipientMasterFileName);
-            }
-            else
-            {
-                string fileExtn = recipientFile.FileName.Split('.')[1];
-                path = GetRecipientsFilePath($"recipients_{DateTime.Now.Ticks}.{fileExtn}");
-                recipientFile.SaveAs(path);
-            }
-
-            return ReadRecipientsFromExcelFile(path);
-        }
-
         private string SaveAttachmentFile(HttpPostedFileBase attachmentFile)
         {
             if (!string.IsNullOrWhiteSpace(attachmentFile?.FileName))
@@ -153,6 +140,11 @@ namespace EmailSender.Controllers
             }
 
             return string.Empty;
+        }
+
+        private void SendEmail(string email, string body, string cc, string bcc, string attachmentFilePath)
+        {
+            // Todo: Email sending code here
         }
 
         #endregion

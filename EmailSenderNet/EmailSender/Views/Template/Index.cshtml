@@ -1,20 +1,53 @@
-﻿@model IList<EmailSender.DbModels.DbTemplates>
+﻿@model EmailSender.Models.TemplateViewModel
 @{
     ViewBag.Title = "Templates";
 }
-<div class="page-breadcrumb">
-    <div class="row align-items-center">
-        <div class="col-4">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 d-flex align-items-center">
-                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="link"><i class="mdi mdi-home-outline fs-4"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Templates</li>
-                </ol>
-            </nav>
+
+@functions {
+    object getHtmlAttributes(int dataShareId, int ownerId)
+    {
+        if (Model.LoggedInUserId != ownerId)
+        {
+            return new { @class = "form-check-input", disabled = true };
+        }
+        return new { data_share_check = dataShareId, @class = "form-check-input", @style = "cursor:pointer" };
+    }
+}
+
+
+@using (Html.BeginForm("Index", "Template", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="page-breadcrumb">
+        <div class="row align-items-center">
+            <div class="col-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0 d-flex align-items-center">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="link"><i class="mdi mdi-home-outline fs-4"></i></a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Templates</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="col-8">
+                <div class="file btn btn-primary" style="float:right">
+                    <i class="mdi mdi-upload"></i>
+                    Upload new
+                    <input type="file" class="form-control-file" id="MasterFile" name="MasterFile" accept="text/plain" />
+                </div>
+            </div>
         </div>
-        <div class="col-8"></div>
+        <div class="row" style="margin-top:6px">
+            <div class="col-6"></div>
+            <div class="col-6">
+                <div id="upload-master-cancel" style="display:none">
+                    <button type="button" id="btn-master-cancel" class="btn btn-danger btn-sm" style="float:right">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm" style="float:right">Submit</button>
+                    <span style="float:right" data-control-id="MasterFile"></span>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+}
 
 <div class="container-fluid">
     <div class="row">
@@ -35,23 +68,14 @@
                                 </thead>
                                 <tbody>
                                     @{
-                                        foreach (var item in Model)
+                                        foreach (var item in Model.TemplateList)
                                         {
                                             <tr>
                                                 <td>@item.Id</td>
                                                 <td>@item.Name</td>
                                                 <td>@item.OwnerId</td>
                                                 <td>
-                                                    @{
-                                                        if (item.Share)
-                                                        {
-                                                            <input data-share-check="@item.Id" class="form-check-input" type="checkbox" checked>
-                                                        }
-                                                        else
-                                                        {
-                                                            <input data-share-check="@item.Id" class="form-check-input" type="checkbox">
-                                                        }
-                                                    }
+                                                    @Html.CheckBox("share", item.Share, getHtmlAttributes(item.Id, item.OwnerId))
                                                 </td>
                                                 <td><button data-preview data-id="@item.Id" type="button" class="btn btn-primary btn-sm">Preview</button></td>
                                             </tr>

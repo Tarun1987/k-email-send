@@ -3,75 +3,64 @@
     ViewBag.Title = "Home Page";
 }
 
+@{
+    var isFormSubmitted = !string.IsNullOrWhiteSpace(ViewBag.Message);
+}
+
 <div class="container-fluid">
     <div class="row">
         @{
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
+                        @{
+                            if (isFormSubmitted)
+                            {
+                                <div class="modal-body">
+                                    <h4 class="modal-title" id="myModalLabel">Sending email</h4>
+                                    <br />
+                                    <p id="progress-text">Sending email to selected recipients...</p>
+                                    <div class="progress" style="height:12px">
+                                        <div id="send-progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+                                    </div>
+                                    <div style="margin-top: 5px;font-size: 12px;">
+                                        Completed <span id="sendCountText">0 </span> of <span id="totalToSendCounText"></span>
+                                    </div>
+                                </div>
 
-                        <div class="modal-body" style="display:none" id="modal-body-1">
-                            <h4 class="modal-title" id="myModalLabel">Sending email</h4>
-                            <br />
-                            <p id="progress-text">Sending email to selected recipients...</p>
-                            <div class="progress">
-                                <div id="send-progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                        <div class="modal-body" id="modal-body-2">
-                            <h4 class="modal-title" id="myModalLabel">Are you sure you want to send email to below users?</h4>
-                            <br />
-                            <div class="table-responsive" style="width:100%; max-height:200px; overflow-y: scroll">
-                                <table class="table mb-0 table-hover align-middle text-nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th class="border-top-0">Client Email</th>
-                                            <th class="border-top-0">CC</th>
-                                            <th class="border-top-0">BCC</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td scope="row">Email</td>
-                                            <td scope="row">CC</td>
-                                            <td scope="row">BCC</td>
-                                        </tr>
-                                        <tr>
-                                            <td scope="row">Email</td>
-                                            <td scope="row">CC</td>
-                                            <td scope="row">BCC</td>
-                                        </tr>
-                                        <tr>
-                                            <td scope="row">Email</td>
-                                            <td scope="row">CC</td>
-                                            <td scope="row">BCC</td>
-                                        </tr>
-                                        <tr>
-                                            <td scope="row">Email</td>
-                                            <td scope="row">CC</td>
-                                            <td scope="row">BCC</td>
-                                        </tr>
-                                        <tr>
-                                            <td scope="row">Email</td>
-                                            <td scope="row">CC</td>
-                                            <td scope="row">BCC</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                <div class="modal-footer">
+                                    <button id="btn-close" type="button" class="btn modal-close" style="display:none">Ok</button>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="modal-body" id="modal-body-2">
+                                    <h4 class="modal-title" id="myModalLabel">Are you sure you want to send email to below users?</h4>
+                                    <br />
+                                    <div class="table-responsive" style="width:100%; max-height:200px; overflow-y: scroll">
+                                        <table class="table mb-0 table-hover align-middle text-nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th class="border-top-0">Client Email</th>
+                                                    <th class="border-top-0">CC</th>
+                                                    <th class="border-top-0">BCC</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="recipientListHtml"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
 
-                        <div class="modal-footer" id="modal-footer-1">
-                            <button id="btn-send" type="button" class="btn btn-default">Send</button>
-                            <button id="btn-cancel" type="button" class="btn modal-close">Cancel</button>
-                        </div>
-
-                        <div class="modal-footer" id="modal-footer-2" style="display:none">
-                            <button id="btn-close" type="button" class="btn modal-close">Ok</button>
-                        </div>
+                                <div class="modal-footer">
+                                    <button id="btn-send" type="button" class="btn btn-default">Send</button>
+                                    <button id="btn-cancel" type="button" class="btn modal-close">Cancel</button>
+                                </div>
+                            }
+                        }
                     </div>
                 </div>
             </div>
+
             if (!string.IsNullOrWhiteSpace(ViewBag.Error))
             {
                 <div class="alert alert-danger" role="alert"> <strong>Oh snap!</strong> @ViewBag.Error</div>
@@ -80,68 +69,44 @@
 
     </div>
 
-    @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmManageEmail" }))
     {
         @Html.AntiForgeryToken()
+
+        if (isFormSubmitted)
+        {
+            <input type="hidden" id="log-data" data-log-file-name="@ViewBag.logFileName" data-recipient-count="@ViewBag.recipientCount" />
+        }
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12 panel-container">
-                                <div id="recipients-box-panel" class="box-panel panel panel-default" style="position:relative">
-                                    <div class="download-template">
-                                        <label>Template:</label>
-                                        <input type="checkbox" id="UseDefaultTemplate" name="RecipientsTemplate" data-width="75" data-toggle="toggle" data-size="small" data-on="Default" data-off="New">
-                                        @Html.ActionLink("Download latest Template", "RecipientsBlankTemplate", "download", new { }, new { @class = "" })
-                                    </div>
-                                    <div id="new-file-container" class="panel-body vertical-center text-center file-upload-container">
-                                        <div class="row">
-                                            @Html.LabelFor(model => model.RecipientPath)
-                                        </div>
-                                        <div class="file btn btn-primary">
-                                            <i class="mdi mdi-upload"></i>
-                                            Upload
-                                            <input type="file" class="form-control-file" id="RecipientFile" name="RecipientFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
-                                        </div>
-                                        <br />
-                                        <span data-control-id="RecipientFile">No File Selected</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="btn hidden" type="button" data-toggle="collapse" data-target="#emailtext" aria-expanded="true" aria-controls="collapseExample">
                     </div>
-                </div>
-            </div>
-
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="btn hidden" type="button" data-toggle="collapse" data-target="#emailtext" aria-expanded="false" aria-controls="collapseExample">
-                        Email content
-                        <i class="mdi mdi-arrow-down"></i>
-                    </div>
-                    <div class="card-body collapse" id="emailtext">
+                    <div class="card-body collapse in" id="emailtext">
                         <div class="row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 @Html.LabelFor(model => model.Subject)
                                 @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 @Html.LabelFor(model => model.Greeting)
                                 @Html.EditorFor(model => model.Greeting, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.Greeting, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-4">
+                                @Html.LabelFor(model => model.RecipientTemplateName)
+                                @Html.DropDownListFor(model => model.RecipientTemplateName, Model.RecipientTemplateNameList, "--Select--", new { @class = "form-select shadow-none form-control-linel" })
+                                @Html.ValidationMessageFor(model => model.RecipientTemplateName, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <label for="selectTemplate">Select Template</label>
-                                <select id="selectTemplate" class="form-select shadow-none form-control-linel">
-                                    <option value="">Blank</option>
-                                    <option value="basic">Basic template</option>
-                                    <option value="custom">Custom template</option>
-                                </select>
+                                @Html.LabelFor(model => model.TemplateId)
+                                @Html.DropDownListFor(model => model.TemplateId, Model.TemplatesList, "--Select--", new { @class = "form-select shadow-none form-control-linel" })
+                                @Html.ValidationMessageFor(model => model.TemplateId, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-md-6">
                                 @Html.LabelFor(model => model.AttachmentFile)

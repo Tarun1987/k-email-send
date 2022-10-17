@@ -14,43 +14,38 @@ namespace EmailSender.DAL
         public IList<DbTemplates> GetTemplates()
         {
             IList<DbTemplates> list = new List<DbTemplates>();
-            //using (SqlConnection connection = GetDbConnection())
-            //{
-            //    string oString = $"Select * from Template";
-            //    SqlCommand oCmd = new SqlCommand(oString, connection);
-            //    try
-            //    {
-            //        connection.Open();
-            //        using (SqlDataReader oReader = oCmd.ExecuteReader())
-            //        {
-            //            while (oReader.Read())
-            //            {
-            //                var obj = new DbTemplates
-            //                {
-            //                    Html = oReader["BCC"].ToString(),
-            //                    Id = Convert.ToInt32(oReader["CC"]),
-            //                    Name = oReader["ClientEmail"].ToString(),
-            //                    OwnerId = Convert.ToInt32(oReader["ClientName"]),
-            //                    Share = Convert.ToBoolean(oReader["RecipientTemplateId"]),
-            //                };
+            using (SqlConnection connection = GetDbConnection())
+            {
+                SqlCommand oCmd = new SqlCommand($"Select * from {TemplateTable}", connection);
+                try
+                {
+                    connection.Open();
+                    using (SqlDataReader oReader = oCmd.ExecuteReader())
+                    {
+                        while (oReader.Read())
+                        {
+                            var obj = new DbTemplates
+                            {
+                                Html = oReader["Html"].ToString(),
+                                Id = Convert.ToInt32(oReader["Id"]),
+                                Name = oReader["Name"].ToString(),
+                                OwnerId = Convert.ToInt32(oReader["OwnerId"]),
+                                Share = Convert.ToBoolean(oReader["Share"]),
+                            };
 
-            //                list.Add(obj);
-            //            }
+                            list.Add(obj);
+                        }
 
-            //            connection.Close();
-            //        }
-            //    }
-            //    catch (Exception e)
-            //    {
+                        connection.Close();
+                    }
+                }
+                catch (Exception e)
+                {
 
-            //    }
-            //}
-
-            list.Add(new DbTemplates { Id = 1 });
-            list.Add(new DbTemplates { Id = 2, Share = true });
+                }
+            }
             return list;
         }
-
 
 
         /// <summary>
@@ -60,11 +55,38 @@ namespace EmailSender.DAL
         /// <returns></returns>
         public DbTemplates GetTemplateById(int id)
         {
-            return new DbTemplates
+            IList<DbTemplates> list = new List<DbTemplates>();
+            using (SqlConnection connection = GetDbConnection())
             {
-                Id = id,
-                Html = $"<p>This is html {id}"
-            };
+                SqlCommand oCmd = new SqlCommand($"Select * from {TemplateTable} WHERE Id={id}", connection);
+                try
+                {
+                    connection.Open();
+                    using (SqlDataReader oReader = oCmd.ExecuteReader())
+                    {
+                        while (oReader.Read())
+                        {
+                            var obj = new DbTemplates
+                            {
+                                Html = oReader["Html"].ToString(),
+                                Id = Convert.ToInt32(oReader["Id"]),
+                                Name = oReader["Name"].ToString(),
+                                OwnerId = Convert.ToInt32(oReader["OwnerId"]),
+                                Share = Convert.ToBoolean(oReader["Share"]),
+                            };
+
+                            list.Add(obj);
+                        }
+
+                        connection.Close();
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+            return list[0];
         }
 
         /// <summary>
@@ -77,7 +99,32 @@ namespace EmailSender.DAL
         {
             using (SqlConnection connection = GetDbConnection())
             {
-                string oString = $"UPDATE Template SET Share='{shareStatus}'WHERE TemplateId={id}";
+                string oString = $"UPDATE {TemplateTable} SET Share={(shareStatus ? 1 : 0)} WHERE Id={id}";
+                SqlCommand oCmd = new SqlCommand(oString, connection);
+                try
+                {
+                    connection.Open();
+                    oCmd.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Save template in db
+        /// </summary>
+        /// <param name="templateData">Template data</param>
+        /// <returns>Success/Failure</returns>
+        public bool SaveTemplate(DbTemplates data)
+        {
+            using (SqlConnection connection = GetDbConnection())
+            {
+                string oString = $"INSERT INTO {TemplateTable}(Name, Html, OwnerId, Share) VALUES('{data.Name}', '{data.Html}', {data.OwnerId}, {(data.Share ? 1 : 0)});";
                 SqlCommand oCmd = new SqlCommand(oString, connection);
                 try
                 {

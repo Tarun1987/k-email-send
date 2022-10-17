@@ -45,23 +45,27 @@ namespace EmailSender.Controllers
             return MapPath("Recipients", fileName);
         }
 
-        protected void WriteToLogFile(ExcelDataModel data, string logFileName)
+        /// <summary>
+        /// Write text to text file
+        /// </summary>
+        /// <param name="text">Text to write</param>
+        /// <param name="logFileName">File path</param>
+        protected void WriteToLogFile(string text, string logFileName)
         {
-            Thread.Sleep(2000);
             string path = GetLogFilePath(logFileName);
             try
             {
                 // Check if file already exists. If yes, delete it.     
                 if (System.IO.File.Exists(path))
                 {
-                    System.IO.File.AppendAllText(path, data.Email + Environment.NewLine);
+                    System.IO.File.AppendAllText(path, text + Environment.NewLine);
                 }
                 else
                 {
                     using (FileStream fs = System.IO.File.Create(path))
                     {
                         // Add some text to file    
-                        byte[] title = new UTF8Encoding(true).GetBytes(data.Email + Environment.NewLine);
+                        byte[] title = new UTF8Encoding(true).GetBytes(text + Environment.NewLine);
                         fs.Write(title, 0, title.Length);
                     }
                 }
@@ -73,6 +77,11 @@ namespace EmailSender.Controllers
             }
         }
 
+        /// <summary>
+        /// Get data from excel file
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         protected IList<ExcelDataModel> ReadRecipientsFromExcelFile(string filePath)
         {
             IList<ExcelDataModel> list = new List<ExcelDataModel>();

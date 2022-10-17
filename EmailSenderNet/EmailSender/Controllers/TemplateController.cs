@@ -1,7 +1,9 @@
 ﻿using EmailSender.DAL;
+using EmailSender.DbModels;
 using EmailSender.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,9 +15,41 @@ namespace EmailSender.Controllers
         // GET: Template
         public ActionResult Index()
         {
+            return View(new TemplateViewModel
+            {
+                TemplateList = new TemplateService().GetTemplates(),
+                LoggedInUserId = int.Parse(ConfigurationManager.AppSettings["loggedInUserId"])
+            });
+        }
+
+        // GET: Template
+        [HttpPost]
+        public ActionResult Index(TemplateViewModel model)
+        {
             var dbService = new TemplateService();
-            var list = dbService.GetTemplates();
-            return View(list);
+            var ownerId = int.Parse(ConfigurationManager.AppSettings["loggedInUserId"]);
+
+            if (ModelState.IsValid)
+            {
+                string fileName = $"log_{DateTime.Now.Ticks}.txt";
+                string path = GetRecipientTemplateFilePath(fileName);
+                model.MasterFile.SaveAs(path);
+
+                var templateName = model.MasterFile.FileName.Split('.')[0];
+                dbService.SaveTemplate(new DbTemplates
+                {
+                    Html = System.IO.File.ReadAllText(path),
+                    Name = templateName,
+                    OwnerId = ownerId,
+                    Share = false
+                });
+            }
+
+            return View(new TemplateViewModel
+            {
+                TemplateList = dbService.GetTemplates(),
+                LoggedInUserId = ownerId
+            });
         }
 
         [HttpGet]

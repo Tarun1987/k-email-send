@@ -145,8 +145,10 @@
     <Compile Include="Helpers\Constant.cs" />
     <Compile Include="Models\EmailSendModel.cs" />
     <Compile Include="Models\ExcelDataModel.cs" />
-    <Compile Include="Models\MasterRecipientUpdateModel.cs" />
+    <Compile Include="Models\MasterRecipientViewModel.cs" />
     <Compile Include="Models\ReportViewModel.cs" />
+    <Compile Include="Models\ShareStatusUpdateModel.cs" />
+    <Compile Include="Models\TemplateViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
