@@ -7,16 +7,22 @@ namespace EmailSender.DAL
 {
     public class TemplateService : BaseService
     {
-        /// <summary>
-        /// Get List of all templates 
-        /// </summary>
-        /// <returns></returns>
-        public IList<DbTemplates> GetTemplates()
+        private IList<DbTemplates> GetTemplatesBy(int? loggedInUserId)
         {
             IList<DbTemplates> list = new List<DbTemplates>();
             using (SqlConnection connection = GetDbConnection())
             {
-                SqlCommand oCmd = new SqlCommand($"Select * from {TemplateTable}", connection);
+                var command = $"Select * from {TemplateTable}";
+                if (loggedInUserId.HasValue)
+                {
+                    command += $" WHERE (OwnerId={loggedInUserId.Value} OR Share = 1);";
+                }
+                else
+                {
+                    command += ";";
+                }
+
+                SqlCommand oCmd = new SqlCommand(command, connection);
                 try
                 {
                     connection.Open();
@@ -45,6 +51,22 @@ namespace EmailSender.DAL
                 }
             }
             return list;
+        }
+
+
+        /// <summary>
+        /// Get List of all templates 
+        /// </summary>
+        /// <returns></returns>
+        public IList<DbTemplates> GetTemplates()
+        {
+            return GetTemplatesBy(null);
+        }
+
+
+        public IList<DbTemplates> GetTemplates(int loggedInUserId)
+        {
+            return GetTemplatesBy(loggedInUserId);
         }
 
 

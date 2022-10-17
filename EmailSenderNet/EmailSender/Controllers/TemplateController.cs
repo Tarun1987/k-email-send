@@ -15,10 +15,11 @@ namespace EmailSender.Controllers
         // GET: Template
         public ActionResult Index()
         {
+            var loggedInUserId = int.Parse(ConfigurationManager.AppSettings["loggedInUserId"]);
             return View(new TemplateViewModel
             {
-                TemplateList = new TemplateService().GetTemplates(),
-                LoggedInUserId = int.Parse(ConfigurationManager.AppSettings["loggedInUserId"])
+                TemplateList = new TemplateService().GetTemplates(loggedInUserId),
+                LoggedInUserId = loggedInUserId
             });
         }
 
@@ -27,7 +28,7 @@ namespace EmailSender.Controllers
         public ActionResult Index(TemplateViewModel model)
         {
             var dbService = new TemplateService();
-            var ownerId = int.Parse(ConfigurationManager.AppSettings["loggedInUserId"]);
+            var loggedInUserId = int.Parse(ConfigurationManager.AppSettings["loggedInUserId"]);
 
             if (ModelState.IsValid)
             {
@@ -40,7 +41,7 @@ namespace EmailSender.Controllers
                 {
                     Html = System.IO.File.ReadAllText(path),
                     Name = templateName,
-                    OwnerId = ownerId,
+                    OwnerId = loggedInUserId,
                     Share = false
                 });
             }
@@ -48,7 +49,7 @@ namespace EmailSender.Controllers
             return View(new TemplateViewModel
             {
                 TemplateList = dbService.GetTemplates(),
-                LoggedInUserId = ownerId
+                LoggedInUserId = loggedInUserId
             });
         }
 

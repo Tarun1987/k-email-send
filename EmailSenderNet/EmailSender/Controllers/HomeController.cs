@@ -93,8 +93,8 @@ namespace EmailSender.Controllers
         {
             foreach (var data in recipientList)
             {
-                Thread.Sleep(5000);
-                SendEmail(data.ClientEmail, model.GetEmailBody(), data.CC, data.BCC, attachmentFilePath);
+                Thread.Sleep(1000);
+                SendEmail(data.ClientEmail, model.GetEmailBody(), model.Subject, data.CC, data.BCC, attachmentFilePath);
                 WriteToLogFile(data.ClientEmail, logFileName);
             }
 
@@ -142,7 +142,7 @@ namespace EmailSender.Controllers
             return string.Empty;
         }
 
-        private void SendEmail(string email, string body, string cc, string bcc, string attachmentFilePath)
+        private void SendEmail(string email, string body, string subject, string cc, string bcc, string attachmentFilePath)
         {
             // Todo: Email sending code here
         }

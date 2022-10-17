@@ -25,6 +25,7 @@
             $(modalId).modal({ backdrop: 'static' });
             $(modalId + " .modal-close").on('click', function () {
                 $(modalId).modal('hide');
+                window.location.href = window.location.href;
             })
             $('#totalToSendCounText').html(elemLogData.attr("data-recipient-count"))
             intervalId = setInterval(function () {
