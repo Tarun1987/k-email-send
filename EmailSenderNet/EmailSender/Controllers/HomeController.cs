@@ -147,6 +147,12 @@ namespace EmailSender.Controllers
             // Todo: Email sending code here
         }
 
+        private IList<string> SplitEmail(string emailStr)
+        {
+            if (string.IsNullOrWhiteSpace(emailStr)) return new List<string>();
+            return emailStr.Split(';').ToList();
+        }
+
         #endregion
     }
 }
