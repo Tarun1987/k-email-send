@@ -1,9 +1,9 @@
 ﻿(() => {
 
     let intervalId = 0;
+    const modalId = '#myModal'
     const formIdSelector = "#frmManageEmail";
     $(document).ready(function () {
-        const modalId = '#myModal'
         const logDataId = '#log-data';
         const btnSubmit = "#btnSubmit";
         const ddTemplateIdSelector = "#TemplateId";
@@ -67,6 +67,7 @@
                 $('#btn-close').show();
                 $('#progress-text').html('Email sending completed...');
                 clearInterval(intervalId);
+                $(modalId).modal('hide');
 
                 // reset form
                 $(':input', formIdSelector)
