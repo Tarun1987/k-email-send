@@ -15,3 +15,21 @@ CREATE TABLE EmailSender.dbo.Templates (
 	OwnerId varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	Share tinyint NULL
 );
+
+
+CREATE TABLE dbo.EmailHistories (
+	Id int IDENTITY(1,1) NOT NULL,
+	Status varchar(100) NULL,
+	Html varchar(MAX) NOT NULL,
+	RecipientTemplateName varchar(100),
+	UniqueId varchar(100),
+	SendAt datetime NOT NULL
+);
+
+CREATE TABLE dbo.EmailSignatures (
+	Id int IDENTITY(1,1) NOT NULL,
+	Name varchar(100) NOT NULL,
+	Html varchar(MAX) NOT NULL,
+	OwnerId int NULL,
+	Share tinyint NULL
+);
