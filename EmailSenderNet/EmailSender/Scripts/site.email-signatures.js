@@ -1,7 +1,7 @@
 ﻿(() => {
 
     const fieldNameSelector = '#Name';
-    const fieldTemplateIdSelector = '#TemplateId';
+    const fieldIdSelector = '#SignatureId';
 
     $(document).ready(function () {
         const previewSelector = '[data-preview]';
@@ -13,7 +13,7 @@
         $(previewSelector).on('click', function () {
             var elem = $(this);
             var id = elem.attr('data-id');
-            getTemplateById(id, function (data) {
+            getById(id, function (data) {
                 var win = window.open("", "Title", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=200,top=" + (screen.height - 400) + ",left=" + (screen.width - 840));
                 win.document.body.innerHTML = data.Html;
             });
@@ -23,10 +23,10 @@
             var elem = $(this);
             var id = elem.attr('data-id');
             resetFields();
-            getTemplateById(id, function (data) {
+            getById(id, function (data) {
                 $('.collapse').collapse('show');
                 $(fieldNameSelector).val(data.Name);
-                $(fieldTemplateIdSelector).val(data.Id);
+                $(fieldIdSelector).val(data.Id);
                 $(textEditorId).summernote('pasteHTML', data.Html);
                 $(btnAddNewSelector).hide();
             });
@@ -47,7 +47,7 @@
     });
 
     function updateShareStatus(value, id) {
-        $.post("/Template/UpdateShareStatus", { share: value, id }, function (result, status, jqXHR) {
+        $.post("/Signature/UpdateShareStatus", { share: value, id }, function (result, status, jqXHR) {
             if (result === "OK") {
                 alert('Success');
             }
@@ -57,8 +57,8 @@
         })
     }
 
-    function getTemplateById(id, callback) {
-        $.get('/Template/GetTemplateById', { id }, function (data, status, jqXHR) {
+    function getById(id, callback) {
+        $.get('/Signature/GetSignatureById', { id }, function (data, status, jqXHR) {
             callback(data);
         })
     }
@@ -66,7 +66,7 @@
     function resetFields() {
         $(fieldNameSelector).val('');
         $(textEditorId).summernote('reset');
-        $(fieldTemplateIdSelector).val('0')
+        $(fieldIdSelector).val('0')
     }
 
 })();

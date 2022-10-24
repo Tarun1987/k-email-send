@@ -5,23 +5,14 @@ using System.Data.SqlClient;
 
 namespace EmailSender.DAL
 {
-    public class TemplateService : BaseService
+    public class EmailSignatureService : BaseService
     {
-        private IList<DbTemplates> GetTemplatesBy(int? loggedInUserId)
+        private IList<EmailSignatures> GetBy(int loggedInUserId)
         {
-            IList<DbTemplates> list = new List<DbTemplates>();
+            IList<EmailSignatures> list = new List<EmailSignatures>();
             using (SqlConnection connection = GetDbConnection())
             {
-                var command = $"Select * from {TemplateTable}";
-                if (loggedInUserId.HasValue)
-                {
-                    command += $" WHERE (OwnerId={loggedInUserId.Value} OR Share = 1);";
-                }
-                else
-                {
-                    command += ";";
-                }
-
+                var command = $"SELECT * from {EmailSignatures}  WHERE OwnerId={loggedInUserId};";
                 SqlCommand oCmd = new SqlCommand(command, connection);
                 try
                 {
@@ -30,7 +21,7 @@ namespace EmailSender.DAL
                     {
                         while (oReader.Read())
                         {
-                            var obj = new DbTemplates
+                            var obj = new EmailSignatures
                             {
                                 Html = oReader["Html"].ToString(),
                                 Id = Convert.ToInt32(oReader["Id"]),
@@ -52,35 +43,23 @@ namespace EmailSender.DAL
             }
             return list;
         }
-
-
-        /// <summary>
-        /// Get List of all templates 
-        /// </summary>
-        /// <returns></returns>
-        public IList<DbTemplates> GetTemplates()
+        
+        public IList<EmailSignatures> GetSignatures(int loggedInUserId)
         {
-            return GetTemplatesBy(null);
+            return GetBy(loggedInUserId);
         }
 
-
-        public IList<DbTemplates> GetTemplates(int loggedInUserId)
-        {
-            return GetTemplatesBy(loggedInUserId);
-        }
-
-
         /// <summary>
-        /// Get Template by Id
+        /// Get Signatures by Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public DbTemplates GetTemplateById(int id)
+        public EmailSignatures GetSignatureById(int id)
         {
-            IList<DbTemplates> list = new List<DbTemplates>();
+            IList<EmailSignatures> list = new List<EmailSignatures>();
             using (SqlConnection connection = GetDbConnection())
             {
-                SqlCommand oCmd = new SqlCommand($"Select * from {TemplateTable} WHERE Id={id}", connection);
+                SqlCommand oCmd = new SqlCommand($"Select * from {EmailSignatures} WHERE Id={id}", connection);
                 try
                 {
                     connection.Open();
@@ -88,7 +67,7 @@ namespace EmailSender.DAL
                     {
                         while (oReader.Read())
                         {
-                            var obj = new DbTemplates
+                            var obj = new EmailSignatures
                             {
                                 Html = oReader["Html"].ToString(),
                                 Id = Convert.ToInt32(oReader["Id"]),
@@ -112,7 +91,7 @@ namespace EmailSender.DAL
         }
 
         /// <summary>
-        /// Update remplate share status 
+        /// Update Signature share status 
         /// </summary>
         /// <param name="id">Id</param>
         /// <param name="shareStatus">Boolean</param>
@@ -121,7 +100,7 @@ namespace EmailSender.DAL
         {
             using (SqlConnection connection = GetDbConnection())
             {
-                string oString = $"UPDATE {TemplateTable} SET Share={(shareStatus ? 1 : 0)} WHERE Id={id}";
+                string oString = $"UPDATE {EmailSignatures} SET Share={(shareStatus ? 1 : 0)} WHERE Id={id}";
                 SqlCommand oCmd = new SqlCommand(oString, connection);
                 try
                 {
@@ -138,15 +117,15 @@ namespace EmailSender.DAL
         }
 
         /// <summary>
-        /// Save template in db
+        /// Save Signature in db
         /// </summary>
-        /// <param name="templateData">Template data</param>
+        /// <param name="templateData">Signature data</param>
         /// <returns>Success/Failure</returns>
-        public bool SaveTemplate(DbTemplates data)
+        public bool Save(EmailSignatures data)
         {
             using (SqlConnection connection = GetDbConnection())
             {
-                string oString = $"INSERT INTO {TemplateTable}(Name, Html, OwnerId, Share) VALUES('{data.Name}', '{data.Html}', {data.OwnerId}, {(data.Share ? 1 : 0)});";
+                string oString = $"INSERT INTO {EmailSignatures}(Name, Html, OwnerId, Share) VALUES('{data.Name}', '{data.Html}', {data.OwnerId}, {(data.Share ? 1 : 0)});";
                 SqlCommand oCmd = new SqlCommand(oString, connection);
                 try
                 {
@@ -162,19 +141,18 @@ namespace EmailSender.DAL
             }
         }
 
-
-       /// <summary>
-       /// Update template name and body
-       /// </summary>
-       /// <param name="id">Template Id</param>
-       /// <param name="name">Updated Name</param>
-       /// <param name="html">Updated html</param>
-       /// <returns></returns>
+        /// <summary>
+        /// Update Signature name and body
+        /// </summary>
+        /// <param name="id">Signature Id</param>
+        /// <param name="name">Name</param>
+        /// <param name="html">html</param>
+        /// <returns></returns>
         public bool UpdateNameAndHtml(int id, string name, string html)
         {
             using (SqlConnection connection = GetDbConnection())
             {
-                string oString = $"UPDATE {TemplateTable} SET Name='{name}', Html='{html}' WHERE Id={id}";
+                string oString = $"UPDATE {EmailSignatures} SET Name='{name}', Html='{html}' WHERE Id={id}";
                 SqlCommand oCmd = new SqlCommand(oString, connection);
                 try
                 {

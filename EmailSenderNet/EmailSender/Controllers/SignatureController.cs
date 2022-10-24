@@ -1,44 +1,40 @@
 ﻿using EmailSender.DAL;
 using EmailSender.DbModels;
 using EmailSender.Models;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EmailSender.Controllers
 {
-    public class TemplateController : CustomBaseController
+    public class SignatureController : CustomBaseController
     {
         // GET: Template
         public ActionResult Index()
         {
             var loggedInUserId = int.Parse(ConfigurationManager.AppSettings["loggedInUserId"]);
-            return View(new TemplateViewModel
+            return View(new SignatureViewModel
             {
-                TemplateList = new TemplateService().GetTemplates(loggedInUserId),
+                SignatureList = new EmailSignatureService().GetSignatures(loggedInUserId),
                 LoggedInUserId = loggedInUserId
             });
         }
 
         // GET: Template
         [HttpPost]
-        public ActionResult Index(TemplateViewModel model)
+        public ActionResult Index(SignatureViewModel model)
         {
-            var dbService = new TemplateService();
+            var dbService = new EmailSignatureService();
             var loggedInUserId = int.Parse(ConfigurationManager.AppSettings["loggedInUserId"]);
 
             if (ModelState.IsValid)
             {
-                if (model.TemplateId.HasValue && model.TemplateId.Value > 0)
+                if (model.SignatureId.HasValue && model.SignatureId.Value > 0)
                 {
-                    dbService.UpdateNameAndHtml(model.TemplateId.Value, model.Name, model.Body);
+                    dbService.UpdateNameAndHtml(model.SignatureId.Value, model.Name, model.Body);
                 }
                 else
                 {
-                    dbService.SaveTemplate(new DbTemplates
+                    dbService.Save(new EmailSignatures
                     {
                         Html = model.Body,
                         Name = model.Name,
@@ -49,25 +45,25 @@ namespace EmailSender.Controllers
                 }
             }
 
-            return View(new TemplateViewModel
+            return View(new SignatureViewModel
             {
-                TemplateList = dbService.GetTemplates(),
+                SignatureList = dbService.GetSignatures(loggedInUserId),
                 LoggedInUserId = loggedInUserId
             });
         }
 
         [HttpGet]
-        public JsonResult GetTemplateById(int id)
+        public JsonResult GetSignatureById(int id)
         {
-            var dbService = new TemplateService();
-            var data = dbService.GetTemplateById(id);
+            var dbService = new EmailSignatureService();
+            var data = dbService.GetSignatureById(id);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult UpdateShareStatus(ShareStatusUpdateModel model)
         {
-            var dbService = new TemplateService();
+            var dbService = new EmailSignatureService();
             var result = dbService.UpdateShareStatus(model.Id, model.Share);
             return Json(result ? "OK" : "FAIL", JsonRequestBehavior.AllowGet);
         }

@@ -8,6 +8,8 @@ namespace EmailSender.DAL
         private string _connectionString = "Data Source=localhost;Initial Catalog=EmailSender;User ID=sa;Password=Passw0rd";
         protected string RecipientTable = "Recipients";
         protected string TemplateTable = "Templates";
+        protected string EmailHistories = "EmailHistories";
+        protected string EmailSignatures = "EmailSignatures";
 
         protected SqlConnection GetDbConnection()
         {

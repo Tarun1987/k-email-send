@@ -2,26 +2,25 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EmailSender.Models
 {
-    public class TemplateViewModel
+    public class SignatureViewModel
     {
-        public IList<DbTemplates> TemplateList { get; set; }
+        public IList<EmailSignatures> SignatureList { get; set; }
 
         public int LoggedInUserId { get; set; }
 
-        public int? TemplateId { get; set; }
+        public int? SignatureId { get; set; }
 
         [Required]
-        [DisplayName("Template Name")]
+        [DisplayName("Signature Name")]
         public string Name { get; set; }
 
         [Required]
         [AllowHtml]
-        [DisplayName("Template Body")]
+        [DisplayName("Signature Body")]
         public string Body { get; set; }
 
     }

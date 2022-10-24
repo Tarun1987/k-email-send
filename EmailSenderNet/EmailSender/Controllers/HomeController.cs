@@ -35,7 +35,7 @@ namespace EmailSender.Controllers
                 try
                 {
                     // Set log file name
-                    string logFileName = $"log_{DateTime.Now.Ticks}.txt";
+                    string uniqueId = $"{DateTime.Now.Ticks}";
 
                     // Save Attachment file
                     var attachmentFilePath = SaveAttachmentFile(model.AttachmentFile);
@@ -43,10 +43,10 @@ namespace EmailSender.Controllers
                     // Get email list by reading excel file.
                     var emailList = recipientService.GetRecipients(model.RecipientTemplateName);
 
-                    Thread myNewThread = new Thread(() => SendEmailInBackground(emailList, model, attachmentFilePath, logFileName));
+                    Thread myNewThread = new Thread(() => SendEmailInBackground(emailList, model, attachmentFilePath, uniqueId));
                     myNewThread.Start();
 
-                    ViewBag.logFileName = logFileName;
+                    ViewBag.uniqueId = uniqueId;
                     ViewBag.recipientCount = emailList.Count;
                     ModelState.Clear();
                     ViewBag.Message = "Email send to all.";
@@ -66,10 +66,11 @@ namespace EmailSender.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetProgress(string fileName)
+        public JsonResult GetProgress(string uniqueId)
         {
-            var completedEmail = GetCompletedEmail(fileName);
-            return Json(new { completed = completedEmail.Count, fileName, completedEmail }, JsonRequestBehavior.AllowGet);
+            var dbService = new EmailHistoryService();
+            var result = dbService.GetHistoryBy(uniqueId);
+            return Json(new { completed = result.Count, uniqueId }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -88,45 +89,22 @@ namespace EmailSender.Controllers
         /// <param name="recipientList">List of all recipients</param>
         /// <param name="model">Data submitted from front end</param>
         /// <param name="attachmentFilePath">Path of saved attachment file</param>
-        /// <param name="logFileName">Log file name</param>
-        private void SendEmailInBackground(IList<DbRecipients> recipientList, EmailSendModel model, string attachmentFilePath, string logFileName)
+        /// <param name="uniqueId">Log file name</param>
+        private void SendEmailInBackground(IList<DbRecipients> recipientList, EmailSendModel model, string attachmentFilePath, string uniqueId)
         {
             foreach (var data in recipientList)
             {
                 Thread.Sleep(1000);
-                SendEmail(data.ClientEmail, model.GetEmailBody(), model.Subject, data.CC, data.BCC, attachmentFilePath);
-                WriteToLogFile(data.ClientEmail, logFileName);
-            }
-
-            // Todo: Delete attachment file from file system
-        }
-
-        private IList<string> GetCompletedEmail(string fileName)
-        {
-            IList<string> completedEmail = new List<string>();
-            try
-            {
-                string path = GetLogFilePath(fileName);
-                if (!System.IO.File.Exists(path))
+                var emailSendStatus = SendEmail(data.ClientEmail, model.GetEmailBody(), model.Subject, data.CC, data.BCC, attachmentFilePath);
+                new EmailHistoryService().SaveHistory(new EmailHistory
                 {
-                    return completedEmail;
-                }
-
-                using (StreamReader sr = System.IO.File.OpenText(path))
-                {
-                    string s = "";
-                    while ((s = sr.ReadLine()) != null)
-                    {
-                        completedEmail.Add(s);
-                    }
-                }
+                    Html = model.GetEmailBody(),
+                    RecipientTemplateName = model.RecipientTemplateName,
+                    SendAt = DateTime.Now,
+                    Status = emailSendStatus ? "Success" : "Failed",
+                    UniqueId = uniqueId
+                });
             }
-            catch (Exception e)
-            {
-            }
-
-            return completedEmail;
-
         }
 
         private string SaveAttachmentFile(HttpPostedFileBase attachmentFile)
@@ -142,8 +120,9 @@ namespace EmailSender.Controllers
             return string.Empty;
         }
 
-        private void SendEmail(string email, string body, string subject, string cc, string bcc, string attachmentFilePath)
+        private bool SendEmail(string email, string body, string subject, string cc, string bcc, string attachmentFilePath)
         {
+            return true;
             // Todo: Email sending code here
         }
 
