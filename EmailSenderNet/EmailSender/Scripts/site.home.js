@@ -109,7 +109,7 @@
         var subject = $(textEditorId).summernote('code');
         if (!body && !subject) return false;
 
-        var hasAttachmentKeyWord = (subject.search(/attach/) >= 0 || subject.search(/Attach/) >= 0 || body.search(/attach/) >= 0 || body.search(/Attach/))
+        var hasAttachmentKeyWord = (subject.search(/attach/) >= 0 || subject.search(/Attach/) >= 0 || body.search(/attach/) >= 0 || body.search(/Attach/)) >= 0;
         var dontHaveAttachment = !($('#AttachmentFile').val());
         return hasAttachmentKeyWord && dontHaveAttachment;
 
