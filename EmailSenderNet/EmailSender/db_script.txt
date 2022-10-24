@@ -33,3 +33,6 @@ CREATE TABLE dbo.EmailSignatures (
 	OwnerId int NULL,
 	Share tinyint NULL
 );
+
+
+ALTER TABLE EmailHistories  ADD CONSTRAINT DF_EmailHistories DEFAULT GETDATE() FOR SendAt;

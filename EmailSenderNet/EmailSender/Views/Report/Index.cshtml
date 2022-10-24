@@ -1,4 +1,4 @@
-﻿@model IList<EmailSender.Models.ReportViewModel>
+﻿@model IList<EmailSender.DbModels.EmailHistory>
 @{
     ViewBag.Title = "Report Page";
 }
@@ -25,12 +25,11 @@
                             <table class="table mb-0 table-hover align-middle text-nowrap">
                                 <thead>
                                     <tr>
-                                        
+                                        <th class="border-top-0">Id</th>
                                         <th class="border-top-0">Date Send</th>
-                                        <th class="border-top-0">Failed Count</th>
-                                        <th class="border-top-0">Delivered Count</th>
-                                        <th class="border-top-0">Pending Count</th>
-                                        <th class="border-top-0">File Name</th>
+                                        <th class="border-top-0">Template Name</th>
+                                        <th class="border-top-0">Status</th>
+                                        <th class="border-top-0">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -38,29 +37,31 @@
                                         foreach (var report in Model)
                                         {
                                             <tr>
-                                                <th scope="row">@report.CreatedDate</th>
-                                                <td><label class="badge bg-danger">@report.FailedCount</label></td>
-                                                <td><label class="badge bg-success">@report.DeliveredCount</label></td>
-                                                <td><label class="badge bg-purple">@report.PendingCount</label></td>
+                                                <td><label class="badge bg-purple">@report.Id</label></td>
+                                                <th scope="row">@report.SendAt</th>
+                                                <td><label class="badge bg-danger">@report.RecipientTemplateName</label></td>
+                                                <td><label class="badge bg-success">@report.Status</label></td>
                                                 <td>
-                                                    @Html.ActionLink(report.FileName, "UploadedRecipientsFile", "Download", new { fileName = report.FileName }, new { @class = "a" })
+                                                    <button data-preview data-id="@report.Id" type="button" class="btn btn-primary btn-sm">Preview</button>
                                                 </td>
                                             </tr>
                                         }
                                     }
-                                 
+
                                 </tbody>
                             </table>
                         </div>
-                        </div>
                     </div>
-                    <div class="amp-pxl mt-4" style="height: 350px;">
-                        <div class="chartist-tooltip"></div>
-                    </div>
+                </div>
+                <div class="amp-pxl mt-4" style="height: 350px;">
+                    <div class="chartist-tooltip"></div>
                 </div>
             </div>
         </div>
-    
     </div>
-   
+
 </div>
+
+@section Scripts {
+    <script src="~/Scripts/site.reports.js"></script>
+}

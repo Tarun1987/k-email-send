@@ -16,7 +16,7 @@ namespace EmailSender.DAL
         {
             using (SqlConnection connection = GetDbConnection())
             {
-                string oString = $"INSERT INTO {EmailHistories}(Status, Html, RecipientTemplateName, UniqueId, SendAt) VALUES('{data.Status}', '{data.Html}', '{data.RecipientTemplateName}', '{data.UniqueId}', '{data.FormattedSendAt}');";
+                string oString = $"INSERT INTO {EmailHistories}(Status, Html, RecipientTemplateName, UniqueId) VALUES('{data.Status}', '{data.Html}', '{data.RecipientTemplateName}', '{data.UniqueId}');";
                 SqlCommand oCmd = new SqlCommand(oString, connection);
                 try
                 {
@@ -37,7 +37,14 @@ namespace EmailSender.DAL
             IList<EmailHistory> list = new List<EmailHistory>();
             using (SqlConnection connection = GetDbConnection())
             {
-                SqlCommand oCmd = new SqlCommand($"Select * from {EmailHistories} WHERE UniqueId={uniqueId}", connection);
+                var query = $"Select * from {EmailHistories}";
+                if (!string.IsNullOrWhiteSpace(uniqueId))
+                {
+                    query += $" WHERE UniqueId={uniqueId}";
+                }
+                query += " ORDER BY SendAt DESC;";
+
+                SqlCommand oCmd = new SqlCommand(query, connection);
                 try
                 {
                     connection.Open();
@@ -67,6 +74,44 @@ namespace EmailSender.DAL
                 }
             }
             return list;
+        }
+
+        /// <summary>
+        /// Get History by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public EmailHistory GetById(int id)
+        {
+            IList<EmailHistory> list = new List<EmailHistory>();
+            using (SqlConnection connection = GetDbConnection())
+            {
+                SqlCommand oCmd = new SqlCommand($"Select * from {EmailHistories} WHERE Id={id}", connection);
+                try
+                {
+                    connection.Open();
+                    using (SqlDataReader oReader = oCmd.ExecuteReader())
+                    {
+                        while (oReader.Read())
+                        {
+                            var obj = new EmailHistory
+                            {
+                                Html = oReader["Html"].ToString(),
+                                Id = Convert.ToInt32(oReader["Id"]),
+                            };
+
+                            list.Add(obj);
+                        }
+
+                        connection.Close();
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+            return list[0];
         }
     }
 }

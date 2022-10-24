@@ -206,10 +206,12 @@
     <Content Include="Content\style.min.css" />
     <Content Include="Content\summernote-lite.css" />
     <Content Include="Content\summernote.css" />
+    <Content Include="db_script.txt" />
     <Content Include="Scripts\app-style-switcher.js" />
     <Content Include="Scripts\custom.js" />
     <Content Include="Scripts\sidebarmenu.js" />
     <Content Include="Scripts\site.email-signatures.js" />
+    <Content Include="Scripts\site.reports.js" />
     <Content Include="Scripts\site.home.js" />
     <Content Include="Scripts\site.email-templates.js" />
     <Content Include="Scripts\site.recipients.js" />
