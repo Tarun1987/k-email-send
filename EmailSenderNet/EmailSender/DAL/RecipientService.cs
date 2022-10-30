@@ -13,12 +13,14 @@ namespace EmailSender.DAL
         /// </summary>
         /// <param name="recipientName"></param>
         /// <returns></returns>
-        public IList<DbRecipients> GetRecipients(string recipientName)
+        public IList<DbRecipients> GetRecipients(string recipientName, bool includeInactive = false)
         {
             IList<DbRecipients> list = new List<DbRecipients>();
             using (SqlConnection connection = GetDbConnection())
             {
                 string oString = $"Select * from {RecipientTable} WHERE TemplateName = '{recipientName}'";
+                if (!includeInactive) oString += " AND IsActive = 1";
+
                 SqlCommand oCmd = new SqlCommand(oString, connection);
                 try
                 {
@@ -34,7 +36,9 @@ namespace EmailSender.DAL
                                 ClientEmail = oReader["ClientEmail"].ToString(),
                                 ClientName = oReader["ClientName"].ToString(),
                                 TemplateId = Convert.ToInt32(oReader["TemplateId"]),
-                                TemplateName = oReader["TemplateName"].ToString()
+                                TemplateName = oReader["TemplateName"].ToString(),
+                                Share = oReader["Share"] == DBNull.Value ? false : Convert.ToBoolean(oReader["Share"]),
+                                IsActive = oReader["IsActive"] == DBNull.Value ? true : Convert.ToBoolean(oReader["IsActive"]),
                             };
 
                             list.Add(obj);
@@ -82,7 +86,6 @@ namespace EmailSender.DAL
             return list;
         }
 
-
         /// <summary>
         /// Save recipient entry to DB
         /// </summary>
@@ -109,7 +112,6 @@ namespace EmailSender.DAL
             }
         }
 
-
         /// <summary>
         /// Update recipients 
         /// </summary>
@@ -119,7 +121,7 @@ namespace EmailSender.DAL
         {
             using (SqlConnection connection = GetDbConnection())
             {
-                string oString = $"UPDATE {RecipientTable} SET ClientName='{model.ClientName}', BCC='{model.BCC}', ClientEmail='{model.ClientEmail}', CC='{model.CC}' WHERE TemplateId={model.TemplateId}";
+                string oString = $"UPDATE {RecipientTable} SET ClientName='{model.ClientName}', BCC='{model.BCC}', ClientEmail='{model.ClientEmail}', CC='{model.CC}', Share={(model.Share ? 1 : 0)}, IsActive={(model.IsActive ? 1 : 0)} WHERE TemplateId={model.TemplateId}";
                 SqlCommand oCmd = new SqlCommand(oString, connection);
                 try
                 {

@@ -45,10 +45,10 @@ namespace EmailSender.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetTemplateByRecipientName(string name)
+        public JsonResult GetTemplateByRecipientName(string name, bool includeInactive = false)
         {
             var dbService = new RecipientService();
-            var list = dbService.GetRecipients(name);
+            var list = dbService.GetRecipients(name, includeInactive);
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 

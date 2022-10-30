@@ -86,7 +86,7 @@
     }
 
     function getEditorTemplateString(recipientName, cb) {
-        $.get('/MasterRecipient/GetTemplateByRecipientName', { name: recipientName }, function (data, status, jqXHR) {
+        $.get('/MasterRecipient/GetTemplateByRecipientName', { name: recipientName, includeInactive: true }, function (data, status, jqXHR) {
             cb(data);
         })
     }
@@ -99,6 +99,8 @@
             html += '<td>' + getTableCellHtml("CC", list[i].CC) + '</td>';
             html += '<td>' + getTableCellHtml("BCC", list[i].BCC) + '</td>';
             html += '<td>' + getTableCellHtml("ClientName", list[i].ClientName) + '</td>';
+            html += '<td>' + getTableCellCheckboxHtml("Share", list[i].Share) + '</td>';
+            html += '<td>' + getTableCellCheckboxHtml("IsActive", list[i].IsActive) + '</td>';
             html += getActionCellHTML();
             html += '</tr>';
         }
@@ -112,10 +114,17 @@
         return html
     }
 
+    function getTableCellCheckboxHtml(fieldName, value) {
+        var html = '';
+        html += '<input type="checkbox" class="form-check-input" data-input="' + fieldName + '" style="display:none;cursor:pointer" ' + (value ? "checked" : "") + ' />';
+        html += '<span class="badge ' + (value ? "bg-success" : "bg-danger") + '" data-label="' + fieldName + '">' + value + '</span>';
+        return html
+    }
+
     function getActionCellHTML() {
         var html = '<td> ';
         html += '<i data-edit style="cursor:pointer" title="Edit this" class="mdi mdi-pencil"></i>';
-        html += '<button data-submit type="button" class="btn btn-sm btn-primary" style="display:none">Ok</button>';
+        html += '<button data-submit type="button" class="btn btn-sm btn-primary" style="display:none;margin-right:5px">Ok</button>';
         html += '<button data-cancel type = "button" class="btn btn-sm btn-danger" style="display:none"> Reset</button >';
         html += '</td>';
         return html;
@@ -130,8 +139,13 @@
             var td = tdList[i];
             var input = $(td).children('input').first();
             var span = $(td).children('span').first();
-            if (input && span && span.attr('data-label') && input.val())
+            if (input && span && span.attr('data-label') && input.val()) {
                 obj[span.attr('data-label')] = input.val();
+                if (input.is(":checkbox")) {
+                    obj[span.attr('data-label')] = input.is(":checked")
+                }
+            }
+
         }
         return obj;
     }
@@ -142,8 +156,14 @@
             var td = tdList[i];
             var input = $(td).children('input').first();
             var span = $(td).children('span').first();
-            if (input && span)
-                span.html(input.val());
+            if (input && span) {
+                if (input.is(":checkbox")) {
+                    span.html(input.is(":checked") ? "true" : "false");
+                }
+                else {
+                    span.html(input.val());
+                }
+            }
         }
     }
 

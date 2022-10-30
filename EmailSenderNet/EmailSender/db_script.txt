@@ -36,3 +36,6 @@ CREATE TABLE dbo.EmailSignatures (
 
 
 ALTER TABLE EmailHistories  ADD CONSTRAINT DF_EmailHistories DEFAULT GETDATE() FOR SendAt;
+
+ALTER TABLE EmailSender.dbo.Recipients ADD Share tinyint NULL;
+ALTER TABLE EmailSender.dbo.Recipients ADD IsActive tinyint NULL;
