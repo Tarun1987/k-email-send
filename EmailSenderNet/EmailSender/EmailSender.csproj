@@ -148,9 +148,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Constant.cs" />
+    <Compile Include="Helpers\PaginationHelper.cs" />
     <Compile Include="Models\EmailSendModel.cs" />
     <Compile Include="Models\ExcelDataModel.cs" />
     <Compile Include="Models\MasterRecipientViewModel.cs" />
+    <Compile Include="Models\PaginationModel.cs" />
     <Compile Include="Models\ReportViewModel.cs" />
     <Compile Include="Models\ShareStatusUpdateModel.cs" />
     <Compile Include="Models\SignatureViewModel.cs" />
@@ -377,6 +379,7 @@
     <Content Include="Views\MasterRecipient\Index.cshtml" />
     <Content Include="Views\Template\Index.cshtml" />
     <Content Include="Views\Signature\Index.cshtml" />
+    <Content Include="Views\Shared\_PagingPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

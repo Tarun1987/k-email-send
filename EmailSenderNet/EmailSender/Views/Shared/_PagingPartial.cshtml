@@ -1,0 +1,136 @@
+﻿@model EmailSender.Models.PaginationModel
+
+@functions {
+    string getPageUrl(int page)
+    {
+        var url = $"{Model.Controller}";
+        if (!string.IsNullOrWhiteSpace(Model.Action))
+            url += $"{Model.Action}";
+
+        return $"{url}?page={page}";
+    }
+
+}
+@if (Model.CurrentPage > 0 && Model.TotalPages > 0)
+{
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            @if (Model.CurrentPage == 1)
+            {
+                <li class="disabled page-item">
+                    <a class="page-link">Previous</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@getPageUrl(Model.CurrentPage-1)">Prev</a>
+                </li>
+            }
+
+            @if (Model.CurrentPage < 5)
+            {
+                <li class=@(Model.CurrentPage == 1 ? "active page-item" : "page-item")>
+                    <a class="page-link" href="@getPageUrl(1)">1</a>
+                </li>
+                if (Model.TotalPages > 2)
+                {
+                    <li class=@(Model.CurrentPage == 2 ? "active page-item" : "page-item")>
+                        <a class="page-link" href="@getPageUrl(2)">2</a>
+                    </li>
+                }
+                if (Model.TotalPages > 3)
+                {
+                    <li class=@(Model.CurrentPage == 3 ? "active page-item" : "page-item")>
+                        <a class="page-link" href="@getPageUrl(3)">3</a>
+                    </li>
+                }
+                if (Model.TotalPages > 4)
+                {
+                    <li class=@(Model.CurrentPage == 4 ? "active page-item" : "page-item")>
+                        <a class="page-link" href="@getPageUrl(4)">4</a>
+                    </li>
+                }
+                if (Model.TotalPages > 5)
+                {
+                    <li class=@(Model.CurrentPage == 5 ? "active page-item" : "page-item")>
+                        <a class="page-link" href="@getPageUrl(5)">5</a>
+                    </li>
+                    <li class="disabled page-item">
+                        <a class="page-link">...</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="@getPageUrl(Model.TotalPages)">@(Model.TotalPages)</a>
+                    </li>
+                }
+            }
+            else if (Model.CurrentPage >= 5 && Model.CurrentPage <= Model.TotalPages - 4)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@getPageUrl(1)">1</a>
+                </li>
+                if (Model.TotalPages > 5)
+                {
+                    <li class="disabled page-item">
+                        <a class="page-link">...</a>
+                    </li>
+                }
+                <li class="page-item">
+                    <a class="page-link" href="@getPageUrl(Model.CurrentPage-1)">@(Model.CurrentPage - 1)</a>
+                </li>
+                <li class="active page-item">
+                    <a class="page-link" href="@getPageUrl(Model.CurrentPage)">@(Model.CurrentPage)</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="@getPageUrl(Model.CurrentPage+1)">@(Model.CurrentPage + 1)</a>
+                </li>
+                <li class="disabled page-item">
+                    <a class="page-link">...</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="@getPageUrl(Model.TotalPages)">@(Model.TotalPages)</a>
+                </li>
+            }
+
+            else if (Model.CurrentPage > Model.TotalPages - 4)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@getPageUrl(1)">1</a>
+                </li>
+                <li class="disabled page-item">
+                    <a class="page-link">...</a>
+                </li>
+                if ((Model.TotalPages - 4) > 2)
+                {
+                    <li class="page-item">
+                        <a href="@getPageUrl(Model.TotalPages - 4)" class="page-link">@(Model.TotalPages - 4)</a>
+                    </li>
+                }
+                <li @(Model.TotalPages - 3 == Model.CurrentPage ? "class='active page-item'" : "page-item")>
+                    <a href="@getPageUrl(Model.TotalPages - 3)" class="page-link">@(Model.TotalPages - 3)</a>
+                </li>
+                <li @(Model.TotalPages - 2 == Model.CurrentPage ? "class='active page-item'" : "page-item")>
+                    <a href="@getPageUrl(Model.TotalPages - 2)" class="page-link">@(Model.TotalPages - 2)</a>
+                </li>
+                <li @(Model.TotalPages - 1 == Model.CurrentPage ? "class='active page-item'" : "page-item")>
+                    <a href="@getPageUrl(Model.TotalPages - 1)" class="page-link">@(Model.TotalPages - 1)</a>
+                </li>
+                <li @(Model.TotalPages == Model.CurrentPage ? "class='active page-item'" : "page-item")>
+                    <a href="@getPageUrl(Model.TotalPages)" class="page-link">@(Model.TotalPages)</a>
+                </li>
+            }
+
+            @if (Model.CurrentPage == Model.TotalPages)
+            {
+                <li class="disabled page-item">
+                    <a class="page-link">Next</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item"><a href="@getPageUrl(Model.CurrentPage+1)" class="page-link">Next</a></li>
+            }
+        </ul>
+    </nav>
+}
+

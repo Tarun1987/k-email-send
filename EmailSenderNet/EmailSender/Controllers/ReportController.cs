@@ -1,19 +1,21 @@
 ﻿using EmailSender.DAL;
 using EmailSender.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Web.Mvc;
 
 namespace EmailSender.Controllers
 {
     public class ReportController : CustomBaseController
     {
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            var service = new EmailHistoryService();
-            var list = service.GetHistoryBy(null);
-            return View(list);
+            var pageNumber = page.HasValue ? page.Value : 1;
+            var limit = 10;
+
+            return View(new ReportViewModel
+            {
+                EmailHistoryList = new EmailHistoryService().GetHistoryBy(null, pageNumber, limit),
+                PaginationModel = new PaginationModel(pageNumber, 74, 10) { Controller = "Report" }
+            });
         }
 
 

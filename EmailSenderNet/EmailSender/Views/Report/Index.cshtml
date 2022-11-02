@@ -1,4 +1,4 @@
-﻿@model IList<EmailSender.DbModels.EmailHistory>
+﻿@model EmailSender.Models.ReportViewModel
 @{
     ViewBag.Title = "Report Page";
 }
@@ -34,7 +34,7 @@
                                 </thead>
                                 <tbody>
                                     @{
-                                        foreach (var report in Model)
+                                        foreach (var report in Model.EmailHistoryList)
                                         {
                                             <tr>
                                                 <td><label class="badge bg-purple">@report.Id</label></td>
@@ -52,9 +52,15 @@
                             </table>
                         </div>
                     </div>
-                </div>
-                <div class="amp-pxl mt-4" style="height: 350px;">
-                    <div class="chartist-tooltip"></div>
+
+                    <div class="amp-pxl mt-4 col-12" style="height: 10px;">
+                        <div class="pagination" style="float:right;">
+                            @{ 
+                                Html.RenderPartial("_PagingPartial", Model.PaginationModel);
+                            }
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

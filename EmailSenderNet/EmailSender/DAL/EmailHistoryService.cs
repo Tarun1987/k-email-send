@@ -1,4 +1,5 @@
 ﻿using EmailSender.DbModels;
+using EmailSender.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -32,7 +33,7 @@ namespace EmailSender.DAL
             }
         }
 
-        public IList<EmailHistory> GetHistoryBy(string uniqueId)
+        public IList<EmailHistory> GetHistoryBy(string uniqueId, int page = 1, int limit = 10)
         {
             IList<EmailHistory> list = new List<EmailHistory>();
             using (SqlConnection connection = GetDbConnection())
@@ -42,7 +43,7 @@ namespace EmailSender.DAL
                 {
                     query += $" WHERE UniqueId={uniqueId}";
                 }
-                query += " ORDER BY SendAt DESC;";
+                query += $" ORDER BY SendAt DESC {PaginationHelper.GetLimitOffsetString(page, limit)}";
 
                 SqlCommand oCmd = new SqlCommand(query, connection);
                 try
