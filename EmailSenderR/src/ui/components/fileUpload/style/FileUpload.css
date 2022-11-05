@@ -1,0 +1,22 @@
+div._FileUpload {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  color: #67757c;
+  background-color: white;
+  border-color: #67757c;
+}
+
+div._FileUpload:hover {
+  border-color: #67757c;
+  background-color: #67757c;
+}
+
+._FileUpload .form-control-file {
+  position: absolute;
+  font-size: 50px;
+  opacity: 0;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+}

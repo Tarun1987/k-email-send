@@ -1,0 +1,56 @@
+._Home {
+  position: relative;
+}
+
+._Home .card-body {
+  padding-top: 50px;
+}
+
+._Home .body-panel-container {
+  border-right: 1px solid #ecf0f2;
+}
+
+._Home .upload-panel-container {
+  min-height: 160px;
+}
+
+._Home .upload-panel-container .recipients-box-panel {
+  position: relative;
+}
+
+._Home .upload-panel-container .file-upload-container {
+  margin-top: 30px;
+}
+
+._Home .upload-panel-container .file-upload-container .download-recipients {
+  margin-top: 30px;
+  cursor: pointer;
+  color: #1a9bfc;
+}
+
+._Home .choose-template {
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+/* Toggle button  */
+._Home .choose-template .btn-group-sm > .btn,
+.btn-sm {
+  padding: 0.25rem 0.35rem;
+  font-size: 0.7403125rem;
+  border-radius: 5px;
+}
+
+._Home .choose-template .btn-primary {
+  background-color: white;
+  color: #1e4db7;
+}
+
+._Home .choose-template .btn-check:checked + .btn-primary {
+  background-color: #1e4db7;
+  color: white;
+}
+._Home .choose-template .btn-primary .btn-check:checked + .btn-primary:focus {
+  box-shadow: none !important;
+  outline: none;
+}
