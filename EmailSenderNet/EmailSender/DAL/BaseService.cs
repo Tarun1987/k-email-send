@@ -10,6 +10,7 @@ namespace EmailSender.DAL
         protected string TemplateTable = "Templates";
         protected string EmailHistories = "EmailHistories";
         protected string EmailSignatures = "EmailSignatures";
+        protected string Users = "Users";
 
         protected SqlConnection GetDbConnection()
         {

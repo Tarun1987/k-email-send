@@ -1,10 +1,8 @@
-﻿using EmailSender.DbModels;
-using EmailSender.Models;
+﻿using EmailSender.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading;
 using System.Web.Mvc;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -12,7 +10,6 @@ namespace EmailSender.Controllers
 {
     public class CustomBaseController : Controller
     {
-
         #region Private functions
 
         private string MapPath(string directoryName, string fileName)

@@ -1,9 +1,11 @@
-﻿using EmailSender.DAL;
+﻿using EmailSender.Attributes;
+using EmailSender.DAL;
 using EmailSender.Models;
 using System.Web.Mvc;
 
 namespace EmailSender.Controllers
 {
+    [CustomAuthorize]
     public class ReportController : CustomBaseController
     {
         public ActionResult Index(int? page)

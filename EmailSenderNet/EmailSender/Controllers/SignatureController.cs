@@ -1,4 +1,5 @@
-﻿using EmailSender.DAL;
+﻿using EmailSender.Attributes;
+using EmailSender.DAL;
 using EmailSender.DbModels;
 using EmailSender.Models;
 using System.Configuration;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 
 namespace EmailSender.Controllers
 {
+    [CustomAuthorize]
     public class SignatureController : CustomBaseController
     {
         // GET: Template

@@ -1,4 +1,5 @@
-﻿using EmailSender.DAL;
+﻿using EmailSender.Attributes;
+using EmailSender.DAL;
 using EmailSender.DbModels;
 using EmailSender.Models;
 using System;
@@ -11,6 +12,7 @@ using System.Web.Mvc;
 
 namespace EmailSender.Controllers
 {
+    [CustomAuthorize]
     public class HomeController : CustomBaseController
     {
         [HttpGet]

@@ -1,11 +1,12 @@
-﻿using EmailSender.Helpers;
+﻿using EmailSender.Attributes;
+using EmailSender.Helpers;
 using System.Web.Mvc;
 
 namespace EmailSender.Controllers
 {
+    [CustomAuthorize]
     public class DownloadController : CustomBaseController
     {
-
         [HttpGet]
         public ActionResult RecipientsBlankTemplate()
         {

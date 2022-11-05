@@ -1,4 +1,5 @@
-﻿using EmailSender.DAL;
+﻿using EmailSender.Attributes;
+using EmailSender.DAL;
 using EmailSender.DbModels;
 using EmailSender.Helpers;
 using EmailSender.Models;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 
 namespace EmailSender.Controllers
 {
+    [CustomAuthorize]
     public class MasterRecipientController : CustomBaseController
     {
         // GET: MasterRecipient

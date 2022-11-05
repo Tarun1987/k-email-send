@@ -128,6 +128,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Attributes\CustomAuthorizeAttribute.cs" />
     <Compile Include="Controllers\CustomBaseController.cs" />
     <Compile Include="Controllers\DownloadController.cs" />
     <Compile Include="Controllers\MasterRecipientController.cs" />
@@ -135,15 +136,18 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SignatureController.cs" />
     <Compile Include="Controllers\TemplateController.cs" />
+    <Compile Include="Controllers\UnAuthorizedController.cs" />
     <Compile Include="DAL\BaseService.cs" />
     <Compile Include="DAL\EmailSignatureService.cs" />
     <Compile Include="DAL\EmailHistoryService.cs" />
+    <Compile Include="DAL\UserService.cs" />
     <Compile Include="DAL\TemplateService.cs" />
     <Compile Include="DAL\RecipientService.cs" />
     <Compile Include="DbModels\DbRecipients.cs" />
     <Compile Include="DbModels\DbTemplates.cs" />
     <Compile Include="DbModels\EmailSignatures.cs" />
     <Compile Include="DbModels\EmailHistory.cs" />
+    <Compile Include="DbModels\Users.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -380,6 +384,7 @@
     <Content Include="Views\Template\Index.cshtml" />
     <Content Include="Views\Signature\Index.cshtml" />
     <Content Include="Views\Shared\_PagingPartial.cshtml" />
+    <Content Include="Views\UnAuthorized\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -39,3 +39,11 @@ ALTER TABLE EmailHistories  ADD CONSTRAINT DF_EmailHistories DEFAULT GETDATE() F
 
 ALTER TABLE EmailSender.dbo.Recipients ADD Share tinyint NULL;
 ALTER TABLE EmailSender.dbo.Recipients ADD IsActive tinyint NULL;
+
+
+CREATE TABLE EmailSender.dbo.Users (
+	Id int IDENTITY(0,1) NOT NULL,
+	Name varchar(100) NOT NULL,
+	AllowAccess tinyint DEFAULT 0 NULL
+);
+
