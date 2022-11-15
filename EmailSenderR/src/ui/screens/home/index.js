@@ -66,6 +66,7 @@ const Screen = ({
         selectedTemplate: "",
         attachmentFile: "",
         classification: "",
+        signature: "",
         selectedRecipient: "",
         body: "",
     };

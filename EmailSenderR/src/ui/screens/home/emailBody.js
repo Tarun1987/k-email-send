@@ -19,10 +19,13 @@ const EmailBody = ({ onTemplateChange, templateList, recipientList, classificati
                         onChange={onTemplateChange}
                     />
                 </div>
-                <div className="form-group col-md-3">
+                <div className="form-group col-md-2">
                     <CustomSelect options={classificationList} label={"Email Classification"} id="classification" name="classification" />
                 </div>
-                <div className="form-group col-md-3">
+                <div className="form-group col-md-2">
+                    <CustomSelect options={[]} label={"Signature"} id="signature" name="signature" />
+                </div>
+                <div className="form-group col-md-2">
                     <FileUpload label={"Attachment File"} id="attachmentFile" name="attachmentFile" />
                 </div>
             </div>
