@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+const TAB_NAMES = {
+  REPORTS: "REPORTS",
+  MASTER_RECIPIENTS: "MASTER_RECIPIENTS",
+  TEMPLATES: "TEMPLATES",
+  HOME: "HOME",
+};
+
 const SideBar = () => {
   const [activeTab, setActiveTab] = useState("");
 
@@ -8,13 +15,19 @@ const SideBar = () => {
     if (window.location) {
       switch (window.location.pathname) {
         case "/reports":
-          setActiveTab("REPORTS");
+          setActiveTab(TAB_NAMES.REPORTS);
           break;
         case "/master-recipients":
-          setActiveTab("MASTER_RECIPIENTS");
+          setActiveTab(TAB_NAMES.MASTER_RECIPIENTS);
+          break;
+        case "/templates":
+          setActiveTab(TAB_NAMES.TEMPLATES);
+          break;
+        case "/signatures":
+          setActiveTab(TAB_NAMES.TEMPLATES);
           break;
         default:
-          setActiveTab("HOME");
+          setActiveTab(TAB_NAMES.HOME);
           break;
       }
     }
@@ -30,9 +43,9 @@ const SideBar = () => {
         <nav className="sidebar-nav">
           <ul id="sidebarnav">
             <li
-              className={setItemClass("HOME")}
+              className={setItemClass(TAB_NAMES.HOME)}
               onClick={() => {
-                setActiveTab("HOME");
+                setActiveTab(TAB_NAMES.HOME);
               }}
             >
               <Link
@@ -45,9 +58,9 @@ const SideBar = () => {
               </Link>
             </li>
             <li
-              className={setItemClass("REPORTS")}
+              className={setItemClass(TAB_NAMES.REPORTS)}
               onClick={() => {
-                setActiveTab("REPORTS");
+                setActiveTab(TAB_NAMES.REPORTS);
               }}
             >
               <Link
@@ -59,9 +72,9 @@ const SideBar = () => {
               </Link>
             </li>
             <li
-              className={setItemClass("MASTER_RECIPIENTS")}
+              className={setItemClass(TAB_NAMES.MASTER_RECIPIENTS)}
               onClick={() => {
-                setActiveTab("MASTER_RECIPIENTS");
+                setActiveTab(TAB_NAMES.MASTER_RECIPIENTS);
               }}
             >
               <Link
@@ -70,6 +83,20 @@ const SideBar = () => {
               >
                 <i className="mdi mdi-face"></i>
                 <span className="hide-menu">Master recipients</span>
+              </Link>
+            </li>
+            <li
+              className={setItemClass(TAB_NAMES.TEMPLATES)}
+              onClick={() => {
+                setActiveTab(TAB_NAMES.TEMPLATES);
+              }}
+            >
+              <Link
+                className="sidebar-link waves-effect waves-dark sidebar-link"
+                to="/templates"
+              >
+                <i className="mdi mdi-file"></i>
+                <span className="hide-menu">Templates</span>
               </Link>
             </li>
           </ul>

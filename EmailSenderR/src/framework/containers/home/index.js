@@ -1,23 +1,20 @@
 import React from "react";
 import Screen from "../../../ui/screens/home";
-import {
-  submitEmailData,
-  loadEmailBodyTemplate,
-  loadEmailSendingProgess,
-} from "../../services";
+import { submitEmailData, getClassificationMaster, loadEmailSendProgress } from "../../services/home";
+import { getRecipientsMaster, loadRecipients } from "../../services/recipient";
+import { loadTemplates } from "../../services/template";
 
 const Container = () => {
-  const handleFormSubmit = async (formData) => {
-    var result = await submitEmailData(formData);
-    return result;
-  };
-  return (
-    <Screen
-      onSubmit={handleFormSubmit}
-      onTemplateChange={loadEmailBodyTemplate}
-      loadSendingProgess={loadEmailSendingProgess}
-    />
-  );
+    return (
+        <Screen
+            onSubmit={submitEmailData}
+            loadEmailSendProgress={loadEmailSendProgress}
+            getRecipientsMaster={getRecipientsMaster}
+            getTemplates={loadTemplates}
+            getClassifications={getClassificationMaster}
+            getRecipientListByName={loadRecipients}
+        />
+    );
 };
 
 export default Container;

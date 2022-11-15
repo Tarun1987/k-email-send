@@ -1,11 +1,34 @@
 .card-body {
-  padding: 8px 30px;
+    padding: 8px 30px;
 }
 
 .field-validation-error {
-  font-size: 13px;
+    font-size: 13px;
 }
 
 .progress {
-  height: 9px;
+    height: 9px;
+}
+
+div._FileUpload {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    color: #67757c;
+    background-color: white;
+    border-color: #67757c;
+}
+
+div._FileUpload:hover {
+    border-color: #67757c;
+    background-color: #67757c;
+}
+
+._FileUpload .form-control-file {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0;
+    right: 0;
+    top: 0;
+    cursor: pointer;
 }

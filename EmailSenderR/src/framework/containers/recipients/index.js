@@ -1,13 +1,17 @@
 import React from "react";
 import Screen from "../../../ui/screens/recipients";
-import { loadSomeData } from "../../services";
+import { loadRecipients, getRecipientsMaster, updateRecipient, getMasterDownloadURL, uploadRecipients } from "../../services/recipient";
 
 const Container = () => {
-  const handleDataLoad = async () => {
-    return await loadSomeData();
-  };
-
-  return <Screen onLoad={handleDataLoad} />;
+    return (
+        <Screen
+            onLoad={loadRecipients}
+            onMasterLoad={getRecipientsMaster}
+            onUpdate={updateRecipient}
+            masterTemplateUrl={getMasterDownloadURL()}
+            onMasterUpload={uploadRecipients}
+        />
+    );
 };
 
 export default Container;

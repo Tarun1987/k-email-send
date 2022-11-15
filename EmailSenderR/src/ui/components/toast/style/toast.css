@@ -1,0 +1,67 @@
+.tostContainer {
+    position: fixed;
+    opacity: 0;
+    visibility: hidden;
+    top: 5px;
+    width: auto;
+    z-index: 99999;
+    max-width: 400px;
+    margin: 0%;
+    left: 45%;
+    transition: all 0.3s ease-in-out;
+    transform: rotateX(-90deg) rotateY(0);
+    transform-origin: 0 0;
+    -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.tostContainer .msgPopup {
+    position: relative;
+    box-shadow: 0 2px 4px 0 #e3eaf2;
+    background: #e6ebef;
+    border-radius: 4px;
+    color: red;
+    font-size: 14px;
+    width: auto;
+    text-align: left;
+    height: auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 15px 30px 15px 15px;
+}
+.tostContainer .msgPopup img {
+    height: 35px;
+    width: auto;
+    margin-right: 10px;
+}
+.tostContainer .msgPopup .closeIcon {
+    position: absolute;
+    top: 7px;
+    right: -4px;
+    height: 17px;
+    opacity: 0.6;
+    cursor: pointer;
+}
+.tostContainer .msgPopup.success {
+    background: #e6ebef;
+    color: #2dc1a2;
+    width: auto;
+}
+.tostContainer.active {
+    transform: rotateX(0deg) rotateY(0);
+    opacity: 1;
+    visibility: visible;
+    min-height: auto;
+}
+@media only screen and (max-width: 768px) {
+    .tostContainer {
+        top: 0px;
+        max-width: 100%;
+        margin: 0% 0%;
+        left: 0px;
+        right: 0px;
+    }
+    .tostContainer .msgPopup {
+        border-radius: 0px;
+    }
+}

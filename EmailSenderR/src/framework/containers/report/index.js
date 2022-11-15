@@ -1,13 +1,9 @@
 import React from "react";
 import Screen from "../../../ui/screens/report";
-import { loadSomeData } from "../../services";
+import { loadEmailHistory, getTotalHistoryCount } from "../../services/emailHistory";
 
 const Container = () => {
-  const handleDataLoad = async () => {
-    return await loadSomeData();
-  };
-
-  return <Screen onLoad={handleDataLoad} />;
+    return <Screen onLoad={loadEmailHistory} getTotalHistoryCount={getTotalHistoryCount} />;
 };
 
 export default Container;
