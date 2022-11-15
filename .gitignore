@@ -4,3 +4,7 @@ EmailSenderNet/packages
 Alteryx_ISV_Job/Alteryx_ISV_Job/bin
 Alteryx_ISV_Job/Alteryx_ISV_Job/obj
 Alteryx_ISV_Job/packages
+EmailSenderR/node_modules
+EmailSenderApi/packages
+EmailSenderApi/EmailSenderApi/bin
+EmailSenderApi/EmailSenderApi/obj
