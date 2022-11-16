@@ -16,6 +16,7 @@ const Screen = ({
     getClassifications,
     getRecipientListByName,
     loadEmailSendProgress,
+    getSignatures,
 }) => {
     const formikRef = createRef();
     const toast = useToast();
@@ -28,6 +29,7 @@ const Screen = ({
     const [recipientUserList, setRecipientUserList] = useState([]);
     const [recipientList, setRecipientList] = useState([]);
     const [templateList, setTemplateList] = useState([]);
+    const [signatureList, setSignatureList] = useState([]);
     const [classificationList, setClassificationList] = useState([]);
 
     useEffect(() => {
@@ -54,7 +56,6 @@ const Screen = ({
     }, [showSendProgress, progressPercent]);
 
     useEffect(() => {
-        console.log(1);
         if (recipientUserList.length > 0) {
             setShowConfirmModal(true);
         }
@@ -91,6 +92,16 @@ const Screen = ({
         if (templates && templates.length > 0) {
             setTemplateList(
                 templates.map((x) => {
+                    return { key: x.Id, value: x.Name, html: x.Html };
+                })
+            );
+        }
+
+        // Get Signatures
+        var signatures = await getSignatures();
+        if (signatures && signatures.length > 0) {
+            setSignatureList(
+                signatures.map((x) => {
                     return { key: x.Id, value: x.Name, html: x.Html };
                 })
             );
@@ -139,23 +150,25 @@ const Screen = ({
                 selectedRecipient: dataToSubmit.selectedRecipient,
             };
 
-            var result = await submitFormData(data);
+            formikRef.current.setSubmitting(true);
             setShowConfirmModal(false);
+            var result = await submitFormData(data);
             if (result && result.TotalCount) {
                 setShowSendProgress(true);
-                formikRef.current.setSubmitting(true);
                 setSubmitResponse(result);
             } else {
                 toast.danger("Error sending email");
+                formikRef.current.setSubmitting(false);
             }
         } catch (error) {
             toast.danger("Error sending email");
+            formikRef.current.setSubmitting(false);
         }
     };
 
     const getSendingProgress = async (response) => {
         try {
-            const progressResult = await loadEmailSendProgress(response.UniqueId);
+            const progressResult = await loadEmailSendProgress(response.UniqueId, progressPercent);
             var percent = (parseInt(progressResult.completed) / parseInt(response.TotalCount)) * 100;
             setProgressPercent(percent);
         } catch (error) {}
@@ -197,6 +210,7 @@ const Screen = ({
                                                     templateList={templateList}
                                                     recipientList={recipientList}
                                                     classificationList={classificationList}
+                                                    signatureList={signatureList}
                                                     onTemplateChange={(event) => {
                                                         handleTemplateChange(event.target.value, setFieldValue);
                                                     }}

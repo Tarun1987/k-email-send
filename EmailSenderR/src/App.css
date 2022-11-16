@@ -36,3 +36,7 @@ div._FileUpload:hover {
 .form-group label {
     font-weight: bold;
 }
+
+.page-wrapper {
+    margin-top: 30px;
+}

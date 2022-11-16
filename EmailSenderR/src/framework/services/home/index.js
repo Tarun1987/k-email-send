@@ -1,18 +1,30 @@
 import { POST, GET } from "../axiosHelper";
+import { USE_MOCK_DATA, DELAYED } from "../../constants";
+import { CLASSIFICATION_LIST, SUBMIT_EMAIL } from "../mock/home";
 
-export const loadEmailSendProgress = async (uniqueId) => {
-    var response = await GET(`EmailSend/GetProgress?uniqueId=${uniqueId}`);
-    return response.data;
+export const loadEmailSendProgress = async (uniqueId, progressPercent) => {
+    if (USE_MOCK_DATA) {
+        return DELAYED(
+            {
+                completed: SUBMIT_EMAIL.TotalCount * (progressPercent / 100) + 1,
+            },
+            2000
+        );
+    } else {
+        var response = await GET(`EmailSend/GetProgress?uniqueId=${uniqueId}`);
+        return response.data;
+    }
 };
 
 export const submitEmailData = async (data) => {
-    var response = await POST(`EmailSend`, data);
-    return response.data;
+    if (USE_MOCK_DATA) {
+        return DELAYED(SUBMIT_EMAIL, 2000);
+    } else {
+        var response = await POST(`EmailSend`, data);
+        return response.data;
+    }
 };
 
 export const getClassificationMaster = async () => {
-    return [
-        { key: 1, value: "Classification 1" },
-        { key: 2, value: "Classification 2" },
-    ];
+    return DELAYED(CLASSIFICATION_LIST);
 };
