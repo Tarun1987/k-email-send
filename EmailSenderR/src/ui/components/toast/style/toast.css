@@ -2,7 +2,7 @@
     position: fixed;
     opacity: 0;
     visibility: hidden;
-    top: 5px;
+    top: 15px;
     width: auto;
     z-index: 99999;
     max-width: 400px;
@@ -16,10 +16,6 @@
 
 .tostContainer .msgPopup {
     position: relative;
-    box-shadow: 0 2px 4px 0 #e3eaf2;
-    background: #e6ebef;
-    border-radius: 4px;
-    color: red;
     font-size: 14px;
     width: auto;
     text-align: left;
@@ -27,26 +23,28 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 15px 30px 15px 15px;
+    padding: 6px 40px 6px 15px;
 }
-.tostContainer .msgPopup img {
-    height: 35px;
-    width: auto;
-    margin-right: 10px;
-}
+
 .tostContainer .msgPopup .closeIcon {
     position: absolute;
     top: 7px;
-    right: -4px;
+    right: 5px;
     height: 17px;
-    opacity: 0.6;
+    opacity: 1;
     cursor: pointer;
 }
 .tostContainer .msgPopup.success {
-    background: #e6ebef;
-    color: #2dc1a2;
+    background: rgb(0, 132, 127);
+    color: white;
     width: auto;
 }
+.tostContainer .msgPopup.error {
+    background: rgb(168, 0, 11);
+    color: white;
+    width: auto;
+}
+
 .tostContainer.active {
     transform: rotateX(0deg) rotateY(0);
     opacity: 1;
