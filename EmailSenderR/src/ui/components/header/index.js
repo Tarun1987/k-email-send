@@ -1,8 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import LogoIcon from "./images/logo-icon.png";
-import LogoTextIcon from "./images/logo-text.png";
-import LogoLightIcon from "./images/logo-light-icon.png";
-import LogoLightText from "./images/logo-light-text.png";
 import LogoProfileIcon from "./images/profile.png";
 
 const Header = () => {
@@ -28,6 +26,11 @@ const Header = () => {
                         </li>
                     </ul>
                     <ul className="navbar-nav float-end">
+                        <li className="nav-item dropdown" style={{ borderRight: "1px solid #777e89" }}>
+                            <Link target={"_blank"} to={"/help"} className="nav-link dropdown-toggle">
+                                <i className="mdi mdi-help"></i>
+                            </Link>
+                        </li>
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle text-muted">Welcome! Karteek</a>
                         </li>

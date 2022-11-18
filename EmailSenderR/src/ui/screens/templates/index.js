@@ -3,9 +3,10 @@ import BreadCrumb from "../../components/breadcrumb";
 import { useToast, withToastProvider } from "../../components/toast";
 import SignatureTemplateLayout from "../../layout/SignatureTemplateLayout";
 import SignatureTemplateForm from "../signatureTemplateForm";
+import CustomCheckBox from "../../components/checkbox";
 import ValidationSchema from "./validationSchema";
 
-const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: handleShareUpdate }) => {
+const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: handleShareUpdate, onDelete: handleDelete }) => {
     const [list, setList] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const [editItem, setEditItem] = useState({});
@@ -78,6 +79,14 @@ const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: h
         }
     };
 
+    const confirmDelete = async (item) => {
+        if (!confirm("Are you sure you want to delete this signature?")) return;
+
+        setLoading(true);
+        var result = await handleDelete(item);
+        setLoading(false);
+    };
+
     return (
         <>
             <BreadCrumb activeTab={"Templates"}>
@@ -107,8 +116,7 @@ const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: h
                                     <td>{item.Name}</td>
                                     <td>{item.OwnerId}</td>
                                     <td>
-                                        <input
-                                            type="checkbox"
+                                        <CustomCheckBox
                                             checked={item.Share}
                                             className="form-check-input"
                                             style={{ cursor: "pointer" }}
@@ -121,19 +129,29 @@ const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: h
                                     <td>
                                         <i
                                             title="Preview"
-                                            style={{ cursor: "pointer", fontSize: "20px" }}
-                                            className="mdi mdi-eye"
+                                            style={{ cursor: "pointer" }}
+                                            className="mdi mdi-eye mdi-18px"
                                             onClick={() => {
                                                 handlePreviewClick(item);
                                             }}
                                         />
                                         {item.IsEditable && (
                                             <i
-                                                style={{ cursor: "pointer", fontSize: "20px", marginLeft: "9px" }}
+                                                style={{ cursor: "pointer", marginLeft: "9px" }}
                                                 title="Edit this"
-                                                className="mdi mdi-pencil"
+                                                className="mdi mdi-pencil mdi-18px"
                                                 onClick={() => {
                                                     handleEdit(item);
+                                                }}
+                                            />
+                                        )}
+                                        {item.IsEditable && (
+                                            <i
+                                                style={{ cursor: "pointer", marginLeft: "9px" }}
+                                                title="Delete?"
+                                                className="mdi mdi-delete mdi-18px"
+                                                onClick={() => {
+                                                    confirmDelete(item);
                                                 }}
                                             />
                                         )}

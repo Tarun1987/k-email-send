@@ -20,3 +20,12 @@ export const updateShareStatus = async (id, value) => {
     var response = await PUT(`Templates`, { id, share: value });
     return response.data;
 };
+
+export const deleteTemplate = async (data) => {
+    if (USE_MOCK_DATA) {
+        return DELAYED("OK");
+    } else {
+        var response = await GET(`Templates`);
+        return response.data;
+    }
+};

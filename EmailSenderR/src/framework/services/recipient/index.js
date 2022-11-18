@@ -33,3 +33,12 @@ export const uploadRecipients = async (data) => {
     var response = await POST_FILE(`Recipients`, data);
     return response.data;
 };
+
+export const deleteRecipient = async (data) => {
+    if (USE_MOCK_DATA) {
+        return DELAYED("OK");
+    } else {
+        var response = await GET(`Recipients`);
+        return response.data;
+    }
+};

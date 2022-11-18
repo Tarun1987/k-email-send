@@ -7,6 +7,7 @@ import RichText from "../../components/richText";
 import CustomLoader from "../../components/loader";
 import { useToast, withToastProvider } from "../../components/toast";
 import ConfirmEmailSendModal from "../../components/modals/ConfirmEmailSendModal";
+import CustomButton from "../../components/button";
 import "./style/Home.css";
 
 const Screen = ({
@@ -222,9 +223,9 @@ const Screen = ({
                                         </div>
                                         <div className="row">
                                             <div className="form-group col-md-12">
-                                                <button type="submit" className="btn btn-primary" style={{ float: "right" }}>
+                                                <CustomButton type="submit" className="btn btn-primary" style={{ float: "right" }}>
                                                     Submit
-                                                </button>
+                                                </CustomButton>
                                             </div>
                                         </div>
                                     </div>

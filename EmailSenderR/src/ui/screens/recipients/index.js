@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useToast, withToastProvider } from "../../components/toast";
+import CustomButton from "../../components/button";
 import BreadCrumb from "../../components/breadcrumb";
+import CustomCheckBox from "../../components/checkbox";
 import CustomLoader from "../../components/loader";
 
 const Screen = ({
@@ -9,10 +11,12 @@ const Screen = ({
     onUpdate: handleUpdate,
     masterTemplateUrl,
     onMasterUpload: handleMasterFileSubmit,
+    onDelete: deleteRecipient,
 }) => {
     const [masterRecipients, setMasterRecipients] = useState([]);
     const [list, setList] = useState([]);
     const [isLoading, setLoading] = useState(false);
+    const [selectedTemplate, setSelectedTemplate] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
 
     const toast = useToast();
@@ -38,8 +42,10 @@ const Screen = ({
     const handleMasterRecipientChange = (e) => {
         if (e.target.value) {
             getData(e.target.value);
+            setSelectedTemplate(e.target.value);
         } else {
             setList([]);
+            setSelectedTemplate(null);
         }
     };
 
@@ -134,13 +140,23 @@ const Screen = ({
         }
     };
 
+    const handleDelete = async () => {
+        if (!confirm("Are you sure you want to delete this template?")) return;
+
+        setLoading(true);
+        const result = await deleteRecipient(selectedTemplate);
+        getMasterRecipientsData();
+        setList([]);
+        setSelectedTemplate(null);
+    };
+
     return (
         <>
             <BreadCrumb activeTab={"Master Recipients"}>
                 <div className="col-8">
                     <div className="text-end upgrade-btn">
                         <div className="row">
-                            <div className="col-6" style={{ float: "left" }}>
+                            <div className={selectedTemplate ? "col-4" : "col-6"} style={{ float: "left" }}>
                                 <select className="form-select shadow-none form-control-linel" onChange={handleMasterRecipientChange}>
                                     <option value="">Recipient Template</option>
                                     {masterRecipients.map((m, key) => {
@@ -152,6 +168,13 @@ const Screen = ({
                                     })}
                                 </select>
                             </div>
+                            {selectedTemplate && (
+                                <div className="col-2">
+                                    <CustomButton type="button" className="btn btn-primary" onClick={handleDelete}>
+                                        Delete
+                                    </CustomButton>
+                                </div>
+                            )}
                             <div className="col-6" style={{ float: "left" }}>
                                 {!selectedFile && (
                                     <div className="btn btn-primary _FileUpload" style={{ marginRight: "5px" }}>
@@ -177,24 +200,24 @@ const Screen = ({
                                 <div className="col-12">
                                     <div>
                                         <span style={{ marginRight: "5px" }}>{selectedFile.name}</span>
-                                        <button
+                                        <CustomButton
                                             type="button"
                                             className="btn btn-primary btn-sm"
                                             style={{ marginRight: "5px" }}
                                             onClick={handleFileSubmit}
                                         >
                                             Submit
-                                        </button>
-                                        <button
+                                        </CustomButton>
+                                        <CustomButton
                                             type="button"
-                                            className="btn btn-danger btn-sm"
+                                            className="btn btn-secondary btn-sm"
                                             style={{ marginRight: "5px" }}
                                             onClick={() => {
                                                 setSelectedFile(null);
                                             }}
                                         >
                                             Cancel
-                                        </button>
+                                        </CustomButton>
                                     </div>
                                 </div>
                             </div>
@@ -289,11 +312,9 @@ const Screen = ({
                                                             </td>
                                                             <td>
                                                                 {item.Editing ? (
-                                                                    <input
-                                                                        type="checkbox"
+                                                                    <CustomCheckBox
                                                                         checked={item.ShareNew}
                                                                         className="form-check-input"
-                                                                        style={{ cursor: "pointer" }}
                                                                         name={"ShareNew"}
                                                                         onChange={(e) => {
                                                                             handleInputChange(item.TemplateId, e);
@@ -307,12 +328,10 @@ const Screen = ({
                                                             </td>
                                                             <td>
                                                                 {item.Editing ? (
-                                                                    <input
-                                                                        type="checkbox"
+                                                                    <CustomCheckBox
                                                                         checked={item.IsActiveNew}
                                                                         name={"IsActiveNew"}
                                                                         className="form-check-input"
-                                                                        style={{ cursor: "pointer" }}
                                                                         onChange={(e) => {
                                                                             handleInputChange(item.TemplateId, e);
                                                                         }}
@@ -326,7 +345,7 @@ const Screen = ({
                                                             <td>
                                                                 {item.Editing ? (
                                                                     <>
-                                                                        <button
+                                                                        <CustomButton
                                                                             type="button"
                                                                             className="btn btn-sm btn-primary"
                                                                             style={{ marginRight: "5px" }}
@@ -335,22 +354,22 @@ const Screen = ({
                                                                             }}
                                                                         >
                                                                             Ok
-                                                                        </button>
-                                                                        <button
+                                                                        </CustomButton>
+                                                                        <CustomButton
                                                                             type="button"
-                                                                            className="btn btn-sm btn-danger"
+                                                                            className="btn btn-sm btn-secondary"
                                                                             onClick={() => {
                                                                                 toggleEditMode(item.TemplateId, false);
                                                                             }}
                                                                         >
                                                                             Reset
-                                                                        </button>
+                                                                        </CustomButton>
                                                                     </>
                                                                 ) : (
                                                                     <i
-                                                                        style={{ cursor: "pointer", fontSize: "20px" }}
+                                                                        style={{ cursor: "pointer" }}
                                                                         title="Edit this"
-                                                                        className="mdi mdi-pencil"
+                                                                        className="mdi mdi-pencil mdi-18px"
                                                                         onClick={() => {
                                                                             toggleEditMode(item.TemplateId, true);
                                                                         }}

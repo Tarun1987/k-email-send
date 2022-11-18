@@ -1,6 +1,13 @@
 import React from "react";
 import Screen from "../../../ui/screens/recipients";
-import { loadRecipients, getRecipientsMaster, updateRecipient, getMasterDownloadURL, uploadRecipients } from "../../services/recipient";
+import {
+    loadRecipients,
+    getRecipientsMaster,
+    updateRecipient,
+    getMasterDownloadURL,
+    uploadRecipients,
+    deleteRecipient,
+} from "../../services/recipient";
 
 const Container = () => {
     return (
@@ -10,6 +17,7 @@ const Container = () => {
             onUpdate={updateRecipient}
             masterTemplateUrl={getMasterDownloadURL()}
             onMasterUpload={uploadRecipients}
+            onDelete={deleteRecipient}
         />
     );
 };

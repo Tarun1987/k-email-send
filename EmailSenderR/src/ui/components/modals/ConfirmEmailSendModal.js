@@ -1,7 +1,7 @@
 import React from "react";
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Table from "react-bootstrap/Table";
+import CustomButton from "../button";
 
 const ConfirmEmailSendModal = ({ show, onClose: handleClose, onSubmit: handleSubmit, list }) => {
     return (
@@ -39,12 +39,12 @@ const ConfirmEmailSendModal = ({ show, onClose: handleClose, onSubmit: handleSub
                 </Table>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <CustomButton className="btn btn-secondary" onClick={handleClose}>
                     Close
-                </Button>
-                <Button variant="primary" onClick={handleSubmit}>
+                </CustomButton>
+                <CustomButton className="btn btn-primary" onClick={handleSubmit}>
                     Send
-                </Button>
+                </CustomButton>
             </Modal.Footer>
         </Modal>
     );

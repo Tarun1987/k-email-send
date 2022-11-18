@@ -4,6 +4,7 @@ import { useToast, withToastProvider } from "../../components/toast";
 import Collapse from "react-bootstrap/Collapse";
 import CustomInput from "../../components/input";
 import RichText from "../../components/richText";
+import CustomButton from "../../components/button";
 import { useEffect } from "react";
 
 const SignatureTemplateForm = ({ activeTab, validationSchema, editItem, onSubmit: handleSubmit }) => {
@@ -77,21 +78,21 @@ const SignatureTemplateForm = ({ activeTab, validationSchema, editItem, onSubmit
                                     </div>
                                     <div className="row">
                                         <div className="form-group col-md-12" style={{ marginTop: "10px" }}>
-                                            <button
+                                            <CustomButton
                                                 type="submit"
                                                 className="btn btn-primary"
                                                 style={{ float: "right", marginLeft: "10px" }}
                                             >
                                                 Save
-                                            </button>
-                                            <button
+                                            </CustomButton>
+                                            <CustomButton
                                                 type="button"
                                                 className="btn btn-secondary"
                                                 onClick={handleCancelClick}
                                                 style={{ float: "right" }}
                                             >
                                                 Cancel
-                                            </button>
+                                            </CustomButton>
                                         </div>
                                     </div>
                                 </div>

@@ -20,3 +20,12 @@ export const updateShareStatus = async (id, value) => {
     var response = await PUT(`Signature`, { id, share: value });
     return response.data;
 };
+
+export const deleteSignatures = async (data) => {
+    if (USE_MOCK_DATA) {
+        return DELAYED("OK");
+    } else {
+        var response = await GET(`Signature`);
+        return response.data;
+    }
+};

@@ -83,7 +83,7 @@ const Screen = ({ onLoad: loadData, getTotalHistoryCount }) => {
                                                                 <i
                                                                     title="Preview"
                                                                     style={{ cursor: "pointer", fontSize: "20px" }}
-                                                                    className="mdi mdi-eye"
+                                                                    className="mdi mdi-eye mdi-18px"
                                                                     onClick={() => {
                                                                         handlePreviewClick(item);
                                                                     }}

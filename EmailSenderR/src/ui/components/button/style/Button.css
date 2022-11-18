@@ -1,0 +1,39 @@
+._CustomButton {
+    border: none !important;
+    border-radius: 0 !important;
+    appearance: none;
+    box-shadow: none;
+    text-decoration: none;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-width: 1px;
+    border-style: solid;
+    overflow: hidden;
+    user-select: none;
+    vertical-align: middle;
+    transition: background-color 0.1s ease-out 0s, color 0.1s ease-out 0s, border 0.1s ease-out 0s;
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: normal;
+}
+
+._CustomButton.btn-primary {
+    background-color: rgb(219, 0, 17);
+    border-color: rgb(219, 0, 17);
+    color: rgb(255, 255, 255);
+}
+
+._CustomButton.btn-secondary {
+    color: black;
+    background-color: lightgrey;
+}
+
+._CustomButton.btn-primary:hover {
+    background-color: rgb(175, 0, 13);
+    border-color: rgb(175, 0, 13);
+}
