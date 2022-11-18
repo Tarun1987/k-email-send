@@ -12,13 +12,21 @@ export const loadTemplates = async () => {
 };
 
 export const submitTemplate = async (data) => {
-    var response = await POST(`Templates`, data);
-    return response.data;
+    if (USE_MOCK_DATA) {
+        return DELAYED("OK");
+    } else {
+        var response = await POST(`Templates`, data);
+        return response.data;
+    }
 };
 
 export const updateShareStatus = async (id, value) => {
-    var response = await PUT(`Templates`, { id, share: value });
-    return response.data;
+    if (USE_MOCK_DATA) {
+        return DELAYED("OK");
+    } else {
+        var response = await PUT(`Templates`, { id, share: value });
+        return response.data;
+    }
 };
 
 export const deleteTemplate = async (data) => {
