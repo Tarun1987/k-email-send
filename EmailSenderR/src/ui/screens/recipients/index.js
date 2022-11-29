@@ -3,6 +3,7 @@ import { useToast, withToastProvider } from "../../components/toast";
 import CustomButton from "../../components/button";
 import BreadCrumb from "../../components/breadcrumb";
 import CustomCheckBox from "../../components/checkbox";
+import ConfirmModal from "../../components/modals/ConfirmModal";
 import CustomLoader from "../../components/loader";
 
 const Screen = ({
@@ -18,6 +19,7 @@ const Screen = ({
     const [isLoading, setLoading] = useState(false);
     const [selectedTemplate, setSelectedTemplate] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [showConfirm, setShowConfirm] = useState(false);
 
     const toast = useToast();
 
@@ -140,10 +142,9 @@ const Screen = ({
         }
     };
 
-    const handleDelete = async () => {
-        if (!confirm("Are you sure you want to delete this template?")) return;
-
+    const confirmDelete = async () => {
         setLoading(true);
+        setShowConfirm(false);
         const result = await deleteRecipient(selectedTemplate);
         getMasterRecipientsData();
         setList([]);
@@ -152,6 +153,17 @@ const Screen = ({
 
     return (
         <>
+            {showConfirm && (
+                <ConfirmModal
+                    show={showConfirm}
+                    onClose={() => {
+                        setShowConfirm(false);
+                    }}
+                    onSubmit={confirmDelete}
+                    title={"Are you sure you want to delete this template?"}
+                    body="Your changes will be lost."
+                />
+            )}
             <BreadCrumb activeTab={"Master Recipients"}>
                 <div className="col-8">
                     <div className="text-end upgrade-btn">
@@ -170,7 +182,13 @@ const Screen = ({
                             </div>
                             {selectedTemplate && (
                                 <div className="col-2">
-                                    <CustomButton type="button" className="btn btn-primary" onClick={handleDelete}>
+                                    <CustomButton
+                                        type="button"
+                                        className="btn btn-primary"
+                                        onClick={() => {
+                                            setShowConfirm(true);
+                                        }}
+                                    >
                                         Delete
                                     </CustomButton>
                                 </div>

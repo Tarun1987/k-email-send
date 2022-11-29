@@ -3,12 +3,15 @@ import BreadCrumb from "../../components/breadcrumb";
 import { useToast, withToastProvider } from "../../components/toast";
 import SignatureTemplateLayout from "../../layout/SignatureTemplateLayout";
 import SignatureTemplateForm from "../signatureTemplateForm";
+import ConfirmModal from "../../components/modals/ConfirmModal";
 import CustomCheckBox from "../../components/checkbox";
 import ValidationSchema from "./validationSchema";
 
 const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: handleShareUpdate, onDelete: handleDelete }) => {
     const [list, setList] = useState([]);
     const [isLoading, setLoading] = useState(false);
+    const [selectedItem, setSelectedItem] = useState({});
+    const [showConfirm, setShowConfirm] = useState(false);
     const [editItem, setEditItem] = useState({});
 
     const toast = useToast();
@@ -79,16 +82,33 @@ const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: h
         }
     };
 
-    const confirmDelete = async (item) => {
-        if (!confirm("Are you sure you want to delete this signature?")) return;
+    const showDeleteConfirm = async (item) => {
+        setSelectedItem(item);
+        setShowConfirm(true);
+    };
 
+    const confirmDelete = async () => {
         setLoading(true);
-        var result = await handleDelete(item);
+        setShowConfirm(false);
+        var result = await handleDelete(selectedItem);
         setLoading(false);
+        setSelectedItem(null);
     };
 
     return (
         <>
+            {showConfirm && (
+                <ConfirmModal
+                    show={showConfirm}
+                    onClose={() => {
+                        setShowConfirm(false);
+                        setSelectedItem(null);
+                    }}
+                    onSubmit={confirmDelete}
+                    title={"Are you sure you want to delete this template?"}
+                    body="Your changes will be lost."
+                />
+            )}
             <BreadCrumb activeTab={"Templates"}>
                 <SignatureTemplateForm
                     activeTab={"Templates"}
@@ -151,7 +171,7 @@ const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: h
                                                 title="Delete?"
                                                 className="mdi mdi-delete mdi-18px"
                                                 onClick={() => {
-                                                    confirmDelete(item);
+                                                    showDeleteConfirm(item);
                                                 }}
                                             />
                                         )}

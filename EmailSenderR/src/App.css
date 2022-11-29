@@ -44,15 +44,15 @@ div._FileUpload:hover {
 .sidebar-nav ul .sidebar-item.selected > .sidebar-link,
 .page-item.active .page-link,
 .btn-primary {
-    background-color: rgb(219, 0, 17);
-    border-color: rgb(219, 0, 17);
+    background-color: grey;
+    border-color: grey;
 }
 
 .sidebar-nav ul .sidebar-item.selected > .sidebar-link:hover,
 .btn-primary:hover,
 .page-item.active .page-link:hover {
-    background-color: rgb(175, 0, 13);
-    border-color: rgb(175, 0, 13);
+    background-color: #a5a5a5;
+    border-color: #a5a5a5;
 }
 
 .page-item.active .page-link {
@@ -65,4 +65,29 @@ div._FileUpload:hover {
 
 .page-link:hover {
     color: rgb(175, 0, 13);
+}
+
+.badge.bg-danger {
+    background-color: rgb(219, 0, 17) !important;
+}
+
+.badge.bg-success {
+    background-color: rgb(0, 132, 127) !important;
+}
+
+.modal {
+    font-family: Arial, sans-serif;
+}
+
+.modal-content {
+    border: 4px solid #444;
+    top: 80px;
+}
+
+.modal-footer {
+    display: inline;
+}
+
+.modal-footer .btn-primary {
+    float: right;
 }

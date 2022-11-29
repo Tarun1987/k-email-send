@@ -4,11 +4,14 @@ import { useToast, withToastProvider } from "../../components/toast";
 import CustomCheckBox from "../../components/checkbox";
 import SignatureTemplateLayout from "../../layout/SignatureTemplateLayout";
 import SignatureTemplateForm from "../signatureTemplateForm";
+import ConfirmModal from "../../components/modals/ConfirmModal";
 import ValidationSchema from "./validationSchema";
 
 const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: handleShareUpdate, onDelete: handleDelete }) => {
     const [list, setList] = useState([]);
     const [isLoading, setLoading] = useState(false);
+    const [selectedItem, setSelectedItem] = useState({});
+    const [showConfirm, setShowConfirm] = useState(false);
     const [editItem, setEditItem] = useState({});
 
     const toast = useToast();
@@ -78,16 +81,33 @@ const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: h
         }
     };
 
-    const confirmDelete = async (item) => {
-        if (!confirm("Are you sure you want to delete this signature?")) return;
+    const showDeleteConfirm = async (item) => {
+        setSelectedItem(item);
+        setShowConfirm(true);
+    };
 
+    const confirmDelete = async () => {
         setLoading(true);
-        var result = await handleDelete(item);
+        setShowConfirm(false);
+        var result = await handleDelete(selectedItem);
         setLoading(false);
+        setSelectedItem(null);
     };
 
     return (
         <>
+            {showConfirm && (
+                <ConfirmModal
+                    show={showConfirm}
+                    title={"Are you sure you want to delete this signature?"}
+                    onClose={() => {
+                        setShowConfirm(false);
+                        setSelectedItem(null);
+                    }}
+                    onSubmit={confirmDelete}
+                    body="Your changes will be lost."
+                />
+            )}
             <BreadCrumb activeTab={"Signatures"}>
                 <SignatureTemplateForm
                     activeTab={"Signatures"}
@@ -150,7 +170,7 @@ const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: h
                                                 title="Detete?"
                                                 className="mdi mdi-delete mdi-18px"
                                                 onClick={() => {
-                                                    confirmDelete(item);
+                                                    showDeleteConfirm(item);
                                                 }}
                                             />
                                         )}
