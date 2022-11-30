@@ -30,6 +30,10 @@ const Screen = ({
     const getData = async (templateName) => {
         setLoading(true);
         var l = await loadData(templateName, true);
+        l.forEach((x) => {
+            x.ShareNew = x.Share;
+            x.IsActiveNew = x.IsActive;
+        });
         setList(l);
         setLoading(false);
     };
@@ -329,36 +333,26 @@ const Screen = ({
                                                                 )}
                                                             </td>
                                                             <td>
-                                                                {item.Editing ? (
-                                                                    <CustomCheckBox
-                                                                        checked={item.ShareNew}
-                                                                        className="form-check-input"
-                                                                        name={"ShareNew"}
-                                                                        onChange={(e) => {
-                                                                            handleInputChange(item.TemplateId, e);
-                                                                        }}
-                                                                    />
-                                                                ) : (
-                                                                    <label className={`badge bg-${item.Share ? "success" : "danger"}`}>
-                                                                        {item.Share ? "True" : "False"}
-                                                                    </label>
-                                                                )}
+                                                                <CustomCheckBox
+                                                                    checked={item.ShareNew}
+                                                                    className="form-check-input"
+                                                                    name={"ShareNew"}
+                                                                    disabled={!item.Editing}
+                                                                    onChange={(e) => {
+                                                                        handleInputChange(item.TemplateId, e);
+                                                                    }}
+                                                                />
                                                             </td>
                                                             <td>
-                                                                {item.Editing ? (
-                                                                    <CustomCheckBox
-                                                                        checked={item.IsActiveNew}
-                                                                        name={"IsActiveNew"}
-                                                                        className="form-check-input"
-                                                                        onChange={(e) => {
-                                                                            handleInputChange(item.TemplateId, e);
-                                                                        }}
-                                                                    />
-                                                                ) : (
-                                                                    <label className={`badge bg-${item.IsActive ? "success" : "danger"}`}>
-                                                                        {item.IsActive ? "True" : "False"}
-                                                                    </label>
-                                                                )}
+                                                                <CustomCheckBox
+                                                                    checked={item.IsActiveNew}
+                                                                    name={"IsActiveNew"}
+                                                                    className="form-check-input"
+                                                                    disabled={!item.Editing}
+                                                                    onChange={(e) => {
+                                                                        handleInputChange(item.TemplateId, e);
+                                                                    }}
+                                                                />
                                                             </td>
                                                             <td>
                                                                 {item.Editing ? (
