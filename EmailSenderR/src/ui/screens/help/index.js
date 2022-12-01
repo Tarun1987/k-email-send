@@ -5,7 +5,7 @@ const Screen = ({}) => {
     return (
         <>
             <BreadCrumb activeTab={"Help"} />
-            <div>This is from help page</div>
+            <div className="container-fluid _Home">This is from help page</div>
         </>
     );
 };

@@ -1,4 +1,6 @@
 import React from "react";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 import CustomInput from "../../components/input";
 import FileUpload from "../../components/fileUpload";
 import CustomSelect from "../../components/select";
@@ -35,7 +37,24 @@ const EmailBody = ({ onTemplateChange, templateList, recipientList, classificati
                     <CustomInput label={"Email Subject"} id="subject" name="subject" />
                 </div>
                 <div className="form-group col-md-4">
-                    <CustomInput label={"Greetings"} id="greetings" name="greetings" />
+                    <CustomInput
+                        label={"Greetings"}
+                        id="greetings"
+                        name="greetings"
+                        infoIcon={
+                            <OverlayTrigger
+                                key={"tooltip"}
+                                placement={"top"}
+                                overlay={
+                                    <Tooltip id={`tooltip`}>
+                                        Dont write <strong>Name</strong> here.
+                                    </Tooltip>
+                                }
+                            >
+                                <i className="mdi mdi-information"></i>
+                            </OverlayTrigger>
+                        }
+                    />
                 </div>
             </div>
         </>
