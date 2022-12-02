@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import LogoIcon from "./images/logo-icon.png";
 import LogoProfileIcon from "./images/profile.png";
 
 const Header = () => {
+    const userInfo = useSelector((state) => state.userInfo.value);
     return (
         <header className="topbar" data-navbarbg="skin6">
             <nav className="navbar top-navbar navbar-expand-md navbar-dark bg-dark box-shadow">
@@ -32,7 +34,7 @@ const Header = () => {
                             </Link>
                         </li>
                         <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle text-muted">Welcome! Karteek</a>
+                            <a className="nav-link dropdown-toggle text-muted">Welcome! {userInfo ? userInfo.name : ""}</a>
                         </li>
                         <li className="nav-item dropdown">
                             <a
