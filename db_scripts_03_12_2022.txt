@@ -1,0 +1,78 @@
+-- DROP SCHEMA dbo;
+
+CREATE SCHEMA dbo;
+-- EmailSender.dbo.EmailHistories definition
+
+-- Drop table
+
+-- DROP TABLE EmailSender.dbo.EmailHistories;
+
+CREATE TABLE EmailSender.dbo.EmailHistories (
+	Id int IDENTITY(0,1) NOT NULL,
+	Status varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Html varchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	SendAt datetime DEFAULT getdate() NOT NULL,
+	RecipientTemplateName varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	UniqueId varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+);
+
+
+-- EmailSender.dbo.EmailSignatures definition
+
+-- Drop table
+
+-- DROP TABLE EmailSender.dbo.EmailSignatures;
+
+CREATE TABLE EmailSender.dbo.EmailSignatures (
+	Id int IDENTITY(1,1) NOT NULL,
+	Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	Html varchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	OwnerId int NULL,
+	Share tinyint NULL
+);
+
+
+-- EmailSender.dbo.Recipients definition
+
+-- Drop table
+
+-- DROP TABLE EmailSender.dbo.Recipients;
+
+CREATE TABLE EmailSender.dbo.Recipients (
+	TemplateId int IDENTITY(1,1) NOT NULL,
+	TemplateName varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	ClientName varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	ClientEmail varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CC varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	BCC varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Share tinyint NULL,
+	IsActive tinyint NULL
+);
+
+
+-- EmailSender.dbo.Templates definition
+
+-- Drop table
+
+-- DROP TABLE EmailSender.dbo.Templates;
+
+CREATE TABLE EmailSender.dbo.Templates (
+	Id int IDENTITY(0,1) NOT NULL,
+	Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Html varchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	OwnerId varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Share tinyint NULL
+);
+
+
+-- EmailSender.dbo.Users definition
+
+-- Drop table
+
+-- DROP TABLE EmailSender.dbo.Users;
+
+CREATE TABLE EmailSender.dbo.Users (
+	Id int IDENTITY(0,1) NOT NULL,
+	Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	AllowAccess tinyint DEFAULT 0 NULL
+);
