@@ -1,7 +1,7 @@
 ﻿using EmailSenderApi.Models.Response;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 
 namespace EmailSenderApi.DAL
 {
@@ -15,13 +15,13 @@ namespace EmailSenderApi.DAL
         public User GetUserById(int userId)
         {
             IList<User> list = new List<User>();
-            using (SqlConnection connection = GetDbConnection())
+            using (var connection = GetDbConnection())
             {
-                SqlCommand oCmd = new SqlCommand($"Select * from {Users} WHERE Id={userId}", connection);
+                var oCmd = new SQLiteCommand($"Select * from {Users} WHERE Id={userId}", connection);
                 try
                 {
                     connection.Open();
-                    using (SqlDataReader oReader = oCmd.ExecuteReader())
+                    using (var oReader = oCmd.ExecuteReader())
                     {
                         while (oReader.Read())
                         {

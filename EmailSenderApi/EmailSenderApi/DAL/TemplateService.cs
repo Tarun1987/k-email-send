@@ -1,7 +1,7 @@
 ﻿using EmailSenderApi.Models.Response;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 
 namespace EmailSenderApi.DAL
 {
@@ -10,7 +10,7 @@ namespace EmailSenderApi.DAL
         private IList<SignatureTemplate> GetTemplatesBy(int? loggedInUserId)
         {
             IList<SignatureTemplate> list = new List<SignatureTemplate>();
-            using (SqlConnection connection = GetDbConnection())
+            using (var connection = GetDbConnection())
             {
                 var command = $"Select * from {TemplateTable}";
                 if (loggedInUserId.HasValue)
@@ -22,11 +22,11 @@ namespace EmailSenderApi.DAL
                     command += ";";
                 }
 
-                SqlCommand oCmd = new SqlCommand(command, connection);
+                SQLiteCommand oCmd = new SQLiteCommand(command, connection);
                 try
                 {
                     connection.Open();
-                    using (SqlDataReader oReader = oCmd.ExecuteReader())
+                    using (SQLiteDataReader oReader = oCmd.ExecuteReader())
                     {
                         while (oReader.Read())
                         {
@@ -79,13 +79,13 @@ namespace EmailSenderApi.DAL
         public SignatureTemplate GetTemplateById(int id)
         {
             IList<SignatureTemplate> list = new List<SignatureTemplate>();
-            using (SqlConnection connection = GetDbConnection())
+            using (var connection = GetDbConnection())
             {
-                SqlCommand oCmd = new SqlCommand($"Select * from {TemplateTable} WHERE Id={id}", connection);
+                SQLiteCommand oCmd = new SQLiteCommand($"Select * from {TemplateTable} WHERE Id={id}", connection);
                 try
                 {
                     connection.Open();
-                    using (SqlDataReader oReader = oCmd.ExecuteReader())
+                    using (var oReader = oCmd.ExecuteReader())
                     {
                         while (oReader.Read())
                         {
@@ -120,10 +120,10 @@ namespace EmailSenderApi.DAL
         /// <returns></returns>
         public bool UpdateShareStatus(int id, bool shareStatus)
         {
-            using (SqlConnection connection = GetDbConnection())
+            using (var connection = GetDbConnection())
             {
                 string oString = $"UPDATE {TemplateTable} SET Share={(shareStatus ? 1 : 0)} WHERE Id={id}";
-                SqlCommand oCmd = new SqlCommand(oString, connection);
+                SQLiteCommand oCmd = new SQLiteCommand(oString, connection);
                 try
                 {
                     connection.Open();
@@ -145,10 +145,10 @@ namespace EmailSenderApi.DAL
         /// <returns>Success/Failure</returns>
         public bool SaveTemplate(SignatureTemplate data)
         {
-            using (SqlConnection connection = GetDbConnection())
+            using (var connection = GetDbConnection())
             {
                 string oString = $"INSERT INTO {TemplateTable}(Name, Html, OwnerId, Share) VALUES('{data.Name}', '{data.Html}', {data.OwnerId}, {(data.Share ? 1 : 0)});";
-                SqlCommand oCmd = new SqlCommand(oString, connection);
+                SQLiteCommand oCmd = new SQLiteCommand(oString, connection);
                 try
                 {
                     connection.Open();
@@ -173,10 +173,10 @@ namespace EmailSenderApi.DAL
         /// <returns></returns>
         public bool UpdateNameAndHtml(int id, string name, string html)
         {
-            using (SqlConnection connection = GetDbConnection())
+            using (var connection = GetDbConnection())
             {
                 string oString = $"UPDATE {TemplateTable} SET Name='{name}', Html='{html}' WHERE Id={id}";
-                SqlCommand oCmd = new SqlCommand(oString, connection);
+                SQLiteCommand oCmd = new SQLiteCommand(oString, connection);
                 try
                 {
                     connection.Open();
