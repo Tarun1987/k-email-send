@@ -112,6 +112,7 @@ const Screen = ({
     const handleOnSubmit = async (values, { resetForm, setErrors }) => {
         try {
             setDataToSubmit(values);
+            console.log(values);
             formikRef.current.setSubmitting(true);
             var list = await getRecipientListByName(values.selectedRecipient, false);
             setRecipientUserList(list);
