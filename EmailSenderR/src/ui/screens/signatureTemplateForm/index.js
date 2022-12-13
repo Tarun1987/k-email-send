@@ -11,18 +11,15 @@ const SignatureTemplateForm = ({ activeTab, validationSchema, editItem, onSubmit
     const formikRef = createRef();
     const toast = useToast();
     const [open, setIsOpen] = useState(false);
-    const [initialValues, setInitialValues] = useState({
-        name: "",
-        body: "",
-    });
+    const [initialValues, setInitialValues] = useState({});
 
     useEffect(() => {
         if (editItem && Object.keys(editItem).length > 0) {
-            setIsOpen(true);
             setInitialValues({
                 name: editItem.Name,
                 body: editItem.Html,
             });
+            setIsOpen(true);
         }
     }, [editItem]);
 
@@ -34,9 +31,9 @@ const SignatureTemplateForm = ({ activeTab, validationSchema, editItem, onSubmit
     const onFormSubmit = async (data) => {
         var result = await handleSubmit(data);
         if (result) {
-            formikRef.current.resetForm();
             setIsOpen(false);
             toast.success(`${activeTab} created successfully!!`);
+            formikRef.current.resetForm();
         }
     };
 
@@ -58,6 +55,7 @@ const SignatureTemplateForm = ({ activeTab, validationSchema, editItem, onSubmit
 
             <Formik
                 innerRef={formikRef}
+                enableReinitialize={editItem && Object.keys(editItem).length > 0}
                 validateOnChange={false}
                 initialValues={initialValues}
                 validationSchema={validationSchema}

@@ -190,5 +190,31 @@ namespace EmailSenderApi.DAL
                 }
             }
         }
+
+
+        /// <summary>
+        /// Delete data
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool Delete(int id)
+        {
+            using (var connection = GetDbConnection())
+            {
+                string oString = $"DELETE FROM {TemplateTable} WHERE Id={id}";
+                var oCmd = new SQLiteCommand(oString, connection);
+                try
+                {
+                    connection.Open();
+                    var count = oCmd.ExecuteNonQuery();
+                    connection.Close();
+                    return count > 0;
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+        }
     }
 }

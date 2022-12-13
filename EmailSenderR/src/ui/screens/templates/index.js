@@ -90,9 +90,16 @@ const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: h
     const confirmDelete = async () => {
         setLoading(true);
         setShowConfirm(false);
-        var result = await handleDelete(selectedItem);
+        var result = await handleDelete(selectedItem.Id);
         setLoading(false);
         setSelectedItem(null);
+
+        if (result === "OK") {
+            toast.success("Template deleted successfully!!");
+            getData();
+        } else {
+            toast.danger("Something went wrong!");
+        }
     };
 
     return (

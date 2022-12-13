@@ -61,3 +61,16 @@ export const GET = async (url) => {
             });
     });
 };
+
+export const DELETE = async (url) => {
+    return new Promise(async (resolve, reject) => {
+        await axios
+            .delete(`${baseUrl}${url}`)
+            .then(function (response) {
+                resolve(response);
+            })
+            .catch(function (error) {
+                reject(error);
+            });
+    });
+};

@@ -7,10 +7,7 @@ namespace EmailSenderApi.Controllers
     {
         public IHttpActionResult Get()
         {
-            // TODO: Get UserId from IIS server code
-            var userId = 1;
-
-            var userData = new UserService().GetUserById(userId);
+            var userData = new UserService().GetUserById(loggedInUserId);
             return Ok(new
             {
                 allowAccess = userData != null ? userData.AllowAccess : false,
