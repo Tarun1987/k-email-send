@@ -1,4 +1,4 @@
-import { GET, POST, PUT } from "../axiosHelper";
+import { DELETE, GET, POST, PUT } from "../axiosHelper";
 import { TEMPLATES_LIST } from "../mock/templates";
 import { USE_MOCK_DATA, DELAYED } from "../../constants";
 
@@ -29,11 +29,11 @@ export const updateShareStatus = async (id, value) => {
     }
 };
 
-export const deleteTemplate = async (data) => {
+export const deleteTemplate = async (id) => {
     if (USE_MOCK_DATA) {
         return DELAYED("OK");
     } else {
-        var response = await GET(`Templates`);
+        var response = await DELETE(`Templates?id=${id}`);
         return response.data;
     }
 };
