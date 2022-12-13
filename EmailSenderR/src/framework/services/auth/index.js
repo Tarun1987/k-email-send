@@ -9,7 +9,7 @@ export const getAuthDetails = async (id) => {
             id,
         });
     } else {
-        var response = await GET(`Auth`);
+        var response = await GET(`Auth?id=${id}`);
         return response.data;
     }
 };
