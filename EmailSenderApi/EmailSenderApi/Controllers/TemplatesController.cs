@@ -55,5 +55,13 @@ namespace EmailSenderApi.Controllers
             var result = dbService.UpdateShareStatus(model.Id, model.Share);
             return Ok(result ? "OK": "FAIL");
         }
+
+        [HttpDelete]
+        public IHttpActionResult Delete(int id)
+        {
+            var dbService = new TemplateService();
+            var result = dbService.Delete(id);
+            return Ok(result ? "OK" : "FAIL");
+        }
     }
 }

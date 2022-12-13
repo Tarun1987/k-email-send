@@ -4,8 +4,8 @@ import { DELAYED, USE_MOCK_DATA } from "../../constants";
 export const getAuthDetails = async () => {
     if (USE_MOCK_DATA) {
         return DELAYED({
-            token: true,
-            name: "Some User",
+            allowAccess: true,
+            name: "Karteek",
         });
     } else {
         var response = await GET(`Auth`);

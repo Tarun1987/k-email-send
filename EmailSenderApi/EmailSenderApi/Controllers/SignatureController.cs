@@ -55,5 +55,13 @@ namespace EmailSenderApi.Controllers
             return Ok(result ? "OK" : "FAIL");
         }
 
+        [HttpDelete]
+        public IHttpActionResult Delete(int id)
+        {
+            var dbService = new SignatureService();
+            var result = dbService.Delete(id);
+            return Ok(result ? "OK" : "FAIL");
+        }
+
     }
 }

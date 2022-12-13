@@ -2,7 +2,7 @@
 using EmailSenderApi.Models.Response;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 
 namespace EmailSenderApi.DAL
 {
@@ -15,10 +15,10 @@ namespace EmailSenderApi.DAL
         /// <returns>Success/Failure</returns>
         public bool SaveHistory(History data)
         {
-            using (SqlConnection connection = GetDbConnection())
+            using (var connection = GetDbConnection())
             {
                 string oString = $"INSERT INTO {EmailHistories}(Status, Html, RecipientTemplateName, UniqueId) VALUES('{data.Status}', '{data.Html}', '{data.RecipientTemplateName}', '{data.UniqueId}');";
-                SqlCommand oCmd = new SqlCommand(oString, connection);
+                var oCmd = new SQLiteCommand(oString, connection);
                 try
                 {
                     connection.Open();
@@ -36,7 +36,7 @@ namespace EmailSenderApi.DAL
         public IList<History> GetHistoryBy(string uniqueId, int page = 1, int limit = 10)
         {
             IList<History> list = new List<History>();
-            using (SqlConnection connection = GetDbConnection())
+            using (var connection = GetDbConnection())
             {
                 var query = $"Select * from {EmailHistories}";
                 if (!string.IsNullOrWhiteSpace(uniqueId))
@@ -45,11 +45,11 @@ namespace EmailSenderApi.DAL
                 }
                 query += $" ORDER BY SendAt DESC {Pagination.GetLimitOffsetString(page, limit)}";
 
-                SqlCommand oCmd = new SqlCommand(query, connection);
+                var oCmd = new SQLiteCommand(query, connection);
                 try
                 {
                     connection.Open();
-                    using (SqlDataReader oReader = oCmd.ExecuteReader())
+                    using (var oReader = oCmd.ExecuteReader())
                     {
                         while (oReader.Read())
                         {
@@ -60,7 +60,7 @@ namespace EmailSenderApi.DAL
                                 Html = oReader["Html"].ToString(),
                                 UniqueId = oReader["UniqueId"].ToString(),
                                 RecipientTemplateName = oReader["RecipientTemplateName"].ToString(),
-                                SendAt = Convert.ToDateTime(oReader["SendAt"]),
+                                SendAt = oReader["SendAt"] is DBNull ? DateTime.Now : Convert.ToDateTime(oReader["SendAt"]),
                             };
 
                             list.Add(obj);
@@ -85,13 +85,13 @@ namespace EmailSenderApi.DAL
         public History GetById(int id)
         {
             IList<History> list = new List<History>();
-            using (SqlConnection connection = GetDbConnection())
+            using (var connection = GetDbConnection())
             {
-                SqlCommand oCmd = new SqlCommand($"Select * from {EmailHistories} WHERE Id={id}", connection);
+                var oCmd = new SQLiteCommand($"Select * from {EmailHistories} WHERE Id={id}", connection);
                 try
                 {
                     connection.Open();
-                    using (SqlDataReader oReader = oCmd.ExecuteReader())
+                    using (var oReader = oCmd.ExecuteReader())
                     {
                         while (oReader.Read())
                         {
@@ -121,13 +121,13 @@ namespace EmailSenderApi.DAL
         /// <returns></returns>
         public int GetTotalCount()
         {
-            using (SqlConnection connection = GetDbConnection())
+            using (var connection = GetDbConnection())
             {
-                SqlCommand oCmd = new SqlCommand($"SELECT COUNT(1) FROM {EmailHistories};", connection);
+                var oCmd = new SQLiteCommand($"SELECT COUNT(1) FROM {EmailHistories};", connection);
                 try
                 {
                     connection.Open();
-                    int count = (int)oCmd.ExecuteScalar();
+                    var count = Convert.ToInt32(oCmd.ExecuteScalar());
                     connection.Close();
                     return count;
                 }

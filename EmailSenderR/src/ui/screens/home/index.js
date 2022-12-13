@@ -155,7 +155,6 @@ const Screen = ({
             setShowConfirmModal(false);
             var result = await submitFormData(data);
             if (result && result.TotalCount) {
-                setShowSendProgress(true);
                 setSubmitResponse(result);
             } else {
                 toast.danger("Error sending email");
@@ -170,8 +169,11 @@ const Screen = ({
     const getSendingProgress = async (response) => {
         try {
             const progressResult = await loadEmailSendProgress(response.UniqueId, progressPercent);
+            console.log(progressResult);
             var percent = (parseInt(progressResult.completed) / parseInt(response.TotalCount)) * 100;
+            console.log(percent);
             setProgressPercent(percent);
+            setShowSendProgress(true);
         } catch (error) {}
     };
 

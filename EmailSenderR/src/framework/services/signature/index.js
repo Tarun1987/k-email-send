@@ -1,4 +1,4 @@
-import { GET, POST, PUT } from "../axiosHelper";
+import { GET, POST, PUT, DELETE } from "../axiosHelper";
 import { SIGNATURES_LIST } from "../mock/signatures";
 import { USE_MOCK_DATA, DELAYED } from "../../constants";
 
@@ -25,11 +25,11 @@ export const updateShareStatus = async (id, value) => {
     }
 };
 
-export const deleteSignatures = async (data) => {
+export const deleteSignatures = async (id) => {
     if (USE_MOCK_DATA) {
         return DELAYED("OK");
     } else {
-        var response = await GET(`Signature`);
+        var response = await DELETE(`Signature?id=${id}`);
         return response.data;
     }
 };
