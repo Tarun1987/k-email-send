@@ -15,7 +15,7 @@ namespace EmailSenderApi.Controllers
         public IHttpActionResult GetProgress(string uniqueId)
         {
             var dbService = new HistoryService();
-            var result = dbService.GetHistoryBy(uniqueId);
+            var result = dbService.GetHistoryBy(uniqueId, -1, -1);
             return Ok(new { completed = result.Count, uniqueId });
         }
 

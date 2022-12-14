@@ -43,7 +43,11 @@ namespace EmailSenderApi.DAL
                 {
                     query += $" WHERE UniqueId={uniqueId}";
                 }
-                query += $" ORDER BY SendAt DESC {Pagination.GetLimitOffsetString(page, limit)}";
+
+                if (limit > 0)
+                {
+                    query += $" ORDER BY SendAt DESC {Pagination.GetLimitOffsetString(page, limit)}";
+                }
 
                 var oCmd = new SQLiteCommand(query, connection);
                 try
