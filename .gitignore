@@ -8,3 +8,6 @@ EmailSenderR/node_modules
 EmailSenderApi/packages
 EmailSenderApi/EmailSenderApi/bin
 EmailSenderApi/EmailSenderApi/obj
+UrlRedirect/URLRedirect/obj
+UrlRedirect/URLRedirect/bin
+UrlRedirect/packages
