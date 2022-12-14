@@ -1,4 +1,4 @@
-export const USE_MOCK_DATA = true;
+export const USE_MOCK_DATA = false;
 
 export const DELAYED = async (data, ms = 500) => {
     return new Promise((resolve, reject) => {

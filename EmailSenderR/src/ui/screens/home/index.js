@@ -24,7 +24,7 @@ const Screen = ({
 
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [showSendProgress, setShowSendProgress] = useState(false);
-    const [progressPercent, setProgressPercent] = useState(0);
+    const [progressPercent, setProgressPercent] = useState(-1);
     const [submitResponse, setSubmitResponse] = useState({});
     const [dataToSubmit, setDataToSubmit] = useState({});
     const [recipientUserList, setRecipientUserList] = useState([]);
@@ -44,7 +44,9 @@ const Screen = ({
     useEffect(() => {
         if (showSendProgress) {
             if (progressPercent < 100) {
-                getSendingProgress(submitResponse);
+                setTimeout(() => {
+                    getSendingProgress(submitResponse);
+                }, 1500);
             } else {
                 formikRef.current.setSubmitting(false);
                 formikRef.current.resetForm();
@@ -173,11 +175,9 @@ const Screen = ({
     const getSendingProgress = async (response) => {
         try {
             const progressResult = await loadEmailSendProgress(response.UniqueId, progressPercent);
-            console.log(progressResult);
             var percent = (parseInt(progressResult.completed) / parseInt(response.TotalCount)) * 100;
-            console.log(percent);
-            setProgressPercent(percent);
             setShowSendProgress(true);
+            setProgressPercent(percent);
         } catch (error) {}
     };
 
@@ -205,7 +205,7 @@ const Screen = ({
                             <div className="container-fluid _Home">
                                 {showSendProgress && (
                                     <div className="col-md" style={{ marginBottom: "10px" }}>
-                                        <ProgressBar animated now={progressPercent} label={`${progressPercent}%`} />
+                                        <ProgressBar animated now={progressPercent} label={`${progressPercent.toFixed()}%`} />
                                     </div>
                                 )}
                                 <div className="card">

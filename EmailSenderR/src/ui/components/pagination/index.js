@@ -2,18 +2,21 @@ import React from "react";
 import Pagination from "react-bootstrap/Pagination";
 
 const CustomPager = ({ currentPage, totalPages, onClick: handleClick }) => {
+    console.log(currentPage, totalPages);
     return (
         <div className="_CustomPager">
-            {totalPages > 0 && (
+            {totalPages > 0 && currentPage > 0 && (
                 <Pagination>
+                    {/* Showing and hiding prev button */}
                     <Pagination.Prev
                         disabled={currentPage === 1}
                         onClick={() => {
                             handleClick(currentPage - 1);
                         }}
                     />
+
                     {/* If number of pages are less than 5 */}
-                    {currentPage < 5 && (
+                    {currentPage < 5 ? (
                         <>
                             <Pagination.Item
                                 active={currentPage === 1}
@@ -23,7 +26,7 @@ const CustomPager = ({ currentPage, totalPages, onClick: handleClick }) => {
                             >
                                 1
                             </Pagination.Item>
-                            {totalPages > 2 && (
+                            {totalPages >= 2 && (
                                 <Pagination.Item
                                     active={currentPage === 2}
                                     onClick={() => {
@@ -33,7 +36,7 @@ const CustomPager = ({ currentPage, totalPages, onClick: handleClick }) => {
                                     2
                                 </Pagination.Item>
                             )}
-                            {totalPages > 3 && (
+                            {totalPages >= 3 && (
                                 <Pagination.Item
                                     active={currentPage === 3}
                                     onClick={() => {
@@ -43,7 +46,7 @@ const CustomPager = ({ currentPage, totalPages, onClick: handleClick }) => {
                                     3
                                 </Pagination.Item>
                             )}
-                            {totalPages > 4 && (
+                            {totalPages >= 4 && (
                                 <Pagination.Item
                                     active={currentPage === 4}
                                     onClick={() => {
@@ -74,9 +77,7 @@ const CustomPager = ({ currentPage, totalPages, onClick: handleClick }) => {
                                 </>
                             )}
                         </>
-                    )}
-
-                    {currentPage >= 5 && currentPage <= totalPages - 4 && (
+                    ) : currentPage >= 5 && currentPage <= totalPages - 4 ? (
                         <>
                             <Pagination.Item
                                 active={currentPage === 1}
@@ -118,9 +119,7 @@ const CustomPager = ({ currentPage, totalPages, onClick: handleClick }) => {
                                 {totalPages}
                             </Pagination.Item>
                         </>
-                    )}
-
-                    {currentPage > totalPages - 4 && (
+                    ) : currentPage > totalPages - 4 ? (
                         <>
                             <Pagination.Item
                                 active={currentPage === 1}
@@ -175,7 +174,7 @@ const CustomPager = ({ currentPage, totalPages, onClick: handleClick }) => {
                                 {totalPages}
                             </Pagination.Item>
                         </>
-                    )}
+                    ) : null}
 
                     <Pagination.Next
                         disabled={currentPage === totalPages}
