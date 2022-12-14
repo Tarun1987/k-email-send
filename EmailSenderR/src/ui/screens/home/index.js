@@ -109,13 +109,17 @@ const Screen = ({
         }
     };
 
-    const handleOnSubmit = async (values, { resetForm, setErrors }) => {
+    const handleOnSubmit = async (values, {}) => {
         try {
             setDataToSubmit(values);
             formikRef.current.setSubmitting(true);
             var list = await getRecipientListByName(values.selectedRecipient, false);
-            setRecipientUserList(list);
-            formikRef.current.setSubmitting(false);
+            if (list.length > 0) {
+                setRecipientUserList(list);
+                formikRef.current.setSubmitting(false);
+            } else {
+                toast.danger("Error loading recipients list");
+            }
         } catch (error) {
             formikRef.current.setSubmitting(false);
         }
