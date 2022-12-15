@@ -177,6 +177,7 @@ const Screen = ({
             const progressResult = await loadEmailSendProgress(response.UniqueId, progressPercent);
             var percent = (parseInt(progressResult.completed) / parseInt(response.TotalCount)) * 100;
             setShowSendProgress(true);
+            if (percent === 0) percent = Math.random(0, 0.5);
             setProgressPercent(percent);
         } catch (error) {}
     };

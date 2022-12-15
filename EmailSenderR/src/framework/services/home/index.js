@@ -25,6 +25,15 @@ export const submitEmailData = async (data) => {
     }
 };
 
+export const submitAttachment = async (data) => {
+    if (USE_MOCK_DATA) {
+        return DELAYED({ path: "filepath" });
+    } else {
+        var response = await POST_FILE(`EmailSend/submitAttachment`, data);
+        return response.data;
+    }
+};
+
 export const getClassificationMaster = async () => {
     return DELAYED(CLASSIFICATION_LIST);
 };

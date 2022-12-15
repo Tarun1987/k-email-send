@@ -137,6 +137,7 @@ const Screen = ({
                 const templateName = selectedFile.name.split(".")[0];
                 getData(templateName);
                 setSelectedFile(null);
+                getMasterRecipientsData();
             } else {
                 toast.danger("Something went wrong");
             }
