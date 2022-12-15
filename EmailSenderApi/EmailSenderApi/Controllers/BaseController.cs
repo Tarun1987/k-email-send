@@ -35,6 +35,11 @@ namespace EmailSenderApi.Controllers
             }
         }
 
+        protected string PostedAttachmentFilePath (string fileName)
+        {
+            return HostingEnvironment.MapPath($"~/Content/${fileName}");
+        }
+
         protected IHttpActionResult Success()
         {
             return Ok("OK");

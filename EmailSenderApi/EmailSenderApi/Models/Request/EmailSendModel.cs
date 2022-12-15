@@ -16,7 +16,11 @@ namespace EmailSenderApi.Models.Request
 
         public string Classification { get; set; }
 
-        public HttpPostedFileBase AttachmentFile { get; set; }
+        public int SignatureId { get; set; }
+
+        public string SignatureString { get; set; }
+
+        public string AttachmentFileName { get; set; }
 
         public string GetEmailBody()
         {
