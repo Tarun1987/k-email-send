@@ -138,23 +138,15 @@ const Screen = ({
 
     const handleConfirmModalSubmit = async () => {
         try {
-            // const formData = new FormData();
-            // formData.append("attachmentFile", dataToSubmit.attachmentFile);
-            // formData.append("subject", dataToSubmit.subject);
-            // formData.append("greeting", dataToSubmit.greetings);
-            // formData.append("selectedTemplate", dataToSubmit.selectedTemplate);
-            // formData.append("body", dataToSubmit.body);
-            // formData.append("classification", dataToSubmit.classification);
-            // formData.append("selectedRecipient", dataToSubmit.selectedRecipient);
-
             var data = {
-                // attachmentFile: dataToSubmit.attachmentFile,
+                attachmentFile: dataToSubmit.attachmentFile,
                 subject: dataToSubmit.subject,
                 greeting: dataToSubmit.greetings,
                 selectedTemplate: dataToSubmit.selectedTemplate,
                 body: dataToSubmit.body,
                 classification: dataToSubmit.classification,
                 selectedRecipient: dataToSubmit.selectedRecipient,
+                signature: dataToSubmit.signature,
             };
 
             formikRef.current.setSubmitting(true);
