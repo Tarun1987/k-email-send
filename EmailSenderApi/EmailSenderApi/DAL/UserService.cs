@@ -1,4 +1,5 @@
-﻿using EmailSenderApi.Models.Response;
+﻿using EmailSenderApi.Helpers;
+using EmailSenderApi.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -40,6 +41,7 @@ namespace EmailSenderApi.DAL
                 }
                 catch (Exception e)
                 {
+                    Logger.Log(e.Message);
                 }
             }
 
@@ -67,6 +69,7 @@ namespace EmailSenderApi.DAL
                 }
                 catch (Exception e)
                 {
+                    Logger.Log(e.Message);
                     return false;
                 }
             }
@@ -93,6 +96,7 @@ namespace EmailSenderApi.DAL
                 }
                 catch (Exception e)
                 {
+                    Logger.Log(e.Message);
                     return false;
                 }
             }

@@ -114,6 +114,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\Pagination.cs" />
     <Compile Include="Models\Request\EmailSendModel.cs" />
     <Compile Include="Models\Request\ShareStatusUpdateModel.cs" />
@@ -129,7 +130,6 @@
     <Content Include="EmailSender.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="EmailSender.db-journal" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -1,4 +1,5 @@
-﻿using EmailSenderApi.Models.Response;
+﻿using EmailSenderApi.Helpers;
+using EmailSenderApi.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -84,6 +85,7 @@ namespace EmailSenderApi.Controllers
             }
             catch (Exception ex)
             {
+                Logger.Log(ex.Message);
             }
             finally
             {

@@ -28,6 +28,7 @@ namespace EmailSenderApi.DAL
                 }
                 catch (Exception e)
                 {
+                    Logger.Log(e.Message);
                     return false;
                 }
             }
@@ -75,7 +76,7 @@ namespace EmailSenderApi.DAL
                 }
                 catch (Exception e)
                 {
-
+                    Logger.Log(e.Message);
                 }
             }
             return list;
@@ -113,7 +114,7 @@ namespace EmailSenderApi.DAL
                 }
                 catch (Exception e)
                 {
-
+                    Logger.Log(e.Message);
                 }
             }
             return list[0];
@@ -137,6 +138,7 @@ namespace EmailSenderApi.DAL
                 }
                 catch (Exception e)
                 {
+                    Logger.Log(e.Message);
                     return 0;
                 }
             }

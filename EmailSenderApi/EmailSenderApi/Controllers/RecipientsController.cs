@@ -1,4 +1,5 @@
 ﻿using EmailSenderApi.DAL;
+using EmailSenderApi.Helpers;
 using EmailSenderApi.Models.Response;
 using System.Net;
 using System.Net.Http;
@@ -41,22 +42,27 @@ namespace EmailSenderApi.Controllers
                 // Check if file exists
                 if (System.IO.File.Exists(PostedRecipientsFilePath))
                     System.IO.File.Delete(PostedRecipientsFilePath);
-
+                
                 HttpPostedFile postedFile = HttpContext.Current.Request.Files[0];
 
                 postedFile.SaveAs(PostedRecipientsFilePath);
                 var templateName = postedFile.FileName.Split('.')[0];
 
+                Logger.Log("Recipient upload: File saved in folder");
                 var recipientsList = ReadRecipientsFromExcelFile(PostedRecipientsFilePath);
+                Logger.Log($"Recipient upload: Reading excel file. total count ${recipientsList.Count}");
+
                 foreach (var recipient in recipientsList)
                 {
                     dbService.SaveRecipient(templateName, recipient);
                 }
 
+                Logger.Log($"Recipient upload: Sending success message");
                 return Success();
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
+                Logger.Log(e.Message);
                 return Fail();
             }
         }
