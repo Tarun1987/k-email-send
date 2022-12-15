@@ -1,4 +1,4 @@
-import { POST, GET } from "../axiosHelper";
+import { POST, GET, POST_FILE } from "../axiosHelper";
 import { USE_MOCK_DATA, DELAYED } from "../../constants";
 import { CLASSIFICATION_LIST, SUBMIT_EMAIL } from "../mock/home";
 
@@ -29,20 +29,18 @@ export const submitEmailData = async (data) => {
     if (USE_MOCK_DATA) {
         return DELAYED(SUBMIT_EMAIL, 2000);
     } else {
-        var attachmentFileName = "";
         if (data.attachmentFile) {
             const formData = new FormData();
             formData.append("file", data.attachmentFile);
             var result = await submitAttachment(formData);
             if (result.status === "OK") {
-                attachmentFileName = result.attachmentFileName;
+                data.attachmentFileName = result.attachmentFile;
             } else {
                 return "FAIL";
             }
         }
 
         delete data.attachmentFile;
-        data.attachmentFileName = attachmentFileName;
         var response = await POST(`EmailSend`, data);
         return response.data;
     }

@@ -146,7 +146,7 @@ const Screen = ({
                 body: dataToSubmit.body,
                 classification: dataToSubmit.classification,
                 selectedRecipient: dataToSubmit.selectedRecipient,
-                signature: dataToSubmit.signature,
+                signatureId: dataToSubmit.signature,
             };
 
             formikRef.current.setSubmitting(true);
