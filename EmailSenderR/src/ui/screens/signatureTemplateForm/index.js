@@ -29,10 +29,12 @@ const SignatureTemplateForm = ({ activeTab, validationSchema, editItem, onSubmit
     };
 
     const onFormSubmit = async (data) => {
+        var isUpdating = editItem && Object.keys(editItem).length > 0;
+        if (isUpdating) data.id = editItem.Id;
         var result = await handleSubmit(data);
         if (result) {
             setIsOpen(false);
-            toast.success(`${activeTab} created successfully!!`);
+            toast.success(`${activeTab} ${isUpdating ? "updated" : "created"} successfully!!`);
             formikRef.current.resetForm();
         }
     };

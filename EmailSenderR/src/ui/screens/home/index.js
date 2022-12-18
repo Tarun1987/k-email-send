@@ -24,7 +24,7 @@ const Screen = ({
 
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [showSendProgress, setShowSendProgress] = useState(false);
-    const [progressPercent, setProgressPercent] = useState(0);
+    const [progressPercent, setProgressPercent] = useState(-1);
     const [submitResponse, setSubmitResponse] = useState({});
     const [dataToSubmit, setDataToSubmit] = useState({});
     const [recipientUserList, setRecipientUserList] = useState([]);
@@ -44,7 +44,9 @@ const Screen = ({
     useEffect(() => {
         if (showSendProgress) {
             if (progressPercent < 100) {
-                getSendingProgress(submitResponse);
+                setTimeout(() => {
+                    getSendingProgress(submitResponse);
+                }, 1500);
             } else {
                 formikRef.current.setSubmitting(false);
                 formikRef.current.resetForm();
@@ -109,13 +111,17 @@ const Screen = ({
         }
     };
 
-    const handleOnSubmit = async (values, { resetForm, setErrors }) => {
+    const handleOnSubmit = async (values, {}) => {
         try {
             setDataToSubmit(values);
             formikRef.current.setSubmitting(true);
             var list = await getRecipientListByName(values.selectedRecipient, false);
-            setRecipientUserList(list);
-            formikRef.current.setSubmitting(false);
+            if (list.length > 0) {
+                setRecipientUserList(list);
+                formikRef.current.setSubmitting(false);
+            } else {
+                toast.danger("Error loading recipients list");
+            }
         } catch (error) {
             formikRef.current.setSubmitting(false);
         }
@@ -132,23 +138,15 @@ const Screen = ({
 
     const handleConfirmModalSubmit = async () => {
         try {
-            // const formData = new FormData();
-            // formData.append("attachmentFile", dataToSubmit.attachmentFile);
-            // formData.append("subject", dataToSubmit.subject);
-            // formData.append("greeting", dataToSubmit.greetings);
-            // formData.append("selectedTemplate", dataToSubmit.selectedTemplate);
-            // formData.append("body", dataToSubmit.body);
-            // formData.append("classification", dataToSubmit.classification);
-            // formData.append("selectedRecipient", dataToSubmit.selectedRecipient);
-
             var data = {
-                // attachmentFile: dataToSubmit.attachmentFile,
+                attachmentFile: dataToSubmit.attachmentFile,
                 subject: dataToSubmit.subject,
                 greeting: dataToSubmit.greetings,
                 selectedTemplate: dataToSubmit.selectedTemplate,
                 body: dataToSubmit.body,
                 classification: dataToSubmit.classification,
                 selectedRecipient: dataToSubmit.selectedRecipient,
+                signatureId: dataToSubmit.signature,
             };
 
             formikRef.current.setSubmitting(true);
@@ -169,11 +167,10 @@ const Screen = ({
     const getSendingProgress = async (response) => {
         try {
             const progressResult = await loadEmailSendProgress(response.UniqueId, progressPercent);
-            console.log(progressResult);
             var percent = (parseInt(progressResult.completed) / parseInt(response.TotalCount)) * 100;
-            console.log(percent);
-            setProgressPercent(percent);
             setShowSendProgress(true);
+            if (percent === 0) percent = Math.random(0, 0.5);
+            setProgressPercent(percent);
         } catch (error) {}
     };
 
@@ -201,7 +198,7 @@ const Screen = ({
                             <div className="container-fluid _Home">
                                 {showSendProgress && (
                                     <div className="col-md" style={{ marginBottom: "10px" }}>
-                                        <ProgressBar animated now={progressPercent} label={`${progressPercent}%`} />
+                                        <ProgressBar animated now={progressPercent} label={`${progressPercent.toFixed()}%`} />
                                     </div>
                                 )}
                                 <div className="card">

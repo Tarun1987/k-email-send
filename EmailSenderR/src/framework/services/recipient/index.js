@@ -30,8 +30,12 @@ export const getMasterDownloadURL = () => {
 };
 
 export const uploadRecipients = async (data) => {
-    var response = await POST_FILE(`Recipients`, data);
-    return response.data;
+    if (USE_MOCK_DATA) {
+        return DELAYED("OK");
+    } else {
+        var response = await POST_FILE(`Recipients`, data);
+        return response.data;
+    }
 };
 
 export const deleteRecipient = async (data) => {
