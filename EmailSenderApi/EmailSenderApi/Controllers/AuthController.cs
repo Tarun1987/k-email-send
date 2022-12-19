@@ -12,7 +12,7 @@ namespace EmailSenderApi.Controllers
             return Ok(new
             {
                 allowAccess = userData != null ? userData.AllowAccess : false,
-                name = userData != null ? userData.Name : ""
+                name = userData != null ? userData.GetName() : ""
             });
         }
 

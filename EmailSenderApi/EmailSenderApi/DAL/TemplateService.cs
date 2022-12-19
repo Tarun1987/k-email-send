@@ -8,20 +8,15 @@ namespace EmailSenderApi.DAL
 {
     public class TemplateService : BaseService
     {
-        private IList<SignatureTemplate> GetTemplatesBy(int? loggedInUserId)
+        public IList<SignatureTemplate> GetTemplates(int loggedInUserId, bool onlyMy)
         {
             IList<SignatureTemplate> list = new List<SignatureTemplate>();
             using (var connection = GetDbConnection())
             {
-                var command = $"Select * from {TemplateTable}";
-                if (loggedInUserId.HasValue)
-                {
-                    command += $" WHERE (OwnerId={loggedInUserId.Value} OR Share = 1);";
-                }
-                else
-                {
-                    command += ";";
-                }
+                var command = $"Select * from {TemplateTable} WHERE Share = 1";
+                if (onlyMy)
+                    command += $" OR OwnerId={loggedInUserId};";
+               
 
                 SQLiteCommand oCmd = new SQLiteCommand(command, connection);
                 try
@@ -38,7 +33,7 @@ namespace EmailSenderApi.DAL
                                 Name = oReader["Name"].ToString(),
                                 OwnerId = Convert.ToInt32(oReader["OwnerId"]),
                                 Share = Convert.ToBoolean(oReader["Share"]),
-                                LoggedInUserId = loggedInUserId.HasValue ? loggedInUserId.Value : 0
+                                LoggedInUserId = loggedInUserId
                             };
 
                             list.Add(obj);
@@ -53,22 +48,6 @@ namespace EmailSenderApi.DAL
                 }
             }
             return list;
-        }
-
-
-        /// <summary>
-        /// Get List of all templates 
-        /// </summary>
-        /// <returns></returns>
-        public IList<SignatureTemplate> GetTemplates()
-        {
-            return GetTemplatesBy(null);
-        }
-
-
-        public IList<SignatureTemplate> GetTemplates(int loggedInUserId)
-        {
-            return GetTemplatesBy(loggedInUserId);
         }
 
 

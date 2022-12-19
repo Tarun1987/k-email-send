@@ -8,9 +8,9 @@ namespace EmailSenderApi.Controllers
     public class TemplatesController : BaseController
     {
         [HttpGet]
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(bool onlyMy = false)
         {
-            var list = new TemplateService().GetTemplates(LoggedInUserId);
+            var list = new TemplateService().GetTemplates(LoggedInUserId, onlyMy);
             return Ok(list);
         }
 

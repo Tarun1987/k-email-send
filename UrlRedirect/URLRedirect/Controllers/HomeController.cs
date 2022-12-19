@@ -13,7 +13,7 @@ namespace URLRedirect.Controllers
         public ActionResult Index()
         {
             // GET Logged in user Id from IIS
-            var iisUserString = "AAAA\\2";
+            var iisUserString = "AAAA\\3";
             var loggedInUserIdArray = iisUserString.Split(new[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
             if (loggedInUserIdArray == null && loggedInUserIdArray.Length < 2)
                 return View();

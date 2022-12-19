@@ -11,11 +11,11 @@ export const loadRecipients = async (templateName, includeInactive = false) => {
     }
 };
 
-export const getRecipientsMaster = async () => {
+export const getRecipientsMaster = async (onlyMy = false) => {
     if (USE_MOCK_DATA) {
         return DELAYED(RECIPIENT_MASTER);
     } else {
-        var response = await GET(`Recipients`);
+        var response = await GET(`Recipients?onlyMy=${onlyMy}`);
         return response.data;
     }
 };

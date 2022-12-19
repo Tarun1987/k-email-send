@@ -2,11 +2,11 @@ import { DELETE, GET, POST, PUT } from "../axiosHelper";
 import { TEMPLATES_LIST } from "../mock/templates";
 import { USE_MOCK_DATA, DELAYED } from "../../constants";
 
-export const loadTemplates = async () => {
+export const loadTemplates = async (loadAll = false) => {
     if (USE_MOCK_DATA) {
         return DELAYED(TEMPLATES_LIST);
     } else {
-        var response = await GET(`Templates`);
+        var response = await GET(`Templates?onlyMy=${loadAll}`);
         return response.data;
     }
 };

@@ -8,9 +8,9 @@ namespace EmailSenderApi.Controllers
     public class SignatureController : BaseController
     {
         [HttpGet]
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(bool onlyMy = false)
         {
-            var list = new SignatureService().GetSignatures(LoggedInUserId);
+            var list = new SignatureService().GetSignatures(LoggedInUserId, onlyMy);
             return Ok(list);
         }
 

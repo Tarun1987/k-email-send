@@ -45,7 +45,7 @@ namespace EmailSenderApi.Controllers
                 model.SignatureString = signature.Html;
 
                 // Get email list by reading excel file.
-                var emailList = recipientService.GetRecipients(model.selectedRecipient);
+                var emailList = recipientService.GetRecipients(model.selectedRecipient, LoggedInUserId);
 
                 Thread myNewThread = new Thread(() => SendEmailInBackground(emailList, model, attachmentFilePath, uniqueId));
                 myNewThread.Start();

@@ -12,9 +12,9 @@ namespace EmailSenderApi.Controllers
     public class RecipientsController : BaseController
     {
         // GET: api/Signature
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(bool onlyMy = false)
         {
-            var list = new RecipientService().GetRecipientTemplateNameList();
+            var list = new RecipientService().GetRecipientTemplateNameList(LoggedInUserId, onlyMy);
             return Ok(list);
         }
 
@@ -22,7 +22,7 @@ namespace EmailSenderApi.Controllers
         public IHttpActionResult GetByName(string name, bool includeInactive = false)
         {
             var dbService = new RecipientService();
-            var list = dbService.GetRecipients(name, includeInactive);
+            var list = dbService.GetRecipients(name, LoggedInUserId, includeInactive);
             return Ok(list);
         }
 
@@ -54,7 +54,7 @@ namespace EmailSenderApi.Controllers
 
                 foreach (var recipient in recipientsList)
                 {
-                    dbService.SaveRecipient(templateName, recipient);
+                    dbService.SaveRecipient(templateName, recipient, LoggedInUserId);
                 }
 
                 Logger.Log($"Recipient upload: Sending success message");

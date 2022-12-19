@@ -1,4 +1,5 @@
 import React from "react";
+import queryString from "query-string";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LogoIcon from "./images/logo-icon.png";
@@ -6,11 +7,17 @@ import LogoProfileIcon from "./images/profile.png";
 
 const Header = () => {
     const userInfo = useSelector((state) => state.userInfo.value);
+    const qsData = queryString.parse(window.location.search);
+
+    const getUrl = (path) => {
+        return `${path}?id=${qsData.id}`;
+    };
+
     return (
         <header className="topbar" data-navbarbg="skin6">
             <nav className="navbar top-navbar navbar-expand-md navbar-dark bg-dark box-shadow">
                 <div className="navbar-header" style={{ background: "none", border: 0, color: "white" }}>
-                    <a className="navbar-brand" href="/">
+                    <a className="navbar-brand" href={getUrl("")}>
                         <b className="logo-icon">
                             <img src={LogoIcon} alt="homepage" className="dark-logo" />
                         </b>

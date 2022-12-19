@@ -2,11 +2,11 @@ import { GET, POST, PUT, DELETE } from "../axiosHelper";
 import { SIGNATURES_LIST } from "../mock/signatures";
 import { USE_MOCK_DATA, DELAYED } from "../../constants";
 
-export const loadSignatures = async () => {
+export const loadSignatures = async (loadAll = false) => {
     if (USE_MOCK_DATA) {
         return DELAYED(SIGNATURES_LIST);
     } else {
-        var response = await GET(`Signature`);
+        var response = await GET(`Signature?onlyMy=${loadAll}`);
         return response.data;
     }
 };

@@ -10,5 +10,6 @@
         public bool IsActive { get; set; }
         public string CC { get; set; }
         public string BCC { get; set; }
+        public bool IsEditable { get; set; }
     }
 }

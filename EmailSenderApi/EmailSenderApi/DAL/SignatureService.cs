@@ -8,12 +8,15 @@ namespace EmailSenderApi.DAL
 {
     public class SignatureService : BaseService
     {
-        private IList<SignatureTemplate> GetBy(int loggedInUserId)
+        public IList<SignatureTemplate> GetSignatures(int loggedInUserId, bool onlyMy)
         {
             IList<SignatureTemplate> list = new List<SignatureTemplate>();
             using (var connection = GetDbConnection())
             {
-                var command = $"SELECT * from {EmailSignatures}  WHERE OwnerId={loggedInUserId};";
+                var command = $"Select * from {EmailSignatures} WHERE Share = 1";
+                if (onlyMy)
+                    command += $" OR OwnerId={loggedInUserId};";
+
                 var oCmd = new SQLiteCommand(command, connection);
                 try
                 {
@@ -44,11 +47,6 @@ namespace EmailSenderApi.DAL
                 }
             }
             return list;
-        }
-
-        public IList<SignatureTemplate> GetSignatures(int loggedInUserId)
-        {
-            return GetBy(loggedInUserId);
         }
 
         /// <summary>

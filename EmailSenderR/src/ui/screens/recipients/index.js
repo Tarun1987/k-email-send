@@ -40,7 +40,7 @@ const Screen = ({
 
     const getMasterRecipientsData = async () => {
         setLoading(true);
-        var l = await loadMasterRecipients();
+        var l = await loadMasterRecipients(true);
         setMasterRecipients(l);
         setLoading(false);
     };
@@ -378,7 +378,7 @@ const Screen = ({
                                                                             Reset
                                                                         </CustomButton>
                                                                     </>
-                                                                ) : (
+                                                                ) : item.IsEditable ? (
                                                                     <i
                                                                         style={{ cursor: "pointer" }}
                                                                         title="Edit this"
@@ -387,6 +387,8 @@ const Screen = ({
                                                                             toggleEditMode(item.TemplateId, true);
                                                                         }}
                                                                     />
+                                                                ) : (
+                                                                    "-"
                                                                 )}
                                                             </td>
                                                         </tr>

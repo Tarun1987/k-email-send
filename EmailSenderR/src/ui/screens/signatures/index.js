@@ -22,7 +22,7 @@ const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: h
 
     const getData = async () => {
         setLoading(true);
-        var l = await loadData();
+        var l = await loadData(true);
         setList(l);
         setLoading(false);
     };

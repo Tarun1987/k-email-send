@@ -40,7 +40,7 @@ const SideBar = () => {
     };
 
     const getUrl = (path) => {
-        return `${path}?name=${qsData.name}&id=${qsData.id}`;
+        return `${path}?id=${qsData.id}`;
     };
 
     return (

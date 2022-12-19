@@ -30,6 +30,7 @@ namespace EmailSenderApi.DAL
                             {
                                 Name = oReader["Name"].ToString(),
                                 AllowAccess = Convert.ToBoolean(oReader["AllowAccess"]),
+                                LastName = oReader["LastName"].ToString(),
                                 Id = Convert.ToInt32(oReader["Id"]),
                             };
 
@@ -58,7 +59,7 @@ namespace EmailSenderApi.DAL
         {
             using (var connection = GetDbConnection())
             {
-                string oString = $"INSERT INTO {Users}(Id, Name, AllowAccess) VALUES('{data.Id}', '{data.Name}', {(data.AllowAccess ? 1 : 0)});";
+                string oString = $"INSERT INTO {Users}(Id, Name, LastName, AllowAccess) VALUES('{data.Id}', '{data.Name}', '{data.LastName}', {(data.AllowAccess ? 1 : 0)});";
                 SQLiteCommand oCmd = new SQLiteCommand(oString, connection);
                 try
                 {

@@ -13,13 +13,13 @@ namespace EmailSenderApi.DAL
         /// </summary>
         /// <param name="recipientName"></param>
         /// <returns></returns>
-        public IList<Recipient> GetRecipients(string recipientName, bool includeInactive = false)
+        public IList<Recipient> GetRecipients(string recipientName, int loggedInUserId, bool includeInactive = false)
         {
             IList<Recipient> list = new List<Recipient>();
             using (var connection = GetDbConnection())
             {
-                string oString = $"Select * from {RecipientTable} WHERE TemplateName = '{recipientName}'";
-                if (!includeInactive) oString += " AND IsActive = 1";
+                string oString = $"Select * from {RecipientTable} WHERE TemplateName = '{recipientName}' AND (OwnerId={loggedInUserId} OR Share = 1)";
+                if (!includeInactive) oString += " AND IsActive = 1 AND Share = 1";
 
                 var oCmd = new SQLiteCommand(oString, connection);
                 try
@@ -39,6 +39,7 @@ namespace EmailSenderApi.DAL
                                 TemplateName = oReader["TemplateName"].ToString(),
                                 Share = oReader["Share"] == DBNull.Value ? false : Convert.ToBoolean(oReader["Share"]),
                                 IsActive = oReader["IsActive"] == DBNull.Value ? true : Convert.ToBoolean(oReader["IsActive"]),
+                                IsEditable = loggedInUserId == Convert.ToInt32(oReader["OwnerId"])
                             };
 
                             list.Add(obj);
@@ -59,12 +60,16 @@ namespace EmailSenderApi.DAL
         /// Get list of all template names
         /// </summary>
         /// <returns></returns>
-        public IList<string> GetRecipientTemplateNameList()
+        public IList<string> GetRecipientTemplateNameList(int ownerId, bool onlyMy)
         {
             IList<string> list = new List<string>();
             using (var connection = GetDbConnection())
             {
-                var oCmd = new SQLiteCommand($"Select DISTINCT TemplateName from {RecipientTable}", connection);
+                var command = $"Select DISTINCT TemplateName from {RecipientTable} WHERE Share = 1";
+                if (onlyMy)
+                    command += $" OR OwnerId = {ownerId}";
+
+                var oCmd = new SQLiteCommand(command, connection);
                 try
                 {
                     connection.Open();
@@ -92,11 +97,11 @@ namespace EmailSenderApi.DAL
         /// <param name="templateName">Name of template</param>
         /// <param name="recipient">List of recpients</param>
         /// <returns></returns>
-        public bool SaveRecipient(string templateName, Recipient recipient)
+        public bool SaveRecipient(string templateName, Recipient recipient, int ownerId)
         {
             using (var connection = GetDbConnection())
             {
-                string oString = $"INSERT INTO {RecipientTable}(TemplateName, ClientName, ClientEmail, CC, BCC) VALUES('{templateName}', '{recipient.ClientName}', '{recipient.ClientEmail}', '{recipient.CC}', '{recipient.BCC}');";
+                string oString = $"INSERT INTO {RecipientTable}(TemplateName, ClientName, ClientEmail, CC, BCC, OwnerId) VALUES('{templateName}', '{recipient.ClientName}', '{recipient.ClientEmail}', '{recipient.CC}', '{recipient.BCC}', {ownerId});";
                 var oCmd = new SQLiteCommand(oString, connection);
                 try
                 {
