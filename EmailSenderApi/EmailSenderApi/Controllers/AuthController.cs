@@ -6,9 +6,9 @@ namespace EmailSenderApi.Controllers
 {
     public class AuthController : BaseController
     {
-        public IHttpActionResult Get(int id)
+        public IHttpActionResult Get()
         {
-            var userData = new UserService().GetUserById(id);
+            var userData = new UserService().GetUserById(LoggedInUserId);
             return Ok(new
             {
                 allowAccess = userData != null ? userData.AllowAccess : false,

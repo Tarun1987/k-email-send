@@ -98,11 +98,11 @@ namespace EmailSenderApi.DAL
         /// <param name="id">Id</param>
         /// <param name="shareStatus">Boolean</param>
         /// <returns></returns>
-        public bool UpdateShareStatus(int id, bool shareStatus)
+        public bool UpdateShareStatus(int id, bool shareStatus, int ownerId)
         {
             using (var connection = GetDbConnection())
             {
-                string oString = $"UPDATE {EmailSignatures} SET Share={(shareStatus ? 1 : 0)} WHERE Id={id}";
+                string oString = $"UPDATE {EmailSignatures} SET Share={(shareStatus ? 1 : 0)} WHERE Id={id} AND ownerId={ownerId}";
                 var oCmd = new SQLiteCommand(oString, connection);
                 try
                 {
@@ -152,11 +152,11 @@ namespace EmailSenderApi.DAL
         /// <param name="name">Name</param>
         /// <param name="html">html</param>
         /// <returns></returns>
-        public bool UpdateNameAndHtml(int id, string name, string html)
+        public bool UpdateNameAndHtml(int id, string name, string html, int ownerId)
         {
             using (var connection = GetDbConnection())
             {
-                string oString = $"UPDATE {EmailSignatures} SET Name='{name}', Html='{html}' WHERE Id={id}";
+                string oString = $"UPDATE {EmailSignatures} SET Name='{name}', Html='{html}' WHERE Id={id} AND ownerId={ownerId}";
                 var oCmd = new SQLiteCommand(oString, connection);
                 try
                 {
@@ -173,17 +173,16 @@ namespace EmailSenderApi.DAL
             }
         }
 
-
         /// <summary>
         /// Delete data
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool Delete(int id)
+        public bool Delete(int id, int ownerId)
         {
             using (var connection = GetDbConnection())
             {
-                string oString = $"DELETE FROM {EmailSignatures} WHERE Id={id}";
+                string oString = $"DELETE FROM {EmailSignatures} WHERE Id={id} AND ownerId={ownerId}";
                 var oCmd = new SQLiteCommand(oString, connection);
                 try
                 {

@@ -17,6 +17,7 @@ const ConfirmEmailSendModal = ({ show, onClose: handleClose, onSubmit: handleSub
             <Table striped bordered hover>
                 <thead>
                     <tr>
+                        <th>Client Name</th>
                         <th>Client Email</th>
                         <th>CC</th>
                         <th>BCC</th>
@@ -26,6 +27,7 @@ const ConfirmEmailSendModal = ({ show, onClose: handleClose, onSubmit: handleSub
                     {list.map((x, key) => {
                         return (
                             <tr key={key}>
+                                <td>{x.ClientName}</td>
                                 <td>{x.ClientEmail}</td>
                                 <td>{x.CC}</td>
                                 <td>{x.BCC}</td>

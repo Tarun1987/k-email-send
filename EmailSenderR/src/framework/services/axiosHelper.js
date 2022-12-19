@@ -1,6 +1,9 @@
 import axios from "axios";
+import queryString from "query-string";
 
 const baseUrl = "http://localhost:55457/api/";
+const qsData = queryString.parse(window.location.search);
+axios.defaults.headers.common["userId"] = qsData.id;
 
 export const MAP_URL = (url) => {
     return `${baseUrl}${url}`;

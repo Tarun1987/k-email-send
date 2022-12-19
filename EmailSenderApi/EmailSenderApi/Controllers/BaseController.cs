@@ -2,7 +2,7 @@
 using EmailSenderApi.Models.Response;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
+using System.Linq;
 using System.Web.Hosting;
 using System.Web.Http;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -11,12 +11,32 @@ namespace EmailSenderApi.Controllers
 {
     public class BaseController : ApiController
     {
-        protected int loggedInUserId;
         protected string RecipientsFileName = "recipients_master.xlsx";
 
-        public BaseController()
+        protected int LoggedInUserId
         {
-            loggedInUserId = int.Parse(ConfigurationManager.AppSettings["loggedInUserId"]);
+            get
+            {
+                try
+                {
+                    if (Request.Headers.Contains("userId"))
+                    {
+                        string encryptedUserId = Request.Headers.GetValues("userId").First();
+                        if (!string.IsNullOrWhiteSpace(encryptedUserId))
+                        {
+                            var decrytedId = SecurityHelper.Decrypt(encryptedUserId);
+                            return int.Parse(decrytedId);
+                        }
+                    }
+
+                    return 1;
+                }
+                catch (Exception e)
+                {
+                    Logger.Log(e.Message);
+                    return 0;
+                }
+            }
         }
 
         protected string RecipientsFilePath
@@ -35,7 +55,7 @@ namespace EmailSenderApi.Controllers
             }
         }
 
-        protected string PostedAttachmentFilePath (string fileName)
+        protected string PostedAttachmentFilePath(string fileName)
         {
             return HostingEnvironment.MapPath($"~/Content/${fileName}");
         }

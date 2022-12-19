@@ -119,11 +119,11 @@ namespace EmailSenderApi.DAL
         /// <param name="id">Id</param>
         /// <param name="shareStatus">Boolean</param>
         /// <returns></returns>
-        public bool UpdateShareStatus(int id, bool shareStatus)
+        public bool UpdateShareStatus(int id, bool shareStatus, int ownerId)
         {
             using (var connection = GetDbConnection())
             {
-                string oString = $"UPDATE {TemplateTable} SET Share={(shareStatus ? 1 : 0)} WHERE Id={id}";
+                string oString = $"UPDATE {TemplateTable} SET Share={(shareStatus ? 1 : 0)} WHERE Id={id} and ownerId={ownerId}";
                 SQLiteCommand oCmd = new SQLiteCommand(oString, connection);
                 try
                 {
@@ -173,12 +173,13 @@ namespace EmailSenderApi.DAL
         /// <param name="id">Template Id</param>
         /// <param name="name">Updated Name</param>
         /// <param name="html">Updated html</param>
+        /// <param name="ownerId">Owner id</param>
         /// <returns></returns>
-        public bool UpdateNameAndHtml(int id, string name, string html)
+        public bool UpdateNameAndHtml(int id, string name, string html, int ownerId)
         {
             using (var connection = GetDbConnection())
             {
-                string oString = $"UPDATE {TemplateTable} SET Name='{name}', Html='{html}' WHERE Id={id}";
+                string oString = $"UPDATE {TemplateTable} SET Name='{name}', Html='{html}' WHERE Id={id} and OwnerId={ownerId}";
                 SQLiteCommand oCmd = new SQLiteCommand(oString, connection);
                 try
                 {
@@ -201,11 +202,11 @@ namespace EmailSenderApi.DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool Delete(int id)
+        public bool Delete(int id, int ownerId)
         {
             using (var connection = GetDbConnection())
             {
-                string oString = $"DELETE FROM {TemplateTable} WHERE Id={id}";
+                string oString = $"DELETE FROM {TemplateTable} WHERE Id={id} AND OwnerId=${ownerId}";
                 var oCmd = new SQLiteCommand(oString, connection);
                 try
                 {

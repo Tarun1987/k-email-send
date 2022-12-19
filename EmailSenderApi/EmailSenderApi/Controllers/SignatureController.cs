@@ -10,7 +10,7 @@ namespace EmailSenderApi.Controllers
         [HttpGet]
         public IHttpActionResult Get()
         {
-            var list = new SignatureService().GetSignatures(loggedInUserId);
+            var list = new SignatureService().GetSignatures(LoggedInUserId);
             return Ok(list);
         }
 
@@ -30,7 +30,7 @@ namespace EmailSenderApi.Controllers
             {
                 if (model.SignatureId.HasValue && model.SignatureId.Value > 0)
                 {
-                    dbService.UpdateNameAndHtml(model.SignatureId.Value, model.Name, model.Body);
+                    dbService.UpdateNameAndHtml(model.SignatureId.Value, model.Name, model.Body, LoggedInUserId);
                 }
                 else
                 {
@@ -38,7 +38,7 @@ namespace EmailSenderApi.Controllers
                     {
                         Html = model.Body,
                         Name = model.Name,
-                        OwnerId = loggedInUserId,
+                        OwnerId = LoggedInUserId,
                         Share = false
                     });
                 }
@@ -51,7 +51,7 @@ namespace EmailSenderApi.Controllers
         public IHttpActionResult Put(ShareStatusUpdateModel model)
         {
             var dbService = new SignatureService();
-            var result = dbService.UpdateShareStatus(model.Id, model.Share);
+            var result = dbService.UpdateShareStatus(model.Id, model.Share, LoggedInUserId);
             return Ok(result ? "OK" : "FAIL");
         }
 
@@ -59,7 +59,7 @@ namespace EmailSenderApi.Controllers
         public IHttpActionResult Delete(int id)
         {
             var dbService = new SignatureService();
-            var result = dbService.Delete(id);
+            var result = dbService.Delete(id, LoggedInUserId);
             return Ok(result ? "OK" : "FAIL");
         }
 

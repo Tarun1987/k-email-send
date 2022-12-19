@@ -116,6 +116,7 @@
     </Compile>
     <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\Pagination.cs" />
+    <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Models\Request\EmailSendModel.cs" />
     <Compile Include="Models\Request\ShareStatusUpdateModel.cs" />
     <Compile Include="Models\Request\SignatureModel.cs" />
