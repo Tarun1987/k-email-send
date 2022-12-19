@@ -28,7 +28,7 @@ const EmailBody = ({ onTemplateChange, templateList, recipientList, classificati
                     <CustomSelect options={signatureList} label={"Signature"} id="signature" name="signature" />
                 </div>
                 <div className="form-group col-md-2">
-                    <FileUpload label={"Attachment File"} id="attachmentFile" name="attachmentFile" />
+                    <FileUpload label={"Attachment File"} id="attachmentFile" name="attachmentFile" multiple={true} />
                 </div>
             </div>
 

@@ -31,10 +31,13 @@ export const submitEmailData = async (data) => {
     } else {
         if (data.attachmentFile) {
             const formData = new FormData();
-            formData.append("file", data.attachmentFile);
+            for (let i = 0; i < data.attachmentFile.length; i++) {
+                const file = data.attachmentFile[i];
+                formData.append(`file-${i}`, file);
+            }
             var result = await submitAttachment(formData);
             if (result.status === "OK") {
-                data.attachmentFileName = result.attachmentFile;
+                data.attachmentFiles = result.attachmentFiles;
             } else {
                 return "FAIL";
             }

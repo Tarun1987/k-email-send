@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Collections.Generic;
+using System.Web;
 
 namespace EmailSenderApi.Models.Request
 {
@@ -20,7 +21,7 @@ namespace EmailSenderApi.Models.Request
 
         public string SignatureString { get; set; }
 
-        public string AttachmentFileName { get; set; }
+        public IList<string> AttachmentFiles { get; set; }
 
         public string GetEmailBody()
         {

@@ -32,9 +32,14 @@ namespace EmailSenderApi.Controllers
 
                 var recipientService = new RecipientService();
 
-                var attachmentFilePath = "";
-                if (!string.IsNullOrWhiteSpace(model.AttachmentFileName))
-                    attachmentFilePath = PostedAttachmentFilePath(model.AttachmentFileName);
+                IList<string> attachments = new List<string>();
+                if (model.AttachmentFiles != null)
+                {
+                    foreach (var fileName in model.AttachmentFiles)
+                    {
+                        attachments.Add(PostedAttachmentFilePath(fileName));
+                    }
+                }
 
                 var signature = new SignatureService().GetSignatureById(model.SignatureId);
                 if (signature == null)
@@ -47,7 +52,7 @@ namespace EmailSenderApi.Controllers
                 // Get email list by reading excel file.
                 var emailList = recipientService.GetRecipients(model.selectedRecipient, LoggedInUserId);
 
-                Thread myNewThread = new Thread(() => SendEmailInBackground(emailList, model, attachmentFilePath, uniqueId));
+                Thread myNewThread = new Thread(() => SendEmailInBackground(emailList, model, attachments, uniqueId));
                 myNewThread.Start();
 
                 return Ok(new { UniqueId = uniqueId, TotalCount = emailList.Count });
@@ -72,17 +77,23 @@ namespace EmailSenderApi.Controllers
                     throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
                 }
 
-                HttpPostedFile postedFile = HttpContext.Current.Request.Files[0];
-                string filePath = PostedAttachmentFilePath(postedFile.FileName);
+                IList<string> attachmentFiles = new List<string>();
+                for (int i = 0; i < HttpContext.Current.Request.Files.Count; i++)
+                {
+                    HttpPostedFile postedFile = HttpContext.Current.Request.Files[i];
+                    string filePath = PostedAttachmentFilePath(postedFile.FileName);
 
-                // Check if file exists
-                if (System.IO.File.Exists(filePath))
-                    System.IO.File.Delete(filePath);
+                    // Check if file exists
+                    if (System.IO.File.Exists(filePath))
+                        System.IO.File.Delete(filePath);
 
-                postedFile.SaveAs(filePath);
-                return Ok(new { status = "OK", attachmentFile = postedFile.FileName });
+                    postedFile.SaveAs(filePath);
+                    attachmentFiles.Add(postedFile.FileName);
+                }
+
+                return Ok(new { status = "OK", attachmentFiles });
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Logger.Log(e.Message);
                 return Fail();
@@ -98,12 +109,12 @@ namespace EmailSenderApi.Controllers
         /// <param name="model">Data submitted from front end</param>
         /// <param name="attachmentFilePath">Path of saved attachment file</param>
         /// <param name="uniqueId">Log file name</param>
-        private void SendEmailInBackground(IList<Recipient> recipientList, EmailSendModel model, string attachmentFilePath, string uniqueId)
+        private void SendEmailInBackground(IList<Recipient> recipientList, EmailSendModel model, IList<string> attachments, string uniqueId)
         {
             foreach (var data in recipientList)
             {
                 Thread.Sleep(1000);
-                var emailSendStatus = SendEmail(data.ClientEmail, model.GetEmailBody(), model.Subject, data.CC, data.BCC, attachmentFilePath);
+                var emailSendStatus = SendEmail(data.ClientEmail, model.GetEmailBody(), model.Subject, data.CC, data.BCC, attachments);
 
                 new HistoryService().SaveHistory(new History
                 {
@@ -126,7 +137,7 @@ namespace EmailSenderApi.Controllers
         /// <param name="bcc"></param>
         /// <param name="attachmentFilePath"></param>
         /// <returns></returns>
-        private bool SendEmail(string email, string body, string subject, string cc, string bcc, string attachmentFilePath)
+        private bool SendEmail(string email, string body, string subject, string cc, string bcc, IList<string> attachments)
         {
             return true;
             // Todo: Email sending code here
