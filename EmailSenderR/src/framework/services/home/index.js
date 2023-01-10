@@ -52,3 +52,12 @@ export const submitEmailData = async (data) => {
 export const getClassificationMaster = async () => {
     return DELAYED(CLASSIFICATION_LIST);
 };
+
+export const previewEmailData = async (data) => {
+    if (USE_MOCK_DATA) {
+        return DELAYED({ status: "OK", previewData: "this is result from server" });
+    } else {
+        var response = await POST(`EmailSend/previewEmailData`, data);
+        return response.data;
+    }
+};

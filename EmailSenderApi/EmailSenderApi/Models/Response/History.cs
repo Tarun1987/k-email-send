@@ -15,10 +15,18 @@ namespace EmailSenderApi.Models.Response
         {
             get
             {
-                var dateFormat = "yyyy-MM-dd";
+                var dateFormat = "dd-MM-yyyy HH:mm:ss";
 
                 if (SendAt == null) return DateTime.Now.ToString(dateFormat);
                 return SendAt.ToString(dateFormat);
+            }
+        }
+
+        public string SendAtDbFormat
+        {
+            get
+            {
+                return SendAt.ToString("yyyy-MM-dd HH:mm:ss");
             }
         }
     }

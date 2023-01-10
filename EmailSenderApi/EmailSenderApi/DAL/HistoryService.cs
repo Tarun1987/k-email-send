@@ -17,7 +17,7 @@ namespace EmailSenderApi.DAL
         {
             using (var connection = GetDbConnection())
             {
-                string oString = $"INSERT INTO {EmailHistories}(Status, Html, RecipientTemplateName, UniqueId) VALUES('{data.Status}', '{data.Html}', '{data.RecipientTemplateName}', '{data.UniqueId}');";
+                string oString = $"INSERT INTO {EmailHistories}(Status, Html, RecipientTemplateName, UniqueId, SendAt) VALUES('{data.Status}', '{data.Html}', '{data.RecipientTemplateName}', '{data.UniqueId}', '{data.SendAtDbFormat}');";
                 var oCmd = new SQLiteCommand(oString, connection);
                 try
                 {
@@ -47,7 +47,7 @@ namespace EmailSenderApi.DAL
 
                 if (limit > 0)
                 {
-                    query += $" ORDER BY SendAt DESC {Pagination.GetLimitOffsetString(page, limit)}";
+                    query += $" ORDER BY Id DESC {Pagination.GetLimitOffsetString(page, limit)}";
                 }
 
                 var oCmd = new SQLiteCommand(query, connection);

@@ -140,7 +140,7 @@ const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: h
                                 <tr key={key}>
                                     <th scope="row">{item.Id}</th>
                                     <td>{item.Name}</td>
-                                    <td>{item.OwnerId}</td>
+                                    <td>{item.OwnerName}</td>
                                     <td>
                                         <CustomCheckBox
                                             checked={item.Share}

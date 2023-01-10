@@ -71,7 +71,7 @@ const Screen = ({ onLoad: loadData, getTotalHistoryCount }) => {
                                                         <tr key={key}>
                                                             <th scope="row">{item.Id}</th>
                                                             <td>
-                                                                <label className="badge bg-danger">{item.SendAt}</label>
+                                                                <label className="badge bg-danger">{item.FormattedSendAt}</label>
                                                             </td>
                                                             <td>
                                                                 <label className="badge bg-purple">{item.RecipientTemplateName}</label>

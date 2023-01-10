@@ -13,7 +13,7 @@ namespace EmailSenderApi.DAL
             IList<SignatureTemplate> list = new List<SignatureTemplate>();
             using (var connection = GetDbConnection())
             {
-                var command = $"Select * from {EmailSignatures} WHERE Share = 1";
+                var command = $"Select t.*, u.Name as FirstName, u.LastName FROM {EmailSignatures} t LEFT JOIN {Users} u on t.OwnerId = u.Id WHERE t.Share = 1";
                 if (onlyMy)
                     command += $" OR OwnerId={loggedInUserId};";
 
@@ -32,7 +32,9 @@ namespace EmailSenderApi.DAL
                                 Name = oReader["Name"].ToString(),
                                 OwnerId = Convert.ToInt32(oReader["OwnerId"]),
                                 Share = Convert.ToBoolean(oReader["Share"]),
-                                LoggedInUserId = loggedInUserId
+                                LoggedInUserId = loggedInUserId,
+                                FirstName = oReader["FirstName"].ToString(),
+                                LastName = oReader["LastName"].ToString(),
                             };
 
                             list.Add(obj);
@@ -59,7 +61,7 @@ namespace EmailSenderApi.DAL
             IList<SignatureTemplate> list = new List<SignatureTemplate>();
             using (var connection = GetDbConnection())
             {
-                var oCmd = new SQLiteCommand($"Select * from {EmailSignatures} WHERE Id={id}", connection);
+                var oCmd = new SQLiteCommand($"Select t.*, u.Name as FirstName, u.LastName FROM {EmailSignatures} t LEFT JOIN {Users} u on t.OwnerId = u.Id WHERE t.Id={id}", connection);
                 try
                 {
                     connection.Open();
@@ -74,6 +76,8 @@ namespace EmailSenderApi.DAL
                                 Name = oReader["Name"].ToString(),
                                 OwnerId = Convert.ToInt32(oReader["OwnerId"]),
                                 Share = Convert.ToBoolean(oReader["Share"]),
+                                FirstName = oReader["FirstName"].ToString(),
+                                LastName = oReader["LastName"].ToString()
                             };
 
                             list.Add(obj);
@@ -87,7 +91,7 @@ namespace EmailSenderApi.DAL
                     Logger.Log(e.Message);
                 }
             }
-            return list[0];
+            return list.Count > 0 ? list[0] : null;
         }
 
         /// <summary>

@@ -18,6 +18,7 @@ const Screen = ({
     getRecipientListByName,
     loadEmailSendProgress,
     getSignatures,
+    onEmailPreview: handleEmailPreview,
 }) => {
     const formikRef = createRef();
     const toast = useToast();
@@ -138,17 +139,7 @@ const Screen = ({
 
     const handleConfirmModalSubmit = async () => {
         try {
-            var data = {
-                attachmentFile: dataToSubmit.attachmentFile,
-                subject: dataToSubmit.subject,
-                greeting: dataToSubmit.greetings,
-                selectedTemplate: dataToSubmit.selectedTemplate,
-                body: dataToSubmit.body,
-                classification: dataToSubmit.classification,
-                selectedRecipient: dataToSubmit.selectedRecipient,
-                signatureId: dataToSubmit.signature,
-            };
-
+            var data = getEmailSubmitBody(dataToSubmit);
             formikRef.current.setSubmitting(true);
             setShowConfirmModal(false);
             var result = await submitFormData(data);
@@ -174,6 +165,40 @@ const Screen = ({
         } catch (error) {}
     };
 
+    const getEmailSubmitBody = (values) => {
+        return {
+            attachmentFile: values.attachmentFile,
+            subject: values.subject,
+            greeting: `<span style="font-family: Calibri;">${values.greetings}</span>`,
+            selectedTemplate: values.selectedTemplate,
+            body: values.body,
+            classification: values.classification,
+            selectedRecipient: values.selectedRecipient,
+            signatureId: values.signature,
+        };
+    };
+
+    const handlePreview = async (values, setSubmitting) => {
+        setSubmitting(true);
+        try {
+            var result = await handleEmailPreview(getEmailSubmitBody(values));
+            setSubmitting(false);
+            if (result.status === "OK") {
+                var win = window.open(
+                    "",
+                    "Title",
+                    "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=200,top=" +
+                        (screen.height - 400) +
+                        ",left=" +
+                        (screen.width - 840)
+                );
+                win.document.body.innerHTML = result.previewData;
+            }
+        } catch (error) {
+            setSubmitting(false);
+        }
+    };
+
     return (
         <>
             {showConfirmModal && (
@@ -192,7 +217,7 @@ const Screen = ({
                 validateOnChange={false}
             >
                 {(formik) => {
-                    const { setFieldValue, values, isSubmitting } = formik;
+                    const { setFieldValue, values, isSubmitting, setSubmitting } = formik;
                     return (
                         <Form>
                             <div className="container-fluid _Home">
@@ -224,6 +249,17 @@ const Screen = ({
                                             <div className="form-group col-md-12">
                                                 <CustomButton type="submit" className="btn btn-primary" style={{ float: "right" }}>
                                                     Submit
+                                                </CustomButton>
+                                                <CustomButton
+                                                    className="btn btn-secondary"
+                                                    name="btnPreview"
+                                                    type="button"
+                                                    style={{ float: "right", marginRight: "5px" }}
+                                                    onClick={() => {
+                                                        handlePreview(values, setSubmitting);
+                                                    }}
+                                                >
+                                                    Preview
                                                 </CustomButton>
                                             </div>
                                         </div>

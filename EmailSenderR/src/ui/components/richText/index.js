@@ -135,6 +135,13 @@ const editorConfig = {
         insertImageAsBase64URI: true,
     },
     height: 400,
+    controls: {
+        font: {
+            list: {
+                Calibri: "Calibri",
+            },
+        },
+    },
 };
 
 const RichText = (props) => {

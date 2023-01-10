@@ -42,12 +42,8 @@ namespace EmailSenderApi.Controllers
                 }
 
                 var signature = new SignatureService().GetSignatureById(model.SignatureId);
-                if (signature == null)
-                {
-                    Logger.Log("Invalid signature");
-                    return Fail();
-                }
-                model.SignatureString = signature.Html;
+                if (signature != null)
+                    model.SignatureString = signature.Html;
 
                 // Get email list by reading excel file.
                 var emailList = recipientService.GetRecipients(model.selectedRecipient, LoggedInUserId);
@@ -98,6 +94,17 @@ namespace EmailSenderApi.Controllers
                 Logger.Log(e.Message);
                 return Fail();
             }
+        }
+
+        [HttpPost]
+        [Route("api/EmailSend/previewEmailData")]
+        public IHttpActionResult PreviewEmailData(EmailSendModel model)
+        {
+            var signature = new SignatureService().GetSignatureById(model.SignatureId);
+            if (signature != null)
+                model.SignatureString = signature.Html;
+
+            return Ok(new { status = "OK", previewData = model.GetEmailBody() });
         }
 
         #region private section
