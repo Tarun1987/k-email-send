@@ -25,7 +25,7 @@ const Screen = ({
 
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [showSendProgress, setShowSendProgress] = useState(false);
-    const [progressPercent, setProgressPercent] = useState(-1);
+    const [progressResult, setProgressResult] = useState({ percent: 0, failed: 0, passed: 0 });
     const [submitResponse, setSubmitResponse] = useState({});
     const [dataToSubmit, setDataToSubmit] = useState({});
     const [recipientUserList, setRecipientUserList] = useState([]);
@@ -44,7 +44,7 @@ const Screen = ({
 
     useEffect(() => {
         if (showSendProgress) {
-            if (progressPercent < 100) {
+            if (progressResult.percent < 100) {
                 setTimeout(() => {
                     getSendingProgress(submitResponse);
                 }, 1500);
@@ -53,11 +53,16 @@ const Screen = ({
                 formikRef.current.resetForm();
                 setTimeout(() => {
                     setShowSendProgress(false);
-                    toast.success("Send to all.");
+                    var message = `Process completed :: Passed: ${progressResult.passed} | Failed: ${progressResult.failed}.`;
+                    if (progressResult.failed == 0) {
+                        toast.success(message);
+                    } else {
+                        toast.danger(message);
+                    }
                 }, 500);
             }
         }
-    }, [showSendProgress, progressPercent]);
+    }, [showSendProgress, progressResult]);
 
     useEffect(() => {
         if (recipientUserList.length > 0) {
@@ -157,11 +162,10 @@ const Screen = ({
 
     const getSendingProgress = async (response) => {
         try {
-            const progressResult = await loadEmailSendProgress(response.UniqueId, progressPercent);
-            var percent = (parseInt(progressResult.completed) / parseInt(response.TotalCount)) * 100;
+            const pResult = await loadEmailSendProgress(response.UniqueId, progressResult.percent);
+            var percent = (parseInt(pResult.completed) / parseInt(response.TotalCount)) * 100;
             setShowSendProgress(true);
-            if (percent === 0) percent = Math.random(0, 0.5);
-            setProgressPercent(percent);
+            setProgressResult({ percent, failed: pResult.failed, passed: pResult.passed });
         } catch (error) {}
     };
 
@@ -169,7 +173,7 @@ const Screen = ({
         return {
             attachmentFile: values.attachmentFile,
             subject: values.subject,
-            greeting: `<span style="font-family: Calibri;">${values.greetings}</span>`,
+            greeting: `<span style="font-family: Calibri;">${values.greetings} [CLIENT_NAME]</span>`,
             selectedTemplate: values.selectedTemplate,
             body: values.body,
             classification: values.classification,
@@ -223,7 +227,7 @@ const Screen = ({
                             <div className="container-fluid _Home">
                                 {showSendProgress && (
                                     <div className="col-md" style={{ marginBottom: "10px" }}>
-                                        <ProgressBar animated now={progressPercent} label={`${progressPercent.toFixed()}%`} />
+                                        <ProgressBar animated now={progressResult.percent} label={`${progressResult.percent.toFixed()}%`} />
                                     </div>
                                 )}
                                 <div className="card">
@@ -242,7 +246,7 @@ const Screen = ({
                                                 />
                                             </div>
                                             <div className="form-group col-md-12">
-                                                <RichText label={"Body of Email"} id="body" name="body" />
+                                                <RichText label={"Body of Email"} id="body" name="body" requiredStar={true} />
                                             </div>
                                         </div>
                                         <div className="row">

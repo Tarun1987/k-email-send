@@ -70,7 +70,7 @@ const buttons = [
     "eraser",
     "copyformat",
     "|",
-    "fullsize",
+    // "fullsize",
     "selectall",
     "print",
     "|",
@@ -161,7 +161,10 @@ const RichText = (props) => {
 
     return (
         <>
-            <label htmlFor={props.id}>{props.label}</label>
+            <label htmlFor={props.id}>
+                {props.label}
+                {props.requiredStar && <span className="text-danger">*</span>}
+            </label>
             <br />
             <div className="_RichText">
                 <JoditEditor ref={editor} value={value} config={editorConfig} onBlur={handleUpdate} onChange={handleChange} />

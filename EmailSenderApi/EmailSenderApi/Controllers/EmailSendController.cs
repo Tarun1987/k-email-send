@@ -3,6 +3,7 @@ using EmailSenderApi.Helpers;
 using EmailSenderApi.Models.Request;
 using EmailSenderApi.Models.Response;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
@@ -13,13 +14,17 @@ namespace EmailSenderApi.Controllers
 {
     public class EmailSendController : BaseController
     {
+        private readonly string _passedStatus = "Success";
+        private readonly string _failedStatus = "Failed";
 
         [HttpGet]
         public IHttpActionResult GetProgress(string uniqueId)
         {
             var dbService = new HistoryService();
             var result = dbService.GetHistoryBy(uniqueId, -1, -1);
-            return Ok(new { completed = result.Count, uniqueId });
+            var failed = result.Count(x => x.Status == _passedStatus);
+            var passed = result.Count(x => x.Status == _failedStatus);
+            return Ok(new { completed = result.Count, uniqueId, passed, failed });
         }
 
         [HttpPost]
@@ -128,7 +133,7 @@ namespace EmailSenderApi.Controllers
                     Html = model.GetEmailBody(),
                     RecipientTemplateName = model.selectedRecipient,
                     SendAt = DateTime.Now,
-                    Status = emailSendStatus ? "Success" : "Failed",
+                    Status = emailSendStatus ? _passedStatus : _failedStatus,
                     UniqueId = uniqueId
                 });
             }
@@ -153,4 +158,5 @@ namespace EmailSenderApi.Controllers
         #endregion
 
     }
+
 }

@@ -100,5 +100,36 @@ namespace EmailSenderApi.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("api/test/updatelastname")]
+        public IHttpActionResult UpdateLastName(string lastName, int userId)
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(_dbStr))
+                {
+                    string oString = $"UPDATE Users SET LastName={lastName} WHERE Id={userId}";
+                    var oCmd = new SQLiteCommand(oString, connection);
+                    try
+                    {
+                        connection.Open();
+                        oCmd.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Log(e.Message);
+                    }
+                }
+                return Ok();
+
+            }
+            catch (Exception)
+            {
+                return Fail();
+            }
+        }
+
     }
 }

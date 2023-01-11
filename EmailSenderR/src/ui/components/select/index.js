@@ -15,7 +15,10 @@ const CustomSelect = (props) => {
 
     return (
         <>
-            <label htmlFor={props.id}>{props.label}</label>
+            <label htmlFor={props.id}>
+                {props.label}
+                {props.requiredStar && <span className="text-danger">*</span>}
+            </label>
             <select
                 onBlur={() => {
                     setTouched(true);

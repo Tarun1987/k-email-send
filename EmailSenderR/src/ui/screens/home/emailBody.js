@@ -10,7 +10,13 @@ const EmailBody = ({ onTemplateChange, templateList, recipientList, classificati
         <>
             <div className="row">
                 <div className="form-group col-md-3">
-                    <CustomSelect options={recipientList} label={"Select Recipient"} id="selectedRecipient" name="selectedRecipient" />
+                    <CustomSelect
+                        options={recipientList}
+                        label={"Select Recipient"}
+                        id="selectedRecipient"
+                        name="selectedRecipient"
+                        requiredStar={true}
+                    />
                 </div>
                 <div className="form-group col-md-3">
                     <CustomSelect
@@ -19,10 +25,17 @@ const EmailBody = ({ onTemplateChange, templateList, recipientList, classificati
                         id="selectedTemplate"
                         name="selectedTemplate"
                         onChange={onTemplateChange}
+                        requiredStar={true}
                     />
                 </div>
                 <div className="form-group col-md-2">
-                    <CustomSelect options={classificationList} label={"Email Classification"} id="classification" name="classification" />
+                    <CustomSelect
+                        options={classificationList}
+                        label={"Email Classification"}
+                        id="classification"
+                        name="classification"
+                        requiredStar={true}
+                    />
                 </div>
                 <div className="form-group col-md-2">
                     <CustomSelect options={signatureList} label={"Signature"} id="signature" name="signature" />
@@ -34,13 +47,14 @@ const EmailBody = ({ onTemplateChange, templateList, recipientList, classificati
 
             <div className="row">
                 <div className="form-group col-md-8">
-                    <CustomInput label={"Email Subject"} id="subject" name="subject" />
+                    <CustomInput label={"Email Subject"} id="subject" name="subject" requiredStar={true} />
                 </div>
                 <div className="form-group col-md-4">
                     <CustomInput
                         label={"Greetings"}
                         id="greetings"
                         name="greetings"
+                        requiredStar={true}
                         infoIcon={
                             <OverlayTrigger
                                 key={"tooltip"}
