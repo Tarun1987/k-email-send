@@ -35,6 +35,9 @@ const SignatureTemplateForm = ({ activeTab, validationSchema, editItem, onSubmit
         if (result) {
             setIsOpen(false);
             toast.success(`${activeTab} ${isUpdating ? "updated" : "created"} successfully!!`);
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
             formikRef.current.resetForm();
         }
     };

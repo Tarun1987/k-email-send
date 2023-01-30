@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 import { useToast, withToastProvider } from "../../components/toast";
 import CustomButton from "../../components/button";
 import BreadCrumb from "../../components/breadcrumb";
@@ -156,6 +158,12 @@ const Screen = ({
         setSelectedTemplate(null);
     };
 
+    const formatLongString = (str) => {
+        if (!str || str.length < 30) return str;
+
+        return str.substr(0, 30) + "...";
+    };
+
     return (
         <>
             {showConfirm && (
@@ -261,7 +269,9 @@ const Screen = ({
                                             <thead>
                                                 <tr>
                                                     <th className="border-top-0">Client Email</th>
-                                                    <th className="border-top-0">CC</th>
+                                                    <th className="border-top-0" style={{ maxWidth: "300px" }}>
+                                                        CC
+                                                    </th>
                                                     <th className="border-top-0">BCC</th>
                                                     <th className="border-top-0">Client Name</th>
                                                     <th className="border-top-0">Share</th>
@@ -288,7 +298,7 @@ const Screen = ({
                                                                     <span> {item.ClientEmail}</span>
                                                                 )}
                                                             </td>
-                                                            <td>
+                                                            <td style={{ maxWidth: "300px" }}>
                                                                 {item.Editing ? (
                                                                     <input
                                                                         type="text"
@@ -300,7 +310,13 @@ const Screen = ({
                                                                         }}
                                                                     />
                                                                 ) : (
-                                                                    <span> {item.CC}</span>
+                                                                    <OverlayTrigger
+                                                                        key={"tooltip"}
+                                                                        placement={"top"}
+                                                                        overlay={<Tooltip id={`tooltip`}>{item.CC}</Tooltip>}
+                                                                    >
+                                                                        <span> {formatLongString(item.CC)}</span>
+                                                                    </OverlayTrigger>
                                                                 )}
                                                             </td>
                                                             <td>
@@ -315,7 +331,13 @@ const Screen = ({
                                                                         }}
                                                                     />
                                                                 ) : (
-                                                                    <span> {item.BCC}</span>
+                                                                    <OverlayTrigger
+                                                                        key={"tooltip"}
+                                                                        placement={"top"}
+                                                                        overlay={<Tooltip id={`tooltip`}>{item.BCC}</Tooltip>}
+                                                                    >
+                                                                        <span> {formatLongString(item.BCC)}</span>
+                                                                    </OverlayTrigger>
                                                                 )}
                                                             </td>
                                                             <td>

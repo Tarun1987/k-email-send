@@ -73,7 +73,6 @@ const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: h
             setLoading(true);
             var result = await handleFormSubmit(data);
             setLoading(false);
-            getData();
             return true;
         } catch (error) {
             console.log(error);

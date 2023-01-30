@@ -25,7 +25,6 @@ const EmailBody = ({ onTemplateChange, templateList, recipientList, classificati
                         id="selectedTemplate"
                         name="selectedTemplate"
                         onChange={onTemplateChange}
-                        requiredStar={true}
                     />
                 </div>
                 <div className="form-group col-md-2">

@@ -16,8 +16,8 @@ export const RECIPIENT_LIST = [
         ClientEmail: "test1@gmail.com",
         Share: true,
         IsActive: true,
-        CC: "test@gmail.com",
-        BCC: "test@gmail.com",
+        CC: "test@gmail.com,test@gmail.com,test@gmail.com,test@gmail.com,test@gmail.com",
+        BCC: "test@gmail.com,test@gmail.com,test@gmail.com,test@gmail.com",
     },
     {
         TemplateId: 2,
