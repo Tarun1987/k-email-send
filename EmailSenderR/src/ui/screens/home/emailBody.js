@@ -2,6 +2,7 @@ import React from "react";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import CustomInput from "../../components/input";
+import GreetingControl from "../../components/greetingControl";
 import FileUpload from "../../components/fileUpload";
 import CustomSelect from "../../components/select";
 
@@ -49,7 +50,7 @@ const EmailBody = ({ onTemplateChange, templateList, recipientList, classificati
                     <CustomInput label={"Email Subject"} id="subject" name="subject" requiredStar={true} />
                 </div>
                 <div className="form-group col-md-4">
-                    <CustomInput
+                    <GreetingControl
                         label={"Greetings"}
                         id="greetings"
                         name="greetings"

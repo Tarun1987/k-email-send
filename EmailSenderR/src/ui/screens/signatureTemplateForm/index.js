@@ -7,11 +7,11 @@ import RichText from "../../components/richText";
 import CustomButton from "../../components/button";
 import { useEffect } from "react";
 
-const SignatureTemplateForm = ({ activeTab, validationSchema, editItem, onSubmit: handleSubmit }) => {
+const SignatureTemplateForm = ({ activeTab, validationSchema, editItem, onSubmit: handleSubmit, onCancel: handleCancel }) => {
     const formikRef = createRef();
     const toast = useToast();
     const [open, setIsOpen] = useState(false);
-    const [initialValues, setInitialValues] = useState({});
+    const [initialValues, setInitialValues] = useState({ name: "", body: "" });
 
     useEffect(() => {
         if (editItem && Object.keys(editItem).length > 0) {
@@ -20,25 +20,24 @@ const SignatureTemplateForm = ({ activeTab, validationSchema, editItem, onSubmit
                 body: editItem.Html,
             });
             setIsOpen(true);
+            window.scrollTo(0, 0);
         }
     }, [editItem]);
 
-    const handleCancelClick = () => {
-        setIsOpen(false);
-        formikRef.current.resetForm();
-    };
+    useEffect(() => {
+        if (!open) {
+            setInitialValues({ name: "", body: "" });
+            formikRef.current.resetForm();
+        }
+    }, [open]);
 
     const onFormSubmit = async (data) => {
         var isUpdating = editItem && Object.keys(editItem).length > 0;
         if (isUpdating) data.id = editItem.Id;
         var result = await handleSubmit(data);
         if (result) {
-            setIsOpen(false);
             toast.success(`${activeTab} ${isUpdating ? "updated" : "created"} successfully!!`);
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000);
-            formikRef.current.resetForm();
+            setIsOpen(false);
         }
     };
 
@@ -60,7 +59,7 @@ const SignatureTemplateForm = ({ activeTab, validationSchema, editItem, onSubmit
 
             <Formik
                 innerRef={formikRef}
-                enableReinitialize={editItem && Object.keys(editItem).length > 0}
+                enableReinitialize={true}
                 validateOnChange={false}
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -91,7 +90,10 @@ const SignatureTemplateForm = ({ activeTab, validationSchema, editItem, onSubmit
                                             <CustomButton
                                                 type="button"
                                                 className="btn btn-secondary"
-                                                onClick={handleCancelClick}
+                                                onClick={() => {
+                                                    handleCancel();
+                                                    setIsOpen(false);
+                                                }}
                                                 style={{ float: "right" }}
                                             >
                                                 Cancel

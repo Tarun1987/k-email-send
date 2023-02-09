@@ -174,7 +174,7 @@ const Screen = ({
         return {
             attachmentFile: values.attachmentFile,
             subject: values.subject,
-            greeting: `<span style="font-family: Calibri;">${values.greetings} [CLIENT_NAME]</span>`,
+            greeting: values.greetings,
             selectedTemplate: values.selectedTemplate,
             body: values.body,
             classification: values.classification,

@@ -121,6 +121,9 @@ const Screen = ({ onLoad: loadData, onSubmit: handleFormSubmit, onShareUpdate: h
                     editItem={editItem}
                     validationSchema={ValidationSchema}
                     onSubmit={handleSubmit}
+                    onCancel={() => {
+                        setEditItem({});
+                    }}
                 />
             </BreadCrumb>
             <SignatureTemplateLayout isLoading={isLoading} activeTab={"Templates"}>
