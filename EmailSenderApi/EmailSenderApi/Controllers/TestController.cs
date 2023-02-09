@@ -1,5 +1,6 @@
 ﻿using EmailSenderApi.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Web.Hosting;
 using System.Web.Http;
@@ -71,6 +72,39 @@ namespace EmailSenderApi.Controllers
         }
 
         [HttpGet]
+        [Route("api/test/addreportemail")]
+        public IHttpActionResult AddReportEmailColumn()
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(_dbStr))
+                {
+                    string oString = $"ALTER TABLE EmailHistories ADD COLUMN ToEmail TEXT;";
+                    var oCmd = new SQLiteCommand(oString, connection);
+                    try
+                    {
+                        connection.Open();
+                        oCmd.ExecuteNonQuery();
+                        connection.Close();
+                        return Ok("Success");
+
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Log(e.Message);
+                        return Ok(e.Message);
+
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                return Fail();
+            }
+        }
+
+        [HttpGet]
         [Route("api/test/updateowner")]
         public IHttpActionResult UpdateRecipient(string templateName, int ownerId)
         {
@@ -129,6 +163,27 @@ namespace EmailSenderApi.Controllers
             {
                 return Fail();
             }
+        }
+
+        [HttpGet]
+        [Route("api/test/email")]
+        public IHttpActionResult VerifySomething(string str)
+        {
+            if (string.IsNullOrWhiteSpace(str)) return Ok("No data");
+            var list = str.Split(',');
+
+            var updatedList = new List<string>();
+            foreach (var item in list)
+            {
+                var res = item.Trim()
+                    .Replace(",", "")
+                    .Replace("|", "")
+                    .Replace(";", "");
+
+                updatedList.Add(res);
+            }
+
+            return Ok(String.Join(",", updatedList));
         }
 
     }

@@ -105,6 +105,7 @@
     <Compile Include="Controllers\SignatureController.cs" />
     <Compile Include="Controllers\TemplatesController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="DAL\BaseService.cs" />
     <Compile Include="DAL\HistoryService.cs" />
     <Compile Include="DAL\SignatureService.cs" />

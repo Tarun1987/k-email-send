@@ -59,6 +59,7 @@ const Screen = ({ onLoad: loadData, getTotalHistoryCount }) => {
                                             <thead>
                                                 <tr>
                                                     <th className="border-top-0">Id</th>
+                                                    <th className="border-top-0">Send To</th>
                                                     <th className="border-top-0">Date Send</th>
                                                     <th className="border-top-0">Template Name</th>
                                                     <th className="border-top-0">Status</th>
@@ -70,6 +71,7 @@ const Screen = ({ onLoad: loadData, getTotalHistoryCount }) => {
                                                     return (
                                                         <tr key={key}>
                                                             <th scope="row">{item.Id}</th>
+                                                            <th scope="row">{item.ToEmail}</th>
                                                             <td>
                                                                 <label className="badge bg-danger">{item.FormattedSendAt}</label>
                                                             </td>

@@ -125,16 +125,15 @@ namespace EmailSenderApi.Controllers
         {
             foreach (var data in recipientList)
             {
-                Thread.Sleep(1000);
                 var emailSendStatus = SendEmail(data.ClientEmail, model.GetEmailBody(), model.Subject, data.CC, data.BCC, attachments);
-
                 new HistoryService().SaveHistory(new History
                 {
                     Html = model.GetEmailBody(),
                     RecipientTemplateName = model.selectedRecipient,
                     SendAt = DateTime.Now,
                     Status = emailSendStatus ? _passedStatus : _failedStatus,
-                    UniqueId = uniqueId
+                    UniqueId = uniqueId,
+                    ToEmail = "toemail@something.com"
                 });
             }
         }
@@ -151,6 +150,7 @@ namespace EmailSenderApi.Controllers
         /// <returns></returns>
         private bool SendEmail(string email, string body, string subject, string cc, string bcc, IList<string> attachments)
         {
+            Thread.Sleep(1000);
             return true;
             // Todo: Email sending code here
         }

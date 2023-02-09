@@ -1,0 +1,4 @@
+Log: $08-02-2023 6.09.03 PM :: SQL logic error
+duplicate column name: ToEmail
+Log: $08-02-2023 6.09.28 PM :: Invalid length for a Base-64 char array or string.
+Log: $08-02-2023 6.19.24 PM :: No current row

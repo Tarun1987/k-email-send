@@ -164,6 +164,19 @@ const Screen = ({
         return str.substr(0, 30) + "...";
     };
 
+    const processString = (str) => {
+        if (!str) return str;
+
+        var list = str.split(",");
+        var updatedList = [];
+        for (let i = 0; i < list.length; i++) {
+            if (!!list[i]) {
+                updatedList.push(list[i]);
+            }
+        }
+        return updatedList.join(",");
+    };
+
     return (
         <>
             {showConfirm && (

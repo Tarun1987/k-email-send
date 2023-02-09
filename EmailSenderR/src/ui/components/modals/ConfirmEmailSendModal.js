@@ -5,7 +5,7 @@ import CustomModal from "./CustomModal";
 const ConfirmEmailSendModal = ({ show, onClose: handleClose, onSubmit: handleSubmit, list }) => {
     return (
         <CustomModal
-            size="lg"
+            size="xl"
             show={show}
             onClose={handleClose}
             onSubmit={handleSubmit}

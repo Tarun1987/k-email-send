@@ -17,7 +17,7 @@ namespace EmailSenderApi.DAL
         {
             using (var connection = GetDbConnection())
             {
-                string oString = $"INSERT INTO {EmailHistories}(Status, Html, RecipientTemplateName, UniqueId, SendAt) VALUES('{data.Status}', '{data.Html}', '{data.RecipientTemplateName}', '{data.UniqueId}', '{data.SendAtDbFormat}');";
+                string oString = $"INSERT INTO {EmailHistories}(Status, Html, RecipientTemplateName, UniqueId, SendAt, ToEmail) VALUES('{data.Status}', '{data.Html}', '{data.RecipientTemplateName}', '{data.UniqueId}', '{data.SendAtDbFormat}', '{data.ToEmail}');";
                 var oCmd = new SQLiteCommand(oString, connection);
                 try
                 {
@@ -64,6 +64,7 @@ namespace EmailSenderApi.DAL
                                 Status = oReader["Status"].ToString(),
                                 Html = oReader["Html"].ToString(),
                                 UniqueId = oReader["UniqueId"].ToString(),
+                                ToEmail = oReader["ToEmail"] is DBNull ? string.Empty : oReader["ToEmail"].ToString(),
                                 RecipientTemplateName = oReader["RecipientTemplateName"].ToString(),
                                 SendAt = oReader["SendAt"] is DBNull ? DateTime.Now : Convert.ToDateTime(oReader["SendAt"]),
                             };

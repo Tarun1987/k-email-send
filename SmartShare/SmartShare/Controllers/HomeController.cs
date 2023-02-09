@@ -11,6 +11,7 @@ namespace SmartShare.Controllers
         [Route("api/home/getFile")]
         public IHttpActionResult GetFile(string fileName, string filePath, string token)
         {
+            TestSomething();
             //Create HTTP Response.
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
             if (token != "1234")
@@ -42,6 +43,15 @@ namespace SmartShare.Controllers
             {
                 response = Request.CreateErrorResponse(HttpStatusCode.NotFound, new HttpError { Message = "File not found or no permissions." });
                 return ResponseMessage(response);
+            }
+        }
+
+
+        public void TestSomething() {
+            using (WebClient client = new WebClient())
+            {
+                client.Credentials = new NetworkCredential("", "");
+                client.DownloadFile("http://feeds.itunes.apple.com/feeds/epf/v3/full/current/itunes20110511.tbz.md5", @"C:\folder\file.md5");
             }
         }
     }

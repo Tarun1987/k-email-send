@@ -140,6 +140,7 @@ const Screen = ({
 
     const handleConfirmModalClose = () => {
         setShowConfirmModal(false);
+        setRecipientUserList([]);
     };
 
     const handleConfirmModalSubmit = async () => {

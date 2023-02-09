@@ -6,6 +6,7 @@ namespace EmailSenderApi.Models.Response
     {
         public int Id { get; set; }
         public string Status { get; set; }
+        public string ToEmail { get; set; }
         public string Html { get; set; }
         public string RecipientTemplateName { get; set; }
         public string UniqueId { get; set; }
