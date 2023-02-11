@@ -189,7 +189,7 @@ namespace EmailSenderApi.DAL
         {
             using (var connection = GetDbConnection())
             {
-                string oString = $"DELETE FROM {TemplateTable} WHERE Id={id} AND OwnerId=${ownerId}";
+                string oString = $"DELETE FROM {TemplateTable} WHERE Id={id} AND OwnerId={ownerId}";
                 var oCmd = new SQLiteCommand(oString, connection);
                 try
                 {

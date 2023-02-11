@@ -32,11 +32,11 @@ const GreetingControl = (props) => {
     return (
         <>
             <div className="input-group">
-                <label htmlFor={props.id}>
+                <label htmlFor={props.id} style={{ width: "100%" }}>
                     {props.label}
                     {props.requiredStar && <span className="text-danger">*</span>}
+                    {props.infoIcon && <>{props.infoIcon}</>}
                 </label>
-                {props.infoIcon && <>{props.infoIcon}</>}
                 <div className="row">
                     <input
                         style={{ width: "70%", fontFamily: font || "Default" }}

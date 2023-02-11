@@ -6,7 +6,7 @@ namespace EmailSenderApi.Models.Request
     {
         public int LoggedInUserId { get; set; }
 
-        public int? SignatureId { get; set; }
+        public int? Id { get; set; }
 
         [Required]
         public string Name { get; set; }

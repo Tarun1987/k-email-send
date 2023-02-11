@@ -28,9 +28,9 @@ namespace EmailSenderApi.Controllers
             var dbService = new SignatureService();
             if (ModelState.IsValid)
             {
-                if (model.SignatureId.HasValue && model.SignatureId.Value > 0)
+                if (model.Id.HasValue && model.Id.Value > 0)
                 {
-                    dbService.UpdateNameAndHtml(model.SignatureId.Value, model.Name, model.Body, LoggedInUserId);
+                    dbService.UpdateNameAndHtml(model.Id.Value, model.Name, model.Body, LoggedInUserId);
                 }
                 else
                 {

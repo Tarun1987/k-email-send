@@ -36,8 +36,8 @@ const SignatureTemplateForm = ({ activeTab, validationSchema, editItem, onSubmit
         if (isUpdating) data.id = editItem.Id;
         var result = await handleSubmit(data);
         if (result) {
-            toast.success(`${activeTab} ${isUpdating ? "updated" : "created"} successfully!!`);
             setIsOpen(false);
+            toast.success(`${activeTab} ${isUpdating ? "updated" : "created"} successfully!!`);
         }
     };
 
@@ -50,6 +50,7 @@ const SignatureTemplateForm = ({ activeTab, validationSchema, editItem, onSubmit
                         style={{ float: "right" }}
                         onClick={() => {
                             setIsOpen(true);
+                            handleCancel();
                         }}
                     >
                         Add new
