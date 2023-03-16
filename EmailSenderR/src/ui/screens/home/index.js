@@ -212,6 +212,7 @@ const Screen = ({
                     list={recipientUserList}
                     onClose={handleConfirmModalClose}
                     onSubmit={handleConfirmModalSubmit}
+                    titleBadgeStr={dataToSubmit.classification}
                 />
             )}
             <Formik
@@ -241,8 +242,8 @@ const Screen = ({
                                                     recipientList={recipientList}
                                                     classificationList={classificationList}
                                                     signatureList={signatureList}
-                                                    onTemplateChange={(event) => {
-                                                        handleTemplateChange(event.target.value, setFieldValue);
+                                                    onTemplateChange={(value) => {
+                                                        handleTemplateChange(value, setFieldValue);
                                                     }}
                                                 />
                                             </div>

@@ -2,7 +2,17 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import CustomButton from "../button";
 
-const CustomModal = ({ title, show, onClose: handleClose, onSubmit: handleSubmit, children, submitText, cancelText, size = "lg" }) => {
+const CustomModal = ({
+    title,
+    show,
+    onClose: handleClose,
+    onSubmit: handleSubmit,
+    children,
+    submitText,
+    cancelText,
+    size = "lg",
+    disableSubmit = false,
+}) => {
     return (
         <Modal
             size={size}
@@ -20,7 +30,7 @@ const CustomModal = ({ title, show, onClose: handleClose, onSubmit: handleSubmit
                 <CustomButton className="btn btn-secondary" onClick={handleClose}>
                     {cancelText}
                 </CustomButton>
-                <CustomButton className="btn btn-primary" onClick={handleSubmit}>
+                <CustomButton disabled={disableSubmit} className="btn btn-primary" onClick={handleSubmit}>
                     {submitText}
                 </CustomButton>
             </Modal.Footer>

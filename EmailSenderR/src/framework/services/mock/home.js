@@ -1,6 +1,7 @@
 export const CLASSIFICATION_LIST = [
-    { key: 1, value: "Classification 1" },
-    { key: 2, value: "Classification 2" },
+    { key: "Internal", value: "Internal", title: "This is custom title - 1" },
+    { key: "Public", value: "Public", title: "This is custom title - 2" },
+    { key: "Restricted", value: "Restricted", isDisabled: true, title: "This is custom title  - 3" },
 ];
 
 export const SUBMIT_EMAIL = {

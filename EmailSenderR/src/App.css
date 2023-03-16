@@ -91,3 +91,14 @@ div._FileUpload:hover {
 .modal-footer .btn-primary {
     float: right;
 }
+
+.css-1nmdiq5-menu {
+    z-index: 10 !important;
+}
+
+.modal-header ._CustomCheckBox {
+    padding-left: 0;
+}
+.modal-header ._CustomCheckBox .checkmark {
+    border: 1px solid #ecf0f2;
+}
